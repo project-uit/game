@@ -1,12 +1,8 @@
 #pragma once
-
 // ========= GAME
-#define GAME_MODE_320_240 0
-#define GAME_MODE_640_480 1
-extern int ScreenWidth = 640;
-extern int ScreenHeight = 480;
-#define GAME_TITLE L"Ninja Gaiden"
-
+#define GAME_SCREEN_320_240 0
+#define GAME_SCREEN_640_480 1
+#define GAME_TITLE "Ninja Gaiden"
 // =========== TEXTURE + SPRITE
 #define ID_TEXTURE_MAIN 0
 #define PATH_TEXTURE_MAIN L"sprite\\main_character_sprite.png"
@@ -23,7 +19,7 @@ enum OBJECT_TYPE {
 };
 
 // ========== MAIN CHARACTER STATE ==========
-enum MAIN_CHARACTER_STATE {
+enum PLAYER_STATE {
 	STAND_RIGHT,
 	STAND_LEFT,
 	RUN_RIGHT,

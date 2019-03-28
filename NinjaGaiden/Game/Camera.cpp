@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "Camera.h"
 
 Camera::Camera(int width, int height, float _angle, D3DXVECTOR3 _scaleFactors)
 {
@@ -20,15 +20,15 @@ Camera::Camera()
 	cameraY = 0;
 }
 
-void Camera::Update(int x, int y, int WidthMap)
+void Camera::Update(int x, int y, int WidthMap, int G_ScreenWidth)
 {
 	cameraX = x;
 	cameraY = y;
-	if (cameraX < ScreenWidth / 2)
-		cameraX = ScreenWidth / 2;
+	if (cameraX < G_ScreenWidth / 2)
+		cameraX = G_ScreenWidth / 2;
 
-	if (cameraX > WidthMap - ScreenWidth / 2)
-		cameraX = WidthMap - ScreenWidth / 2;
+	if (cameraX > WidthMap - G_ScreenWidth / 2)
+		cameraX = WidthMap - G_ScreenWidth / 2;
 
 	this->viewMatrix = D3DXMATRIX(
 		scaleFactors.x * cos(angle), scaleFactors.x * sin(angle), 0, 0,

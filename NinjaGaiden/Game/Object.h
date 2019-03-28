@@ -4,8 +4,35 @@
 #include <vector>
 #include <algorithm>
 #include "Constants.h"
-#include "CollisionHandler.h"
 using namespace std;
+
+class Object;
+
+class CollisionHandler
+{
+private:
+	Object* obj;
+	float collisionTime, nx, ny;
+public:
+	CollisionHandler(float collisionTime, float nx, float ny, Object* obj = NULL);
+	~CollisionHandler();
+
+	static bool Compare(CollisionHandler* a, CollisionHandler *b) {
+		return a->collisionTime < b->collisionTime;
+	}
+
+	float GetCollisionTime() {
+		return this->collisionTime;
+	}
+
+	float GetNx() {
+		return this->nx;
+	}
+
+	float GetNy() {
+		return this->ny;
+	}
+};
 
 class Object
 {
@@ -73,3 +100,4 @@ public:
 	void SetLastPos(D3DXVECTOR3 pos) { this->lastPos.x = pos.x; this->lastPos.y = pos.y; }
 	D3DXVECTOR3 GetLastPos() { return this->lastPos; }
 };
+

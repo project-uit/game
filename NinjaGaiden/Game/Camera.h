@@ -18,7 +18,7 @@ private:
 public:
 	Camera(int width, int height, float angle, D3DXVECTOR3 scaleFactors);
 	Camera();
-	void Update(int x, int y, int WidthMap);
+	void Update(int x, int y, int WidthMap, int G_ScreenWidth);
 	void SetTransForm(LPDIRECT3DDEVICE9);
 	RECT getRECT();
 	~Camera();

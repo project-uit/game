@@ -8,9 +8,7 @@
 #include "Debug.h"
 #include <vector>
 #include "Game.h"
-
 using namespace std;
-
 class Sprite
 {
 private:

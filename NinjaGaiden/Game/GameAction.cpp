@@ -4,13 +4,13 @@ GameAction *GameAction::_instance = NULL;
 
 GameAction::GameAction(HINSTANCE hInstance, int nShowCmd)
 {
-	Graphic *graphic = Graphic::GetInstance(hInstance, nShowCmd, GAME_TITLE, GAME_MODE_640_480);
+	Graphic *graphic = Graphic::GetInstance(hInstance, nShowCmd, GAME_TITLE, GAME_SCREEN_640_480);
 	/*SetWindowPos(graphic->GetHWnd(), 0, 0, 0, graphic->GetWidth(), graphic->GetHeight(), SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);*/
 
 	Game *game = Game::GetInstance();
 	game->Init(graphic->GetHWnd());
 
-	this->keyHandler = new KeyEventHandler();
+	this->keyHandler = new KeyboardHandler();
 	game->InitKeyboard(this->keyHandler);
 
 
@@ -58,7 +58,7 @@ int GameAction::GameRun()
 
 void GameAction::Update(DWORD dt)
 {
-	World::GetInstance()->Update(dt);
+	World::GetInstance()->Update( (float) dt);
 }
 
 void GameAction::Render()
@@ -88,25 +88,25 @@ void KeyboardHandler::KeyState(BYTE * states)
 void KeyboardHandler::OnKeyDown(int KeyCode)
 {
 	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-		MainCharacter::GetInstance()->SetVeclocity(0.2f, 0);
-		MainCharacter::GetInstance()->SetState(RUN_RIGHT);
+		Player::GetInstance()->SetVeclocity(0.2f, 0);
+		Player::GetInstance()->SetState(PLAYER_STATE::RUN_RIGHT);
 	}
 
 	if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-		MainCharacter::GetInstance()->SetVeclocity(-0.2f, 0);
-		MainCharacter::GetInstance()->SetState(RUN_LEFT);
+		Player::GetInstance()->SetVeclocity(-0.2f, 0);
+		Player::GetInstance()->SetState(PLAYER_STATE::RUN_LEFT);
 	}
 }
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
 {
 	if (KeyCode == DIK_RIGHT) {
-		MainCharacter::GetInstance()->SetVeclocity(0, 0);
-		MainCharacter::GetInstance()->SetState(STAND_RIGHT);
+		Player::GetInstance()->SetVeclocity(0, 0);
+		Player::GetInstance()->SetState(PLAYER_STATE::RUN_RIGHT);
 	}
 
 	if (KeyCode == DIK_LEFT) {
-		MainCharacter::GetInstance()->SetVeclocity(0, 0);
-		MainCharacter::GetInstance()->SetState(STAND_LEFT);
+		Player::GetInstance()->SetVeclocity(0, 0);
+		Player::GetInstance()->SetState(PLAYER_STATE::RUN_LEFT);
 	}
 }

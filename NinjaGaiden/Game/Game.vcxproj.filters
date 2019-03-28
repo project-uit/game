@@ -19,15 +19,6 @@
     <Filter Include="Header Files\Logging">
       <UniqueIdentifier>{2ecbb9f7-5719-4f72-920a-608bbae7f466}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{3dd46a61-469a-4492-a017-41d1ccc732e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\Sprites">
-      <UniqueIdentifier>{0b7a91ff-fcec-411e-9ffa-cca71328040e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\Map">
-      <UniqueIdentifier>{63397ee3-1bb6-45ff-929b-9927e3c553b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Object">
       <UniqueIdentifier>{250c74ca-9a71-4feb-9ef2-3fc862f90d2c}</UniqueIdentifier>
     </Filter>
@@ -48,6 +39,15 @@
     </Filter>
     <Filter Include="Header Files\Stage">
       <UniqueIdentifier>{679f189e-060a-4052-a271-6c185a730250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Enemy">
+      <UniqueIdentifier>{2c3fe2a7-cebd-4ddf-a5dd-e0081d5d688c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Items">
+      <UniqueIdentifier>{b5a32634-f1cd-4a3a-912e-4af2fd9c0952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Player">
+      <UniqueIdentifier>{2a08951e-ca75-4d0b-b9b0-8d83d75c5871}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,9 +93,6 @@
     <ClInclude Include="Sound.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionHandler.h">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -104,16 +101,31 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Keyboard.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
     <ClCompile Include="GameAction.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
   </ItemGroup>
