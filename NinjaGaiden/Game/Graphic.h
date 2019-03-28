@@ -17,13 +17,13 @@ private:
 	void SetDimension(int);
 
 public:
-	Graphic(HINSTANCE hInstance, int nShowCmd, LPCSTR nameOfGame, int gameMode);
+	Graphic(HINSTANCE hInstance, int nShowCmd, LPCWSTR nameOfGame, int gameMode);
 	~Graphic();
 
 	HWND GetHWnd() { return this->hWnd; }
 	int GetWidth() { return this->screenWidth; }
 	int GetHeight() { return this->screenHeight; }
-	static Graphic* GetInstance(HINSTANCE hInstance, int nShowCmd, LPCSTR nameOfGame, int gameMode) {
+	static Graphic* GetInstance(HINSTANCE hInstance, int nShowCmd, LPCWSTR nameOfGame, int gameMode) {
 		if (_instance == NULL) _instance = new Graphic(hInstance, nShowCmd, nameOfGame, gameMode);
 		return _instance;
 	};

@@ -2,7 +2,7 @@
 // ========= GAME
 #define GAME_SCREEN_320_240 0
 #define GAME_SCREEN_640_480 1
-#define GAME_TITLE "Ninja Gaiden"
+#define GAME_TITLE L"Ninja Gaiden"
 // =========== TEXTURE + SPRITE
 #define ID_TEXTURE_MAIN 0
 #define PATH_TEXTURE_MAIN L"sprite\\main_character_sprite.png"

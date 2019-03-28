@@ -8,7 +8,7 @@ void DebugOut(wchar_t *fmt, ...)
 	wchar_t dbg_out[4096];
 	vswprintf_s(dbg_out, fmt, argp);
 	va_end(argp);
-	OutputDebugStringW(dbg_out);
+	OutputDebugString(dbg_out);
 }
 
 static const char* PATH = "Log\\trace.log";

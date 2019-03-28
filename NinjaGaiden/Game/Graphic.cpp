@@ -34,7 +34,7 @@ void Graphic::SetDimension(int mode) {
 	}
 }
 
-Graphic::Graphic(HINSTANCE hInstance, int nShowCmd, LPCSTR nameOfGame, int gameMode)
+Graphic::Graphic(HINSTANCE hInstance, int nShowCmd, LPCWSTR nameOfGame, int gameMode)
 {
 	this->SetDimension(gameMode);
 

@@ -21,7 +21,7 @@ void World::LoadResource()
 	this->testSpriteStand = new Sprite(texture->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 17, 32);
 
 	Player *main = Player::GetInstance();
-
+	DebugOut((wchar_t *)L"[Resource] Loading resource successfully\n");
 }
 
 void World::Update(float deltaTime)

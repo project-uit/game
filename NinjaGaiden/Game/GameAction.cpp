@@ -87,6 +87,7 @@ void KeyboardHandler::KeyState(BYTE * states)
 
 void KeyboardHandler::OnKeyDown(int KeyCode)
 {
+	DebugOut((wchar_t *)L"[KEYBOARD] KeyDown: %d\n",KeyCode);
 	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
 		Player::GetInstance()->SetVeclocity(0.2f, 0);
 		Player::GetInstance()->SetState(PLAYER_STATE::RUN_RIGHT);
@@ -100,6 +101,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
 {
+	DebugOut((wchar_t *)L"[KEYBOARD] KeyUp: %d\n", KeyCode);
 	if (KeyCode == DIK_RIGHT) {
 		Player::GetInstance()->SetVeclocity(0, 0);
 		Player::GetInstance()->SetState(PLAYER_STATE::RUN_RIGHT);
