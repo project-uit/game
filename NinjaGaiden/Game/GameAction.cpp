@@ -78,8 +78,6 @@ void GameAction::Render()
 	d3ddv->Present(NULL, NULL, NULL, NULL);
 }
 
-
-// Xử lý sự kiện input
 void KeyboardHandler::KeyState(BYTE * states)
 {
 
@@ -90,12 +88,19 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 	DebugOut((wchar_t *)L"[KEYBOARD] KeyDown: %d\n",KeyCode);
 	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
 		Player::GetInstance()->SetVeclocity(0.2f, 0);
-		Player::GetInstance()->SetState(PLAYER_STATE::RUN_RIGHT);
+		Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
+		Player::GetInstance()->SetState(PLAYER_STATE::RUN);
 	}
 
 	if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
 		Player::GetInstance()->SetVeclocity(-0.2f, 0);
-		Player::GetInstance()->SetState(PLAYER_STATE::RUN_LEFT);
+		Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+		Player::GetInstance()->SetState(PLAYER_STATE::RUN);
+	}
+
+	if (Game::GetInstance()->IsKeyDown(DIK_DOWN)) {
+		Player::GetInstance()->SetVeclocity(0, 0);
+		Player::GetInstance()->SetState(PLAYER_STATE::SIT);
 	}
 }
 
@@ -104,11 +109,17 @@ void KeyboardHandler::OnKeyUp(int KeyCode)
 	DebugOut((wchar_t *)L"[KEYBOARD] KeyUp: %d\n", KeyCode);
 	if (KeyCode == DIK_RIGHT) {
 		Player::GetInstance()->SetVeclocity(0, 0);
-		Player::GetInstance()->SetState(PLAYER_STATE::RUN_RIGHT);
+		Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
+		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
 	}
 
 	if (KeyCode == DIK_LEFT) {
 		Player::GetInstance()->SetVeclocity(0, 0);
-		Player::GetInstance()->SetState(PLAYER_STATE::RUN_LEFT);
+		Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+	}
+
+	if (KeyCode == DIK_DOWN) {
+		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
 	}
 }

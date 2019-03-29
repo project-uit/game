@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define TRANSPARENT_COLOR D3DCOLOR_XRGB(255, 255, 255)
+#define TRANSPARENT_COLOR D3DCOLOR_XRGB(255, 163, 177)
 
 class Texture
 {
@@ -14,7 +14,7 @@ class Texture
 	unordered_map<int, LPDIRECT3DTEXTURE9> textures;
 public:
 	Texture();
-	void Add(int id, LPCWSTR filePath);
+	void Add(int id, LPCWSTR filePath, D3DCOLOR trans = D3DCOLOR_XRGB(255, 255, 255));
 	LPDIRECT3DTEXTURE9 Get(int id);
 
 	static Texture * GetInstance() {

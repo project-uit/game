@@ -94,7 +94,7 @@ void Sprite::SetSpritePositions(LPCWSTR filePath)
 	f.close();
 }
 
-void Sprite::UpdateSprite()
+void Sprite::NextSprite()
 {
 	this->index = (this->index + 1) % count;
 }
@@ -118,15 +118,12 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 	if (!flagRight) {
 		tempTurnRight = -1.0f;
 	}
-
-	D3DXVECTOR3 scaling(tempTurnRight, 1.0f, 1.0f);
-
+	D3DXVECTOR3 scaling(tempTurnRight*2.5f, 2.5f, 1.0f);
 	// out, scaling centre, scaling rotation, scaling, rotation centre, rotation, translation
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(width / 2, height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
-
+	/*D3DXMatrixRotationY(&mat,20);*/
 	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
-
-	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_ARGB(255, 255, 255, 255));
+	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }
 
 RECT Sprite::ReadCurrentSpritePosition()
@@ -134,7 +131,6 @@ RECT Sprite::ReadCurrentSpritePosition()
 	RECT rect;
 	vector<int>* tempVector = this->spritePositions->at(this->index);
 
-	// Giá trị đầu tiên là x, giá trị thứ 2 là y
 	rect.left = tempVector->at(0);
 	rect.top = tempVector->at(1);
 	rect.right = rect.left + this->width;
@@ -160,4 +156,11 @@ RECT Sprite::ReadCurrentSpritePositionWithBoundingBox()
 void Sprite::Reset()
 {
 	this->index = 0;
+}
+void Sprite::SetIndex(int idx) {
+	this->index = idx;
+}
+
+int Sprite::GetIndex() {
+	return this->index;
 }

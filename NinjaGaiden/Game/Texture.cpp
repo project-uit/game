@@ -6,7 +6,7 @@ Texture::Texture()
 {
 }
 
-void Texture::Add(int id, LPCWSTR filePath)
+void Texture::Add(int id, LPCWSTR filePath, D3DCOLOR trans)
 {
 	D3DXIMAGE_INFO info;
 	HRESULT result = D3DXGetImageInfoFromFileW(filePath, &info);
@@ -30,7 +30,7 @@ void Texture::Add(int id, LPCWSTR filePath)
 		D3DPOOL_DEFAULT,
 		D3DX_DEFAULT,
 		D3DX_DEFAULT,
-		TRANSPARENT_COLOR,
+		trans,
 		&info,
 		NULL,
 		&texture);								// Created texture pointer
@@ -44,7 +44,6 @@ void Texture::Add(int id, LPCWSTR filePath)
 	textures[id] = texture;
 
 	trace(L"[INFO] Texture loaded Ok: id=%d, %s \n", id, filePath);
-
 }
 
 LPDIRECT3DTEXTURE9 Texture::Get(int id)

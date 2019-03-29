@@ -5,26 +5,45 @@ Player* Player::_instance = NULL;
 Player::Player()
 {
 	this->SetObjectType(MAIN_CHARACTER);
-	this->SetState(STAND_RIGHT);
-
+	this->SetState(PLAYER_STATE::STAND);
+	this->SetDirection(DIRECTION::RIGHT);
 	this->objectWidth = DEFAULT_MAIN_WIDTH;
 	this->objectHeight = DEFAULT_MAIN_HEIGHT;
 
-	this->SetPosition(200, 100);
+	this->SetPosition(300, 300);
 	this->SetVeclocity(0, 0);
 
-	this->standSprite = new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 17, 32);
-	this->runSprite = new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 22, 31);
+	this->sprite = new  map<PLAYER_STATE, Sprite*>();
+	this->sprite
+		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND,
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 17, 32)));
+	this->sprite
+		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::RUN,
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 22, 31)));
+	this->sprite
+		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT,
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 17, 24)));
 }
-
 
 Player::~Player()
 {
-	if (this->standSprite != NULL) delete this->standSprite;
-	if (this->runSprite != NULL) delete this->runSprite;
+	if (this->sprite != NULL) {
+		for (auto i = this->sprite->begin(); i != this->sprite->end(); i++) {
+			delete i->second;
+			this->sprite->erase(i);
+		}
+		delete this->sprite;
+	}
 }
 
 
+void Player::SetDirection(DIRECTION direct) {
+	this->direction = direct;
+}
+
+DIRECTION Player::GetDirection() {
+	return this->direction;
+}
 PLAYER_STATE Player::GetState()
 {
 	return this->state;
@@ -37,8 +56,7 @@ void Player::SetState(PLAYER_STATE value)
 
 void Player::ResetAllSprites()
 {
-	this->standSprite->Reset();
-	this->runSprite->Reset();
+
 }
 
 bool Player::GetStateActive()
@@ -57,37 +75,25 @@ void Player::Update(float t, vector<Object*>* object)
 {
 	Object::Update(t);
 	this->PlusPosition(this->deltaX, this->deltaY);
-
-	switch (this->state) {
-	case STAND_RIGHT: case STAND_LEFT:
-		this->standSprite->UpdateSprite();
-		break;
-	case RUN_RIGHT: case RUN_LEFT:
-		this->runSprite->UpdateSprite();
-		break;
-	default:break;
-	}
+	this->sprite->at(this->state)->NextSprite();
 }
 
 void Player::Render()
 {
-
 	this->position.z = 0;
-
-	switch (this->state) {
-	case STAND_RIGHT:
-		this->standSprite->DrawSprite(this->position, true);
+	switch (this->direction) {
+	case RIGHT:
+		this->sprite->at(this->state)->DrawSprite(this->position, true);
 		break;
-	case STAND_LEFT:
-		this->standSprite->DrawSprite(this->position, false);
+	case LEFT:
+		this->sprite->at(this->state)->DrawSprite(this->position, false);
 		break;
-	case RUN_RIGHT:
-		this->runSprite->DrawSprite(this->position, true);
+	default:
 		break;
-	case RUN_LEFT:
-		this->runSprite->DrawSprite(this->position, false);
-		break;
-	default:break;
 	}
+}
+
+void Player::ResetSpriteState(PLAYER_STATE state) {
+	this->sprite->at(state)->Reset();
 }
 

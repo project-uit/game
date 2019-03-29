@@ -58,20 +58,16 @@ public:
 	Object();
 	~Object();
 
-	//Thuật toán AABB
 	bool checkAABB(Object* obj);
 
-	// Thuật toán SweptAABB
 	void SweptAABB(Object* obj, float deltaX, float deltaY, float &collisionTime, float &nx, float& ny);
 
-	// Này dùng để lấy thông số tất cả object có khả năng va chạm với object đang xét
 	CollisionHandler* GetCollsionObjectsBySweptAABB(Object* obj);
 	void CalcPotentialCollisions(vector<Object*> *objects, vector<CollisionHandler*> *coEvents);
 	void FilterCollision(vector<CollisionHandler*> *coEvents, vector<CollisionHandler*> *coEventsResult, float &minTx, float &minTy, float &nx, float &ny);
 
 	RECT GetBoundingBox();
 
-	// Phải update thông tin của Object trước rồi mới render lên lại màn hình
 	virtual void Update(float deltaTime, std::vector<Object*> *objects = NULL);
 	virtual void Render() = 0;
 
