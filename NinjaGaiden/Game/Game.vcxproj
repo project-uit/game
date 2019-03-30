@@ -122,7 +122,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Boundary.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Debug.h" />
@@ -133,6 +132,8 @@
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Scence.h" />
+    <ClInclude Include="Scence1.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAction.cpp" />
     <ClCompile Include="Graphic.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="Source.cpp" />

@@ -37,9 +37,6 @@
     <Filter Include="Source Files\Object">
       <UniqueIdentifier>{b032063e-2a15-4135-ba6c-32a062e08b2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Stage">
-      <UniqueIdentifier>{679f189e-060a-4052-a271-6c185a730250}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Object\Enemy">
       <UniqueIdentifier>{2c3fe2a7-cebd-4ddf-a5dd-e0081d5d688c}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="Source Files\Object\Player">
       <UniqueIdentifier>{2a08951e-ca75-4d0b-b9b0-8d83d75c5871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scence">
+      <UniqueIdentifier>{679f189e-060a-4052-a271-6c185a730250}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +75,6 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
@@ -93,8 +90,14 @@
     <ClInclude Include="Sound.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Boundary.h">
+    <ClInclude Include="Grid.h">
       <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Scence.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Scence1.h">
+      <Filter>Header Files\Scence</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +132,9 @@
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,7 +30,6 @@ void World::Update(float deltaTime)
 
 void World::Render()
 {
-	//Game::GetInstance()->Draw(0, 0, Texture::GetInstance()->Get(ID_TEXTURE_MAP_1), 0, 0, 600, 600);
-	// D3DXVECTOR3 p(100, 100, 0);
+	Game::GetInstance()->Draw(0, 0, Texture::GetInstance()->Get(ID_TEXTURE_MAP_1), 0, 0, 600, 600);
 	Player::GetInstance()->Render();
 }

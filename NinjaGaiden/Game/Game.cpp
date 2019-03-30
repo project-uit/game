@@ -64,11 +64,11 @@ void Game::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top,
 	r.right = right;
 	r.bottom = bottom;
 
-	D3DXMATRIX mat;
-	D3DXVECTOR3 position(0.0f, 0.0f, 0.0f);
-	D3DXVECTOR3 scaling(1.0f, 1.0f, 1.0f);
-	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(left, top, 0.0f), NULL, NULL, NULL, NULL, &position);
-	spriteHandler->SetTransform(&mat);
+	//D3DXMATRIX mat;
+	//D3DXVECTOR3 position(0.0f, 0.0f, 0.0f);
+	//D3DXVECTOR3 scaling(1.0f, 1.0f, 1.0f);
+	//D3DXMatrixTransformation(&mat, NULL , NULL, NULL, NULL, NULL, &position);
+	//spriteHandler->SetTransform(&mat);
 	spriteHandler->Draw(texture, &r,NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 }
 

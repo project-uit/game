@@ -14,7 +14,7 @@ GameAction::GameAction(HINSTANCE hInstance, int nShowCmd)
 	game->InitKeyboard(this->keyHandler);
 
 	camera = new Camera(graphic->GetWidth(), graphic->GetHeight(), 0, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
-
+	
 	World *world = World::GetInstance();
 	world->LoadResource();
 }
@@ -61,20 +61,18 @@ int GameAction::GameRun()
 void GameAction::Update(DWORD dt)
 {
 	World::GetInstance()->Update( (float) dt);
+	camera->Update(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, 640 * 2, 640);
 }
 
 void GameAction::Render()
 {
-
 	LPDIRECT3DDEVICE9 d3ddv = Game::GetInstance()->GetDirect3DDevice();
-	//camera->Update(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, 640 * 2, 640);
-	//DebugOut((wchar_t*)L"x: %f y: %f", Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y);
+
 	if (d3ddv->BeginScene()) {
 		d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
 		Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
-
+		camera->SetTransForm(Game::GetInstance()->GetDirect3DDevice());
 		World::GetInstance()->Render();
-
 		Game::GetInstance()->GetSpriteHandler()->End();
 		d3ddv->EndScene();
 	}
@@ -106,6 +104,10 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 		Player::GetInstance()->SetVeclocity(0, 0);
 		Player::GetInstance()->SetState(PLAYER_STATE::SIT);
 	}
+
+	if (KeyCode == DIK_Z) {
+		Player::GetInstance()->SetState(PLAYER_STATE::SIT_ATK);
+	}
 }
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
@@ -128,6 +130,6 @@ void KeyboardHandler::OnKeyUp(int KeyCode)
 	}
 
 	if (KeyCode == DIK_Z) {
-		Player::GetInstance()->SetState(PLAYER_STATE::SIT_ATK);
+		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
 	}
 }

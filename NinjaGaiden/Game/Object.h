@@ -39,17 +39,15 @@ class Object
 protected:
 	int objectWidth;
 	int objectHeight;
-	D3DXVECTOR3 position;  // Vị trí hiện tại của object
-	D3DXVECTOR3 lastPos;	// Vị trí trước đó của object
-	D3DXVECTOR3 veclocity;  // Vận tốc của Object
+	D3DXVECTOR3 position;
+	D3DXVECTOR3 lastPos;
+	D3DXVECTOR3 veclocity;
 	OBJECT_TYPE objectType;
 	bool isActive;
 
-	// 2 trường này phục vụ cho Grid
 	Object* nextObj;
 	Object* preObj;
 
-	// Cái này dùng để hỗ trợ cập nhật vị trí của object
 	float deltaX;
 	float deltaY;
 	float deltaTime;

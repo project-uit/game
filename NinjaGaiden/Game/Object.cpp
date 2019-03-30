@@ -139,8 +139,8 @@ void Object::FilterCollision(vector<CollisionHandler*>* coEvents, vector<Collisi
 {
 	minTx = 1.0f;
 	minTy = 1.0f;
-	int minIx = -1; // Index của object có khả năng va chạm gần nhất theo X (chiều ngang)
-	int minIy = -1; // index của Object có khả năng va chạm gần nhất theo Y (chiều dọc)
+	int minIx = -1;
+	int minIy = -1;
 
 	ny = 0.0f;
 	nx = 0.0f;
