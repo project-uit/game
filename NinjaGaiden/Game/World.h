@@ -6,11 +6,13 @@
 #include "Sprite.h"
 #include "Game.h"
 #include "player.h"
+#include "Camera.h"
 class World
 {
 private:
 	static World * _instance;
 	Sprite* testSpriteStand;
+
 public:
 	World();
 	~World();

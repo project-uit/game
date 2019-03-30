@@ -4,6 +4,7 @@
 #include "Graphic.h"
 #include "Player.h"
 
+
 class KeyboardHandler : public InputDevice {
 public:
 	virtual void KeyState(BYTE *states);
@@ -17,7 +18,7 @@ class GameAction
 private:
 	static GameAction* _instance;
 	KeyboardHandler* keyHandler;
-
+	Camera* camera;
 public:
 	GameAction(HINSTANCE hInstance, int nShowCmd);
 	int GameRun();

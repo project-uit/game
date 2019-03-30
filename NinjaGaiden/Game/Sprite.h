@@ -19,27 +19,25 @@ private:
 
 	int width;
 	int height;
-	int count;						  // So luong sprite trong texture
+	int count;
 	int index;
-	int rotate;
+	float rotate;
 	float scale;
 	void SetSpritePositions(LPCWSTR filePath);
 
 public:
-	Sprite(LPDIRECT3DTEXTURE9, LPCWSTR, int, int, int);
-	Sprite(LPDIRECT3DTEXTURE9, LPCWSTR); // Phương thức mới dùng để khỏi tạo sprite và dựa hoàn toàn vào file
-	Sprite(LPDIRECT3DTEXTURE9, int, int, int, int); // Phương thức dùng để khởi tạo sprite đối vs những viên gạch
+	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale = 1.0f);
+	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, float scale = 1.0f);
+	Sprite(LPDIRECT3DTEXTURE9 texture, int index, int count, int width, int height);
 	~Sprite();
 	void SetIndex(int index);
 	int GetIndex();
 	void NextSprite();
-	void DrawSprite(D3DXVECTOR3 position, bool flagRight);	//draw multi sprites
+	void DrawSprite(D3DXVECTOR3 position, bool flagRight);
 	RECT ReadCurrentSpritePosition();
 	RECT ReadCurrentSpritePositionWithBoundingBox();
 	void Reset();
-	void SetScale(int scale);
-	int GetCount() {
-		return this->count;
-	}
+	void SetScale(float scale);
+	int GetCount();
 };
 

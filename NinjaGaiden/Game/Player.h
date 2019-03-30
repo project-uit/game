@@ -12,7 +12,7 @@ private:
 
 	static Player* _instance;
 	PLAYER_STATE state;
-	//PLAYER_STATE last_state;
+	PLAYER_STATE last_state;
 	DIRECTION direction;
 	map<PLAYER_STATE,Sprite*>* sprite;
 public:
@@ -24,7 +24,7 @@ public:
 	void SetDirection(DIRECTION direction);
 	void ResetAllSprites();
 	bool GetStateActive();
-
+	void SetLastState(PLAYER_STATE last_state);
 	void Reset(float  x, float y);
 	void Update(float t, vector<Object*> *object = NULL);
 	void Render();

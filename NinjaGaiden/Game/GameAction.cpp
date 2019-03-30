@@ -13,6 +13,7 @@ GameAction::GameAction(HINSTANCE hInstance, int nShowCmd)
 	this->keyHandler = new KeyboardHandler();
 	game->InitKeyboard(this->keyHandler);
 
+	camera = new Camera(graphic->GetWidth(), graphic->GetHeight(), 0, D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 
 	World *world = World::GetInstance();
 	world->LoadResource();
@@ -49,8 +50,9 @@ int GameAction::GameRun()
 			this->Update(deltaTime);
 			this->Render();
 		}
-		else
+		else {
 			Sleep(tickPerFrame - deltaTime);
+		}
 	}
 
 	return 1;
@@ -63,8 +65,10 @@ void GameAction::Update(DWORD dt)
 
 void GameAction::Render()
 {
-	LPDIRECT3DDEVICE9 d3ddv = Game::GetInstance()->GetDirect3DDevice();
 
+	LPDIRECT3DDEVICE9 d3ddv = Game::GetInstance()->GetDirect3DDevice();
+	//camera->Update(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, 640 * 2, 640);
+	//DebugOut((wchar_t*)L"x: %f y: %f", Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y);
 	if (d3ddv->BeginScene()) {
 		d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
 		Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
@@ -85,7 +89,7 @@ void KeyboardHandler::KeyState(BYTE * states)
 
 void KeyboardHandler::OnKeyDown(int KeyCode)
 {
-	DebugOut((wchar_t *)L"[KEYBOARD] KeyDown: %d\n",KeyCode);
+	DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyDown: %d\n",KeyCode);
 	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
 		Player::GetInstance()->SetVeclocity(0.2f, 0);
 		Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
@@ -106,7 +110,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
 {
-	DebugOut((wchar_t *)L"[KEYBOARD] KeyUp: %d\n", KeyCode);
+	DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyUp: %d\n", KeyCode);
 	if (KeyCode == DIK_RIGHT) {
 		Player::GetInstance()->SetVeclocity(0, 0);
 		Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
@@ -121,5 +125,9 @@ void KeyboardHandler::OnKeyUp(int KeyCode)
 
 	if (KeyCode == DIK_DOWN) {
 		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+	}
+
+	if (KeyCode == DIK_Z) {
+		Player::GetInstance()->SetState(PLAYER_STATE::SIT_ATK);
 	}
 }

@@ -9,6 +9,7 @@
 #define PATH_POS_MAIN_STAND L"sprite\\main\\MAIN_STAND.txt"
 #define PATH_POS_MAIN_RUN L"sprite\\main\\MAIN_RUN.txt"
 #define PATH_POS_SIT L"sprite\\main\\MAIN_SIT.txt"
+#define PATH_POS_SIT_ATK L"sprite\\main\\MAIN_SIT_ATK.txt"
 
 #define ID_TEXTURE_MAP_1 100
 #define PATH_TEXTURE_MAP_1 L"sprite\\background.png"
@@ -23,9 +24,10 @@ enum OBJECT_TYPE {
 enum PLAYER_STATE {
 	STAND,
 	RUN,
-	ATK,
+	STAND_ATK,
 	JUMP,
-	SIT
+	SIT,
+	SIT_ATK
 };
 
 enum DIRECTION {

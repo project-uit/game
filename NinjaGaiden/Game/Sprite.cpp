@@ -1,5 +1,5 @@
 ﻿#include  "Sprite.h"
-Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height)
+Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale)
 {
 
 	if (texture == NULL)
@@ -8,7 +8,7 @@ Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int widt
 	this->count = count;
 	this->width = width;
 	this->height = height;
-
+	this->scale = scale;
 	this->index = 0;
 
 	this->spritePositions = new vector<vector<int>*>();
@@ -16,7 +16,7 @@ Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int widt
 	this->SetSpritePositions(filePath);
 }
 
-Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath)
+Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, float scale)
 {
 	if (texture == NULL) {
 		return;
@@ -118,10 +118,10 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 	if (!flagRight) {
 		tempTurnRight = -1.0f;
 	}
-	D3DXVECTOR3 scaling(tempTurnRight*2.5f, 2.5f, 1.0f);
+	D3DXVECTOR3 scaling(tempTurnRight*this->scale, this->scale, 1.0f);
 	// out, scaling centre, scaling rotation, scaling, rotation centre, rotation, translation
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(width / 2, height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
-	/*D3DXMatrixRotationY(&mat,20);*/
+	//D3DXMatrixRotationX(&mat, 3.14f);
 	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
 	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }
@@ -163,4 +163,12 @@ void Sprite::SetIndex(int idx) {
 
 int Sprite::GetIndex() {
 	return this->index;
+}
+
+int Sprite::GetCount() {
+	return this->count;
+}
+
+void Sprite::SetScale(float scale) {
+	this->scale = scale;
 }

@@ -93,6 +93,9 @@
     <ClInclude Include="Sound.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="Boundary.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
