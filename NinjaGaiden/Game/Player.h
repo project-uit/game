@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "Texture.h"
 #include <map>
+#include "Item.h"
 #define DEFAULT_MAIN_WIDTH 32
 #define DEFAULT_MAIN_HEIGHT 32
 

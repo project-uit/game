@@ -1,4 +1,5 @@
 ﻿#include "Object.h"
+#include "Debug.h"
 Object::Object()
 {
 	this->isActive = true;
@@ -32,27 +33,25 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float & collisionTime, 
 	float movingLeft = (float)movingRect.left;
 	float movingRight = (float)movingRect.right;
 
-	RECT staticRect = this->GetBoundingBox();
+	RECT staticRect = obj->GetBoundingBox();
 	float staticTop =(float) staticRect.top;
 	float staticBottom = (float)staticRect.bottom;
 	float staticLeft = (float)staticRect.left;
 	float staticRight = (float)staticRect.right;
 
-	collisionTime = -1.0f; // Không có va chạm
+	collisionTime = -1.0f;
 	nx = ny = 0;
 
-	// Broad-phase test
 	float bl = dx > 0 ? movingLeft : movingLeft + dx;
 	float bt = dy > 0 ? movingTop : movingTop + dy;
 	float br = dx > 0 ? movingRight + dx : movingRight;
 	float bb = dy > 0 ? movingBottom + dy : movingBottom;
 
-	// Nếu không nằm trong vùng va chạm với nhau thì không cần xét
 	if (br < staticLeft || bl >  staticRight
 		|| bb < staticTop || bt > staticBottom)
 		return;
 
-	if (dx == 0 && dy == 0) return; // Không di chuyển cũng thoát ra
+	if (dx == 0 && dy == 0) return;
 
 	// đi qua phải
 	if (dx > 0) {
@@ -114,10 +113,11 @@ CollisionHandler * Object::GetCollsionObjectsBySweptAABB(Object * obj)
 {
 	float dx = this->deltaX - obj->GetVeclocity().x*this->deltaTime;
 	float dy = this->deltaY - obj->GetVeclocity().y * this->deltaTime;
-
+	
 	float collisionTime, nx, ny;
 
 	this->SweptAABB(obj, dx, dy, collisionTime, nx, ny);
+	
 	return new CollisionHandler(collisionTime, nx, ny, obj);
 }
 
@@ -125,7 +125,7 @@ void Object::CalcPotentialCollisions(vector<Object*>* objects, vector<CollisionH
 {
 	for (UINT i = 0; i < objects->size(); i++) {
 		CollisionHandler* coEvent = this->GetCollsionObjectsBySweptAABB(objects->at(i));
-
+		
 		if (coEvent->GetCollisionTime() > 0 && coEvent->GetCollisionTime() <= 1.0f)
 			coEvents->push_back(coEvent);
 		else

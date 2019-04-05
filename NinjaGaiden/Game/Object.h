@@ -32,6 +32,10 @@ public:
 	float GetNy() {
 		return this->ny;
 	}
+
+	Object* getObject() {
+		return this->obj;
+	}
 };
 
 class Object

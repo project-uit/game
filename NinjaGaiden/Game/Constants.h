@@ -27,6 +27,7 @@ enum PLAYER_STATE {
 	STAND_ATK,
 	JUMP,
 	SIT,
+	DIE,
 	SIT_ATK
 };
 

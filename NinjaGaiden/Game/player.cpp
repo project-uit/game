@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 
 Player* Player::_instance = NULL;
 
@@ -17,16 +17,16 @@ Player::Player()
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 17, 32, 1.8f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 17, 32, 1.0f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::RUN,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 22, 32, 1.8f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 22, 32, 1.0f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 17, 32, 1.8f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 17, 32, 1.0f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 17, 32, 1.8f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 17, 32, 1.0f)));
 }
 
 Player::~Player()
@@ -92,7 +92,55 @@ void Player::Reset(float x, float y)
 void Player::Update(float t, vector<Object*>* object)
 {
 	Object::Update(t);
-	this->PlusPosition(this->deltaX, this->deltaY);
+
+	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
+	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
+	coEvents->clear();
+
+	if (this->state != PLAYER_STATE::DIE) {
+		
+		this->CalcPotentialCollisions(object, coEvents);
+	}
+
+	if (coEvents->size() == 0) {
+		
+		this->PlusPosition(this->deltaX, this->deltaY);
+	}
+	else {
+		DebugOut((wchar_t *)L"Kich hoạt va chạm\n");
+		float min_tx, min_ty, nx = 0, ny;
+		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+
+		if (nx != 0) {
+			DebugOut((wchar_t *)L"Va chạm!\n");
+			this->SetVx(0.0f);
+		}
+		if (ny != 0) {
+			this->SetVy(0.0f);
+		}
+
+		for (UINT i = 0; i < coEventsResult->size(); i++) {
+			
+			CollisionHandler* e = coEventsResult->at(i);
+			//xu ly va cham
+			if (dynamic_cast<Item *>(e->getObject())) {
+				Item *item = dynamic_cast<Item *>(e->getObject());
+				float x = item->GetPosition().x;
+				float y = item->GetPosition().y;
+				item->SetPosition(x + 5, y);
+			}
+		}
+
+	}
+
+	for (UINT i = 0; i < coEvents->size(); i++) {
+		delete coEvents->at(i);
+	}
+
+	//for (UINT i = 0; i < coEventsResult->size(); i++) {
+	//	delete coEventsResult->at(i);
+	//}
+
 	if (this->last_state != this->state) {
 		ResetSpriteState(this->last_state);
 	}
@@ -100,7 +148,7 @@ void Player::Update(float t, vector<Object*>* object)
 }
 
 void Player::Render()
-{	
+{
 	switch (this->direction) {
 	case RIGHT:
 		this->sprite->at(this->state)->DrawSprite(this->position, true);

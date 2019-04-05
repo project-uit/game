@@ -130,6 +130,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="InputDevice.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scence.h" />
@@ -146,6 +147,7 @@
     <ClCompile Include="GameAction.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="Source.cpp" />

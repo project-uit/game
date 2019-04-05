@@ -7,11 +7,14 @@
 #include "Game.h"
 #include "player.h"
 #include "Camera.h"
+#include "Item.h"
 class World
 {
 private:
 	static World * _instance;
 	Sprite* testSpriteStand;
+	vector<Object*>* objects;
+	Item* item;
 
 public:
 	World();

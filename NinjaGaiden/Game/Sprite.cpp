@@ -70,6 +70,7 @@ void Sprite::SetSpritePositions(LPCWSTR filePath)
 	catch (fstream::failure e)
 	{
 		trace(L"Error when Init Sprite %s", filePath);
+		return;
 	}
 
 	string line;
@@ -84,6 +85,7 @@ void Sprite::SetSpritePositions(LPCWSTR filePath)
 
 		while (getline(iss, splitString, '\t'))
 		{
+			DebugOut((wchar_t *)L"Kich hoạt va chạm %d\n" , stoi(splitString));
 			tempVector->push_back(stoi(splitString));
 		}
 
@@ -103,7 +105,6 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 {
 	if (this->texture == NULL)
 		return;
-
 	RECT rect = ReadCurrentSpritePosition();	//đọc tọa độ của sprite trong file txt
 
 	// Texture being used is width by height:
