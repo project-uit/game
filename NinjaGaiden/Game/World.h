@@ -8,14 +8,16 @@
 #include "player.h"
 #include "Camera.h"
 #include "Item.h"
+#include "Scence.h"
+#include "Scence1.h"
 class World
 {
 private:
 	static World * _instance;
-	Sprite* testSpriteStand;
 	vector<Object*>* objects;
 	Item* item;
-
+	Scence* scence;
+	Map* map;
 public:
 	World();
 	~World();

@@ -131,12 +131,14 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Scence1.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Square.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
@@ -148,10 +150,14 @@
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="Scence.cpp" />
+    <ClCompile Include="Scence1.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Square.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>

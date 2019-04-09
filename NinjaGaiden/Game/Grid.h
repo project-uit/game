@@ -14,15 +14,16 @@ class Grid
 private:
 	static Grid* _instance;
 
-	int numOfRow;
-	int numOfColumn;
-	Object ***cells;
-	float deltaTime;
+	int numOfRow;			// Số dòng của Grid (y)
+	int numOfColumn;		// Số cột của Grid (x)
+	Object ***cells;		// Với 3 tham số truyền vào lần lượt là: Số dòng, số cột, và số chiều sâu
+	float deltaTime;		// deltaTime này là cái số thời gian thực tế mà cái sprite nó được vẽ
 
 	void InitObjectForGrid();
 
-	void PushObjectToVector(std::vector<Object*> * vector, Object* cell);
-
+	void PushObjectToVector(std::vector<Object*> * vector, Object* cell, Object * obj);
+	void DeleteGrid();
+	void InitGrid(int mapHeight, int mapWidth, bool isArray);
 public:
 	Grid();
 	Grid(int mapHeight, int mapWidth, bool isArray = true);

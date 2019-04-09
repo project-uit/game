@@ -24,12 +24,14 @@ void Camera::Update(int x, int y, int WidthMap, int G_ScreenWidth)
 {
 	cameraX = x;
 	cameraY = y;
-	if (cameraX < G_ScreenWidth / 2)
+	if (cameraX < G_ScreenWidth / 2) {
 		cameraX = G_ScreenWidth / 2;
+	}
 
-	if (cameraX > WidthMap - G_ScreenWidth / 2)
+	if (cameraX > WidthMap - G_ScreenWidth / 2) {
 		cameraX = WidthMap - G_ScreenWidth / 2;
-
+	}
+		
 	this->viewMatrix = D3DXMATRIX(
 		scaleFactors.x * cos(angle), scaleFactors.x * sin(angle), 0, 0,
 		-scaleFactors.y * sin(angle), scaleFactors.y * cos(angle), 0, 0,

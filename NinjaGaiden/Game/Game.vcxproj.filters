@@ -49,6 +49,15 @@
     <Filter Include="Header Files\Scence">
       <UniqueIdentifier>{679f189e-060a-4052-a271-6c185a730250}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scence">
+      <UniqueIdentifier>{50ba45ad-1f6f-4076-aba1-8588d1733484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Square">
+      <UniqueIdentifier>{64cb917c-56fc-4e41-9876-5229adc74268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Square">
+      <UniqueIdentifier>{bb5d10af-983c-4364-85e3-f359f45e7500}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -96,11 +105,17 @@
     <ClInclude Include="Scence.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\Object\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
     <ClInclude Include="Scence1.h">
       <Filter>Header Files\Scence</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files\Object\Items</Filter>
+    <ClInclude Include="Square.h">
+      <Filter>Header Files\Object\Square</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +157,18 @@
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files\Object\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence.cpp">
+      <Filter>Source Files\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence1.cpp">
+      <Filter>Source Files\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>Source Files\Object\Square</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

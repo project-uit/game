@@ -8,25 +8,31 @@ Player::Player()
 	this->SetState(PLAYER_STATE::STAND);
 	this->SetLastState(PLAYER_STATE::STAND);
 	this->SetDirection(DIRECTION::RIGHT);
-	this->objectWidth = DEFAULT_MAIN_WIDTH;
-	this->objectHeight = DEFAULT_MAIN_HEIGHT;
-	this->SetPosition(300, 300);
+	this->objectWidth = 32;
+	this->objectHeight = 32;
+	this->SetPosition(180, 100);
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
 
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 17, 32, 1.0f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1,1.0f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::RUN,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 22, 32, 1.0f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 1.0f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 17, 32, 1.0f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 1.0f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 17, 32, 1.0f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 1.0f)));
+	this->sprite
+		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND_ATK,
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 1.0f)));
+	this->sprite
+		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::JUMP,
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 1.0f)));
 }
 
 Player::~Player()
@@ -63,9 +69,20 @@ void Player::ResetSpriteState(PLAYER_STATE state) {
 	this->sprite->at(state)->Reset();
 	this->last_state = this->state;
 }
-
+PLAYER_STATE Player::GetLastState() {
+	return this->last_state;
+}
 void Player::SetLastState(PLAYER_STATE last_state) {
 	this->last_state = last_state;
+}
+void Player::SetHp(int hp) {
+	this->hp = hp;
+}
+int Player::GetHp() {
+	return this->hp;
+}
+Sprite* Player::GetCurrentSprite() {
+	return this->sprite->at(this->state);
 }
 
 void Player::ResetAllSprites()
@@ -93,57 +110,72 @@ void Player::Update(float t, vector<Object*>* object)
 {
 	Object::Update(t);
 
+	if (this->last_state != this->state) {
+		ResetSpriteState(this->last_state);
+	}
+	//if (this->state == PLAYER_STATE::JUMP) {
+	//	if (position.y < 100) {
+	//		this->SetVy(PLAYER_VELOCITY_Y);
+	//	}
+	//	if (position.y > 300) {
+	//		this->SetVy(NO_VELOCITY);
+	//		position.y = 300;
+	//		this->state = PLAYER_STATE::STAND;
+	//	}
+	//}
 	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
 	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
 	coEvents->clear();
 
 	if (this->state != PLAYER_STATE::DIE) {
-		
 		this->CalcPotentialCollisions(object, coEvents);
 	}
 
-	if (coEvents->size() == 0) {
-		
+	if (coEvents->size() == 0) {	
 		this->PlusPosition(this->deltaX, this->deltaY);
 	}
+
 	else {
-		DebugOut((wchar_t *)L"Kich hoạt va chạm\n");
+	
 		float min_tx, min_ty, nx = 0, ny;
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+		
+		this->PlusPosition(min_tx * this->deltaX + nx * 0.4f, min_ty * this->deltaY + ny * 0.4f);
 
-		if (nx != 0) {
-			DebugOut((wchar_t *)L"Va chạm!\n");
+		if (nx > 0) {
+			DebugOut((wchar_t *)L"Va chạm trục X1!\n");
+			this->SetVx(0.0f);
+		}
+		if (nx < 0) {
+			DebugOut((wchar_t *)L"Va chạm trục X2!\n");
 			this->SetVx(0.0f);
 		}
 		if (ny != 0) {
+			DebugOut((wchar_t *)L"Va chạm trục Y!\n");
 			this->SetVy(0.0f);
 		}
 
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
-			
+
 			CollisionHandler* e = coEventsResult->at(i);
 			//xu ly va cham
 			if (dynamic_cast<Item *>(e->getObject())) {
 				Item *item = dynamic_cast<Item *>(e->getObject());
 				float x = item->GetPosition().x;
 				float y = item->GetPosition().y;
-				item->SetPosition(x + 5, y);
+				//item->SetPosition(x + 5, y);
 			}
 		}
-
 	}
-
+	
+	
 	for (UINT i = 0; i < coEvents->size(); i++) {
 		delete coEvents->at(i);
-	}
+	}	
 
-	//for (UINT i = 0; i < coEventsResult->size(); i++) {
-	//	delete coEventsResult->at(i);
-	//}
+	delete coEvents;
+	delete coEventsResult;
 
-	if (this->last_state != this->state) {
-		ResetSpriteState(this->last_state);
-	}
 	this->sprite->at(this->state)->NextSprite();
 }
 

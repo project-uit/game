@@ -75,15 +75,31 @@ public:
 
 	D3DXVECTOR3 GetVeclocity() { return this->veclocity; }
 	void SetVeclocity(float vx, float vy) { this->veclocity.x = vx; this->veclocity.y = vy; }
-	void SetVx(float vx) { this->veclocity.x = vx; }
-	void SetVy(float vy) { this->veclocity.y = vy; }
+	void SetVx(float vx) { 
+		this->veclocity.x = vx; 
+	}
+	void SetVy(float vy) { 
+		this->veclocity.y = vy; 
+	}
 
 	D3DXVECTOR3 GetPosition() { return this->position; }
-	void SetPosition(float x, float y) { this->position.x = x; this->position.y = y; }
-	void PlusPosition(float x, float y) { this->position.x += x; this->position.y += y; }
+	void SetPosition(float x, float y) { 
+		this->position.x = x; 
+		this->position.y = y; 
+	}
+	void PlusPosition(float x, float y) { 
+		this->position.x += x; 
+		this->position.y += y; 
+	}
 
-	void SetBoundingBox(int width, int height) { this->objectWidth = width; this->objectHeight = height; }
-	void GetObjectBoudingBox(int &width, int &height) { width = this->objectWidth; height = this->objectHeight; }
+	void SetBoundingBox(int width, int height) { 
+		this->objectWidth = width; 
+		this->objectHeight = height; 
+	}
+	void GetObjectBoudingBox(int &width, int &height) { 
+		width = this->objectWidth; 
+		height = this->objectHeight; 
+	}
 
 	void SetObjectType(OBJECT_TYPE objectType) { this->objectType = objectType; }
 	OBJECT_TYPE GetObjectType() { return this->objectType; }

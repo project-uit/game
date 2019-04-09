@@ -4,8 +4,8 @@ GameAction *GameAction::_instance = NULL;
 
 GameAction::GameAction(HINSTANCE hInstance, int nShowCmd)
 {
-	Graphic *graphic = Graphic::GetInstance(hInstance, nShowCmd, GAME_TITLE, GAME_SCREEN_640_480);
-	/*SetWindowPos(graphic->GetHWnd(), 0, 0, 0, graphic->GetWidth(), graphic->GetHeight(), SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);*/
+	Graphic *graphic = Graphic::GetInstance(hInstance, nShowCmd, GAME_TITLE, GAME_SCREEN_320_240);
+	//SetWindowPos(graphic->GetHWnd(), 0, 0, 0, graphic->GetWidth()*2, graphic->GetHeight()*2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	Game *game = Game::GetInstance();
 	game->Init(graphic->GetHWnd());
@@ -61,7 +61,7 @@ int GameAction::GameRun()
 void GameAction::Update(DWORD dt)
 {
 	World::GetInstance()->Update( (float) dt);
-	camera->Update(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, 640 * 2, 640);
+	camera->Update(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, 2048, 300);
 }
 
 void GameAction::Render()
@@ -71,8 +71,9 @@ void GameAction::Render()
 	if (d3ddv->BeginScene()) {
 		d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
 		Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
-		camera->SetTransForm(Game::GetInstance()->GetDirect3DDevice());
+		
 		World::GetInstance()->Render();
+		//camera->SetTransForm(Game::GetInstance()->GetDirect3DDevice());
 		Game::GetInstance()->GetSpriteHandler()->End();
 		d3ddv->EndScene();
 	}
@@ -87,49 +88,72 @@ void KeyboardHandler::KeyState(BYTE * states)
 
 void KeyboardHandler::OnKeyDown(int KeyCode)
 {
-	//DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyDown: %d\n",KeyCode);
-	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-		Player::GetInstance()->SetVeclocity(0.2f, 0);
-		Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
-		Player::GetInstance()->SetState(PLAYER_STATE::RUN);
-	}
+	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
+		if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
+			Player::GetInstance()->SetVeclocity(PLAYER_VELOCITY_X, NO_VELOCITY);
+			Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
+			Player::GetInstance()->SetState(PLAYER_STATE::RUN);
+		}
 
-	if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-		Player::GetInstance()->SetVeclocity(-0.2f, 0);
-		Player::GetInstance()->SetDirection(DIRECTION::LEFT);
-		Player::GetInstance()->SetState(PLAYER_STATE::RUN);
-	}
+		if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
+			Player::GetInstance()->SetVeclocity(-PLAYER_VELOCITY_X, NO_VELOCITY);
+			Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+			Player::GetInstance()->SetState(PLAYER_STATE::RUN);
+		}
 
-	if (Game::GetInstance()->IsKeyDown(DIK_DOWN)) {
-		Player::GetInstance()->SetVeclocity(0, 0);
-		Player::GetInstance()->SetState(PLAYER_STATE::SIT);
-	}
+		if (Game::GetInstance()->IsKeyDown(DIK_DOWN)) {
+			Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
+			Player::GetInstance()->SetState(PLAYER_STATE::SIT);
+		}
 
-	if (KeyCode == DIK_Z) {
-		Player::GetInstance()->SetState(PLAYER_STATE::SIT_ATK);
-	}
+		if (Player::GetInstance()->GetLastState() == PLAYER_STATE::SIT) {
+			if (KeyCode == DIK_Z) {
+				Player::GetInstance()->SetState(PLAYER_STATE::SIT_ATK);
+			}
+		}
+
+		if (Player::GetInstance()->GetLastState() == PLAYER_STATE::STAND) {
+			if (KeyCode == DIK_Z) {
+				Player::GetInstance()->SetState(PLAYER_STATE::STAND_ATK);
+			}
+			if (KeyCode == DIK_X) {
+				/*Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
+				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);*/
+			}
+		}
+	} 
 }
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
 {
 	//DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyUp: %d\n", KeyCode);
-	if (KeyCode == DIK_RIGHT) {
-		Player::GetInstance()->SetVeclocity(0, 0);
-		Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
-		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
-	}
+	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
+		if (KeyCode == DIK_RIGHT) {
+			Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
+			Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
+			Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+		}
 
-	if (KeyCode == DIK_LEFT) {
-		Player::GetInstance()->SetVeclocity(0, 0);
-		Player::GetInstance()->SetDirection(DIRECTION::LEFT);
-		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
-	}
+		if (KeyCode == DIK_LEFT) {
+			Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
+			Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+			Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+		}
 
-	if (KeyCode == DIK_DOWN) {
-		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
-	}
+		if (KeyCode == DIK_DOWN) {
+			Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+		}
 
-	if (KeyCode == DIK_Z) {
-		Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+		if (Player::GetInstance()->GetState() == PLAYER_STATE::SIT_ATK) {
+			if (KeyCode == DIK_Z) {
+				Player::GetInstance()->SetState(PLAYER_STATE::SIT);
+			}
+		}
+
+		if (Player::GetInstance()->GetLastState() == PLAYER_STATE::STAND_ATK) {
+			if (KeyCode == DIK_Z) {
+				Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+			}
+		}
 	}
 }
