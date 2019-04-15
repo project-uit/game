@@ -26,10 +26,21 @@ private:
 
 public:
 	Map();
-	Map(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP);
+	Map(int tileWidth, int tileHeight, int numOfColumn, int numOfRow);
+	
 	~Map();
-
-	void loadMap(LPCSTR filePath);
+	void LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP);
 	void drawMap();
 
+	//void SetWidth(int width);
+	//int GetWidth();
+
+	//void SetHeight(int height);
+	//int GetHeight();
+
+	//void SetNumOfColumn(int numOfColumn);
+	//int GetNumOfColumn();
+
+	//void SetNumOfColumnTileSet(int numOfColumnTileSet);
+	//int GetNumOfColumnTileSet();
 };

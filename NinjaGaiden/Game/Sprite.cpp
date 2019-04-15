@@ -87,7 +87,6 @@ void Sprite::SetSpritePositions(LPCWSTR filePath)
 		while (getline(iss, splitString, '\t'))
 		{
 			tempVector->push_back(stoi(splitString));
-			
 		}
 		this->spritePositions->push_back(tempVector);
 		//DebugOut((wchar_t *)L"Thông số %d\n", stoi(splitString));
@@ -130,7 +129,7 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }
 
-void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, PLAYER_STATE direct, int width)
+void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, int x, int y)
 {
 	if (this->texture == NULL)
 		return;
@@ -147,13 +146,8 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, PLAYER_STATE direc
 
 	if (!flagRight) {
 		tempTurnRight = -1.0f;
-		if (direct == PLAYER_STATE::SIT_ATK || direct == PLAYER_STATE::STAND_ATK) {
-			DebugOut((wchar_t *)L"Va chạm trục %d %f!\n", width, position.x);
-			position.x -= (this->width - width);
-		}
-	}
-	else {
-		position.x -= (this->width - width);
+		position.x += x;
+		position.y += y;
 	}
 
 	D3DXVECTOR3 scaling(tempTurnRight*this->scale, this->scale, 1.0f);
@@ -181,7 +175,6 @@ RECT Sprite::GetBoudingBoxFromCurrentSprite()
 {
 	RECT rect;
 	vector<int>* tempVector = this->spritePositions->at(this->index);
-
 	rect.left = tempVector->at(4); //x
 	rect.top = tempVector->at(5); //y
 	rect.right = rect.left + tempVector->at(6);// width

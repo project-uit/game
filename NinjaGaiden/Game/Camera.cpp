@@ -1,5 +1,5 @@
 #include "Camera.h"
-
+Camera* Camera::_instance = NULL;
 Camera::Camera(int width, int height, float _angle, D3DXVECTOR3 _scaleFactors)
 {
 	Width = width;
@@ -60,4 +60,5 @@ RECT Camera::getRECT()
 
 Camera::~Camera()
 {
+
 }

@@ -10,7 +10,7 @@ Player::Player()
 	this->SetDirection(DIRECTION::RIGHT);
 	this->objectWidth = 32;
 	this->objectHeight = 32;
-	this->SetPosition(180, 100);
+	this->SetPosition(150, 50);
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
 
@@ -110,19 +110,14 @@ void Player::Update(float t, vector<Object*>* object)
 {
 	Object::Update(t);
 
+	this->veclocity.y += 0.00009*t;
+	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
+	Object::updateBoundingBox(rect);
+
 	if (this->last_state != this->state) {
 		ResetSpriteState(this->last_state);
 	}
-	//if (this->state == PLAYER_STATE::JUMP) {
-	//	if (position.y < 100) {
-	//		this->SetVy(PLAYER_VELOCITY_Y);
-	//	}
-	//	if (position.y > 300) {
-	//		this->SetVy(NO_VELOCITY);
-	//		position.y = 300;
-	//		this->state = PLAYER_STATE::STAND;
-	//	}
-	//}
+
 	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
 	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
 	coEvents->clear();
@@ -140,7 +135,7 @@ void Player::Update(float t, vector<Object*>* object)
 		float min_tx, min_ty, nx = 0, ny;
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 		
-		this->PlusPosition(min_tx * this->deltaX + nx * 0.4f, min_ty * this->deltaY + ny * 0.4f);
+		//this->PlusPosition(min_tx * this->deltaX + nx * 0.4f, min_ty * this->deltaY + ny * 0.4f);
 
 		if (nx > 0) {
 			DebugOut((wchar_t *)L"Va chạm trục X1!\n");

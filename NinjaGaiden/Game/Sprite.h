@@ -33,8 +33,11 @@ public:
 	void SetIndex(int index);
 	int GetIndex();
 	void NextSprite();
+	//Vẽ sprite bên phải ko bị lệch
 	void DrawSprite(D3DXVECTOR3 position, bool flagRight);
-	void DrawSprite(D3DXVECTOR3 position, bool flagRight, PLAYER_STATE state, int width);
+	//Vẽ sprite bên trái bị lệch
+	void DrawSprite(D3DXVECTOR3 position, bool flagRight, int x, int y);
+	//Đọc tọa độ ảnh
 	RECT ReadCurrentSpritePosition();
 	RECT GetBoudingBoxFromCurrentSprite();
 	void Reset();

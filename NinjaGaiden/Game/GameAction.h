@@ -3,7 +3,7 @@
 #include "World.h"
 #include "Graphic.h"
 #include "Player.h"
-
+#include "Camera.h"
 
 class KeyboardHandler : public InputDevice {
 public:
@@ -18,7 +18,6 @@ class GameAction
 private:
 	static GameAction* _instance;
 	KeyboardHandler* keyHandler;
-	Camera* camera;
 public:
 	GameAction(HINSTANCE hInstance, int nShowCmd);
 	int GameRun();

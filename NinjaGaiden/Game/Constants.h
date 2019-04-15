@@ -5,7 +5,7 @@
 #define GAME_TITLE L"Ninja Gaiden"
 // =========== TEXTURE + SPRITE
 #define ID_TEXTURE_MAIN 0
-#define PATH_TEXTURE_MAIN L"sprite\\sprite_ninja.png"
+#define PATH_TEXTURE_MAIN L"sprite\\player.png"
 #define PATH_POS_MAIN_STAND L"sprite\\main\\MAIN_STAND.txt"
 #define PATH_POS_MAIN_RUN L"sprite\\main\\MAIN_RUN.txt"
 #define PATH_POS_SIT L"sprite\\main\\MAIN_SIT.txt"
@@ -14,17 +14,15 @@
 #define PATH_POS_JUMP L"sprite\\main\\MAIN_JUMP.txt"
 
 #define ID_TEXTURE_MAP_1 100
-#define PATH_TEXTURE_MAP_1 L"sprite\\Stage1\\texture.png"
-#define PATH_POS_MAP_1 L"sprite\\Stage1\\map.txt"
+#define PATH_TEXTURE_MAP_1 L"sprite\\Stage1\\Map1.png"
+#define PATH_POS_MAP_1 L"sprite\\Stage1\\Map1.txt"
 #define PATH_POS_GROUND_MAP_1 "sprite\\Stage1\\ground.txt"
 
-// ========= OBJECT =========
 enum OBJECT_TYPE {
 	BRICK,
 	MAIN_CHARACTER
 };
 
-// ========== MAIN CHARACTER STATE ==========
 enum PLAYER_STATE {
 	STAND,
 	RUN,

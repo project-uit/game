@@ -15,7 +15,7 @@ void Scence1::LoadResource()
 {
 	this->objects->push_back(Player::GetInstance());
 
-	this->map = new Map(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
+	//this->map = new Map(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
 
 	fstream fs(PATH_POS_GROUND_MAP_1);
 

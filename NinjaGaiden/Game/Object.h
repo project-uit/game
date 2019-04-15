@@ -92,13 +92,26 @@ public:
 		this->position.y += y; 
 	}
 
+	void updateBoundingBox(RECT rect) {
+		SetBoundingBox(rect.right - rect.left, rect.bottom - rect.top);
+	}
+
 	void SetBoundingBox(int width, int height) { 
 		this->objectWidth = width; 
 		this->objectHeight = height; 
 	}
+
 	void GetObjectBoudingBox(int &width, int &height) { 
 		width = this->objectWidth; 
 		height = this->objectHeight; 
+	}
+
+	void SetPositionX(float x) {
+		this->position.x += x;
+	}
+
+	void SetPositionY(float y) {
+		this->position.y += y;
 	}
 
 	void SetObjectType(OBJECT_TYPE objectType) { this->objectType = objectType; }

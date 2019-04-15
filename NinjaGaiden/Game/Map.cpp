@@ -1,13 +1,20 @@
-#include "Map.h"
+﻿#include "Map.h"
 Map::Map()
 {
 
 }
 
-Map::Map(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP)
+Map::Map(int tileWidth, int tileHeight, int numOfColumn, int numOfRow) {
+	this->tileWidth = tileWidth;
+	this->tileHeight = tileHeight;
+	this->numOfColumn = numOfColumn;
+	this->numOfRow = numOfRow;
+}
+
+void Map::LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP)
 {
 	fstream fs(filePath);
-	fs >> numOfColumn >> numOfRow >> tileWidth >> tileHeight >> numOfColumnTileSet >> numOfRowTileSet;
+	fs >> numOfRow >> numOfColumn >> tileWidth >> tileHeight;
 
 	this->list = new vector<vector<int>*>();
 
@@ -36,17 +43,14 @@ Map::~Map()
 	delete this->list;
 }
 
-void Map::loadMap(LPCSTR filePath)
-{
-
-}
-
 void Map::drawMap()
 {
 	for (int i = 0; i < this->list->size(); i++) {
 		for (int j = 0; j < this->list->at(i)->size(); j++) {
 			int number = this->list->at(i)->at(j);
-			Game::GetInstance()->Draw(j * 16, i * 16, this->texture, number * 16, 0, (number + 1) * 16, 16);
+			if (number != 0) {
+				Game::GetInstance()->Draw(j * 16, i * 16, this->texture, (number - 1) * 16, 0, number*16, 16);
+			}
 		}
 	}
 }
