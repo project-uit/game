@@ -25,10 +25,14 @@ void Map::LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP)
 			int tempNumber;
 			fs >> tempNumber;
 			temp->push_back(tempNumber);
+			if (i == 0) {
+				this->width += tileWidth;
+			}
 		}
 		this->list->push_back(temp);
+		this->height += tileHeight;
 	}
-
+	DebugOut((wchar_t *)L"[Map.cpp] Width X Height map: %d %d\n", width, height);
 	fs.close();
 
 	Texture::GetInstance()->Add(ID_MAP, tileset);

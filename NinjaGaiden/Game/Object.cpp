@@ -114,7 +114,7 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float & collisionTime, 
 CollisionHandler * Object::GetCollsionObjectsBySweptAABB(Object * obj)
 {
 	float dx = this->deltaX - obj->GetVeclocity().x*this->deltaTime;
-	float dy = this->deltaY - obj->GetVeclocity().y * this->deltaTime;
+	float dy = this->deltaY - obj->GetVeclocity().y*this->deltaTime;
 	
 	float collisionTime, nx, ny;
 
@@ -172,9 +172,9 @@ void Object::FilterCollision(vector<CollisionHandler*>* coEvents, vector<Collisi
 RECT Object::GetBoundingBox()
 {
 	RECT rect;
-	rect.top = (LONG) this->position.y;
-	rect.left = (LONG) this->position.x;
-	rect.right =  rect.left + (LONG) this->objectWidth;
+	rect.left = (LONG)(this->position.x + this->positionColide.x);
+	rect.top = (LONG)(this->position.y + this->positionColide.y);
+	rect.right =  rect.left + (LONG)this->objectWidth;
 	rect.bottom = rect.top + (LONG)this->objectHeight;
 	return rect;
 }

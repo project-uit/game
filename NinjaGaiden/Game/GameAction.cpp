@@ -35,7 +35,7 @@ int GameAction::GameRun()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-
+		
 		DWORD now = GetTickCount();
 
 		// dt: the time between (beginning of last frame) and now
@@ -61,7 +61,6 @@ int GameAction::GameRun()
 void GameAction::Update(DWORD dt)
 {
 	World::GetInstance()->Update( (float) dt);
-	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, 2048, 320);
 }
 
 void GameAction::Render()
@@ -71,9 +70,8 @@ void GameAction::Render()
 	if (d3ddv->BeginScene()) {
 		d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
 		Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
-		
-		World::GetInstance()->Render();
 		//Camera::GetInstance()->SetTransForm(Game::GetInstance()->GetDirect3DDevice());
+		World::GetInstance()->Render();		
 		Game::GetInstance()->GetSpriteHandler()->End();
 		d3ddv->EndScene();
 	}
@@ -116,13 +114,17 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 			Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
 		}
 
+		if (KeyCode == DIK_DOWN) {
+			Player::GetInstance()->SetVy(PLAYER_VELOCITY_Y);
+		}
+
 		if (Player::GetInstance()->GetLastState() == PLAYER_STATE::STAND) {
 			if (KeyCode == DIK_Z) {
 				Player::GetInstance()->SetState(PLAYER_STATE::STAND_ATK);
 			}
 			if (KeyCode == DIK_X) {
-				/*Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
-				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);*/
+				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
+				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
 			}
 		}
 	} 

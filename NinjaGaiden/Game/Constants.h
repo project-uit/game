@@ -12,12 +12,15 @@
 #define PATH_POS_SIT_ATK L"sprite\\main\\MAIN_SIT_ATK.txt"
 #define PATH_POS_STAND_ATK L"sprite\\main\\MAIN_STAND_ATK.txt"
 #define PATH_POS_JUMP L"sprite\\main\\MAIN_JUMP.txt"
-
+// =====	Map 1
 #define ID_TEXTURE_MAP_1 100
 #define PATH_TEXTURE_MAP_1 L"sprite\\Stage1\\Map1.png"
 #define PATH_POS_MAP_1 L"sprite\\Stage1\\Map1.txt"
 #define PATH_POS_GROUND_MAP_1 "sprite\\Stage1\\ground.txt"
-
+// ========	Enemy
+#define ID_TEXTURE_MAP_1_ENEMY 101 
+#define PATH_TEXTURE_MAP_1_ENEMY L"sprite\\Enemies_Bosses.png"
+#define PATH_TEXTURE_MAP_1_ENEMY_LiNH L"sprite\\enemy\\linh.txt"
 enum OBJECT_TYPE {
 	BRICK,
 	MAIN_CHARACTER

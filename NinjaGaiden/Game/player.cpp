@@ -10,29 +10,29 @@ Player::Player()
 	this->SetDirection(DIRECTION::RIGHT);
 	this->objectWidth = 32;
 	this->objectHeight = 32;
-	this->SetPosition(150, 50);
+	this->SetPosition(150, 100);
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
 
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1,1.0f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::RUN,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 1.0f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 1.0f)));
-	this->sprite
-		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 1.0f)));
-	this->sprite
-		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 1.0f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1)));
+	//this->sprite
+	//	->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT_ATK,
+	//		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3)));
+	//this->sprite
+	//	->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND_ATK,
+	//		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::JUMP,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 1.0f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4)));
 }
 
 Player::~Player()
@@ -75,12 +75,7 @@ PLAYER_STATE Player::GetLastState() {
 void Player::SetLastState(PLAYER_STATE last_state) {
 	this->last_state = last_state;
 }
-void Player::SetHp(int hp) {
-	this->hp = hp;
-}
-int Player::GetHp() {
-	return this->hp;
-}
+
 Sprite* Player::GetCurrentSprite() {
 	return this->sprite->at(this->state);
 }
@@ -109,29 +104,28 @@ void Player::Reset(float x, float y)
 void Player::Update(float t, vector<Object*>* object)
 {
 	Object::Update(t);
-
-	this->veclocity.y += 0.00009*t;
+	
 	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 	Object::updateBoundingBox(rect);
-
+	//this->veclocity.y += 0.00009f*t;
 	if (this->last_state != this->state) {
 		ResetSpriteState(this->last_state);
+		this->sprite->at(this->state)->NextSprite();
 	}
-
+	
 	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
 	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
 	coEvents->clear();
 
 	if (this->state != PLAYER_STATE::DIE) {
-		this->CalcPotentialCollisions(object, coEvents);
+		Object::CalcPotentialCollisions(object, coEvents);
 	}
 
 	if (coEvents->size() == 0) {	
-		this->PlusPosition(this->deltaX, this->deltaY);
+		Object::PlusPosition(this->deltaX, this->deltaY);
 	}
-
 	else {
-	
+		
 		float min_tx, min_ty, nx = 0, ny;
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 		
@@ -146,8 +140,8 @@ void Player::Update(float t, vector<Object*>* object)
 			this->SetVx(0.0f);
 		}
 		if (ny != 0) {
-			DebugOut((wchar_t *)L"Va chạm trục Y!\n");
 			this->SetVy(0.0f);
+			DebugOut((wchar_t *)L"Va chạm trục Y %f %f %f %f!\n", rect.top, rect.left, rect.right, rect.bottom);
 		}
 
 		for (UINT i = 0; i < coEventsResult->size(); i++) {

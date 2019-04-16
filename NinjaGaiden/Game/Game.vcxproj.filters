@@ -117,6 +117,12 @@
     <ClInclude Include="Square.h">
       <Filter>Header Files\Object\Square</Filter>
     </ClInclude>
+    <ClInclude Include="Cam.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDebugDraw.h">
+      <Filter>Header Files\Logging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -169,6 +175,12 @@
     </ClCompile>
     <ClCompile Include="Square.cpp">
       <Filter>Source Files\Object\Square</Filter>
+    </ClCompile>
+    <ClCompile Include="Cam.cpp">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDebugDraw.cpp">
+      <Filter>Header Files\Logging</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

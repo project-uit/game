@@ -10,6 +10,7 @@
 #include "Item.h"
 #include "Scence.h"
 #include "Scence1.h"
+#include "Cam.h"
 class World
 {
 private:

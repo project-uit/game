@@ -46,6 +46,7 @@ protected:
 	D3DXVECTOR3 position;
 	D3DXVECTOR3 lastPos;
 	D3DXVECTOR3 veclocity;
+	D3DXVECTOR2 positionColide;
 	OBJECT_TYPE objectType;
 	bool isActive;
 
@@ -55,7 +56,7 @@ protected:
 	float deltaX;
 	float deltaY;
 	float deltaTime;
-
+	int hp;
 public:
 	Object();
 	~Object();
@@ -93,6 +94,8 @@ public:
 	}
 
 	void updateBoundingBox(RECT rect) {
+		positionColide.x = rect.left;
+		positionColide.y = rect.top;
 		SetBoundingBox(rect.right - rect.left, rect.bottom - rect.top);
 	}
 
@@ -101,7 +104,7 @@ public:
 		this->objectHeight = height; 
 	}
 
-	void GetObjectBoudingBox(int &width, int &height) { 
+	void SetObjectBoudingBox(int &width, int &height) { 
 		width = this->objectWidth; 
 		height = this->objectHeight; 
 	}
@@ -112,6 +115,13 @@ public:
 
 	void SetPositionY(float y) {
 		this->position.y += y;
+	}
+
+	void SetHp(int hp) {
+		this->hp = hp;
+	}
+	int GetHp() {
+		return this->hp;
 	}
 
 	void SetObjectType(OBJECT_TYPE objectType) { this->objectType = objectType; }

@@ -32,11 +32,19 @@ public:
 	void LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP);
 	void drawMap();
 
-	//void SetWidth(int width);
-	//int GetWidth();
+	void SetWidth(int width) {
+		this->width = width;
+	}
+	int GetWidth() {
+		return this->width;
+	}
 
-	//void SetHeight(int height);
-	//int GetHeight();
+	void SetHeight(int height) {
+		this->height = height;
+	}
+	int GetHeight() {
+		return this->height;
+	}
 
 	//void SetNumOfColumn(int numOfColumn);
 	//int GetNumOfColumn();
