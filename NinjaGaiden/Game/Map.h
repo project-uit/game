@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Constants.h"
 #include "Game.h"
+#include "Camera.h"
 class Map
 {
 private:
@@ -31,7 +32,7 @@ public:
 	~Map();
 	void LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP);
 	void drawMap();
-
+	bool isRectOverlap(RECT r1, RECT r2);
 	void SetWidth(int width) {
 		this->width = width;
 	}

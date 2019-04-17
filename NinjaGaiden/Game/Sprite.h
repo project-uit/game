@@ -40,6 +40,8 @@ public:
 	//Đọc tọa độ ảnh
 	RECT ReadCurrentSpritePosition();
 	RECT GetBoudingBoxFromCurrentSprite();
+	RECT GetBoudingBoxFromCurrentSprite(DIRECTION direct);
+	RECT GetRectDrawSprite();
 	void Reset();
 	void SetScale(float scale);
 	int GetCount();

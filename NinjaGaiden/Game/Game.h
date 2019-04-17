@@ -9,7 +9,7 @@
 
 #define DIRECTINPUT_VERSION 0x0800
 #define KEYBOARD_BUFFER_SIZE 1024
-#define MAX_FRAME_RATE 35
+#define MAX_FRAME_RATE 30
 
 class Game
 {

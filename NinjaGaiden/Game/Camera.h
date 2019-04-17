@@ -32,6 +32,9 @@ public:
 			_instance = new Camera(width, height, angle, scaleFactors);
 		}
 	}
+	D3DXVECTOR3 GetPosition() {
+		return D3DXVECTOR3(cameraX, cameraY, 0.0f);
+	}
 	static Camera* GetInstance() {
 		return _instance;
 	}

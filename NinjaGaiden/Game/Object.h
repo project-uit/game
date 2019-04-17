@@ -70,6 +70,7 @@ public:
 	void FilterCollision(vector<CollisionHandler*> *coEvents, vector<CollisionHandler*> *coEventsResult, float &minTx, float &minTy, float &nx, float &ny);
 
 	RECT GetBoundingBox();
+	RECT GetRECTSprite();
 
 	virtual void Update(float deltaTime, std::vector<Object*> *objects = NULL);
 	virtual void Render() = 0;

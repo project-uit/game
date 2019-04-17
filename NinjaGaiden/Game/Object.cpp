@@ -179,6 +179,16 @@ RECT Object::GetBoundingBox()
 	return rect;
 }
 
+RECT Object::GetRECTSprite()
+{
+	RECT rect;
+	rect.left = (LONG)(this->position.x);
+	rect.top = (LONG)(this->position.y);
+	rect.right = rect.left + (LONG)this->objectWidth;
+	rect.bottom = rect.top + (LONG)this->objectHeight;
+	return rect;
+}
+
 void Object::Update(float deltaTime, std::vector<Object*>* objects)
 {
 	this->deltaTime = deltaTime;

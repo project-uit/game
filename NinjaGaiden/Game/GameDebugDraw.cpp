@@ -3,8 +3,9 @@
 GameDebugDraw::GameDebugDraw()
 {
 	mSpriteHandler = Game::GetInstance()->GetSpriteHandler();
-	mSpriteHandler->GetDevice(&mddv);
-	D3DXCreateLine(mddv, &LineDraw);
+	//mddv = Game::GetInstance()->GetDirect3DDevice();
+	//mSpriteHandler->GetDevice(&mddv);
+	D3DXCreateLine(Game::GetInstance()->GetDirect3DDevice(), &LineDraw);
 
 	//set size cho line
 	LineDraw->SetWidth(1);
@@ -31,9 +32,7 @@ void GameDebugDraw::setLineSize(float width)
 
 void GameDebugDraw::DrawLine(D3DXVECTOR2 lines[], int count)
 {
-	LineDraw->Begin();
 	LineDraw->Draw(lines, count, mColor);
-	LineDraw->End();
 }
 
 void GameDebugDraw::DrawRect(RECT rect, Camera *camera)
@@ -43,7 +42,7 @@ void GameDebugDraw::DrawRect(RECT rect, Camera *camera)
 
 	if (camera)
 	{
-		//trans = D3DXVECTOR3(GameGlobal::GetWidth() / 2, GameGlobal::GetHeight() / 2, 0) - camera->GetPosition();
+		trans = D3DXVECTOR3(304 / 2, 220 / 2, 0) - camera->GetPosition();
 	}
 	D3DXVECTOR2 lines[] = { D3DXVECTOR2(rect.left + trans.x, rect.top + trans.y),
 							D3DXVECTOR2(rect.right + trans.x, rect.top + trans.y),

@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Debug.h"
 Camera* Camera::_instance = NULL;
 Camera::Camera(int width, int height, float _angle, D3DXVECTOR3 _scaleFactors)
 {
@@ -33,11 +34,10 @@ void Camera::Update(int x, int y, int WidthMap, int G_ScreenWidth)
 	}
 		
 	this->viewMatrix = D3DXMATRIX(
-		scaleFactors.x * cos(angle), scaleFactors.x * sin(angle), 0, 0,
-		-scaleFactors.y * sin(angle), scaleFactors.y * cos(angle), 0, 0,
-		0, 0, scaleFactors.z, 0,
-		-cameraX * scaleFactors.x * cos(angle) + cameraY * scaleFactors.y * sin(angle),
-		-cameraX * scaleFactors.y * sin(angle) - cameraY * scaleFactors.y * cos(angle), 0, 1
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		-cameraX, -cameraY, 0, 1
 	);
 }
 

@@ -18,6 +18,5 @@ public:
 
 private:
 	LPD3DXSPRITE mSpriteHandler;
-	LPDIRECT3DDEVICE9 mddv;
 	D3DCOLOR mColor;
 };

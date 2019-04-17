@@ -182,6 +182,20 @@ RECT Sprite::GetBoudingBoxFromCurrentSprite()
 
 	return rect;
 }
+RECT Sprite::GetBoudingBoxFromCurrentSprite(DIRECTION direct) {
+	if (direct == DIRECTION::RIGHT) {
+		return GetBoudingBoxFromCurrentSprite();
+	}
+	if (direct == DIRECTION::LEFT) {
+		RECT rect;
+		vector<int>* tempVector = this->spritePositions->at(this->index);
+		rect.left = - tempVector->at(4); //x
+		rect.top = tempVector->at(5); //y
+		rect.right = rect.left + tempVector->at(6);// width
+		rect.bottom = rect.top + tempVector->at(7);//height
+		return rect;
+	}
+}
 
 void Sprite::Reset()
 {

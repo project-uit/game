@@ -39,11 +39,9 @@ void World::Update(float deltaTime)
 
 void World::Render()
 {
-	//map->drawMap();
-	
+	map->drawMap();
 	item->Render();
+	Player::GetInstance()->Render();
 	draw->DrawRect(item->GetBoundingBox(), nullptr);
 	draw->DrawRect(Player::GetInstance()->GetBoundingBox(), nullptr);
-	Player::GetInstance()->Render();
-
 }

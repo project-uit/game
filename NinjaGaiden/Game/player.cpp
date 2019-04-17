@@ -105,14 +105,15 @@ void Player::Update(float t, vector<Object*>* object)
 {
 	Object::Update(t);
 	
-	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
+	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite(this->direction);
+
 	Object::updateBoundingBox(rect);
 	//this->veclocity.y += 0.00009f*t;
 	if (this->last_state != this->state) {
 		ResetSpriteState(this->last_state);
 		this->sprite->at(this->state)->NextSprite();
 	}
-	
+
 	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
 	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
 	coEvents->clear();
