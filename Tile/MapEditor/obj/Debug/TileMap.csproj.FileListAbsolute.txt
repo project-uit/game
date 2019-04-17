@@ -1,0 +1,12 @@
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\TileMap.csprojAssemblyReference.cache
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\SplitTools.FrmMapEditor.resources
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\TileMap.csproj.GenerateResource.cache
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\MapEditor.exe.licenses
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\bin\Debug\MapEditor.exe.config
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\bin\Debug\MapEditor.exe
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\bin\Debug\MapEditor.pdb
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\TileMap.csproj.CoreCompileInputs.cache
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\MapEditor.exe
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\MapEditor.pdb
