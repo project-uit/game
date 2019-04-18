@@ -1,5 +1,5 @@
 ﻿#include "Player.h"
-
+#include "Camera1.h"
 Player* Player::_instance = NULL;
 
 Player::Player()
@@ -113,7 +113,7 @@ void Player::Update(float t, vector<Object*>* object)
 		ResetSpriteState(this->last_state);
 		this->sprite->at(this->state)->NextSprite();
 	}
-
+	DebugOut((wchar_t *)L"[player.cpp][KEYBOARD] KeyUp: %f %f\n", position.x, position.y);
 	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
 	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
 	coEvents->clear();
@@ -171,12 +171,13 @@ void Player::Update(float t, vector<Object*>* object)
 
 void Player::Render()
 {
+	D3DXVECTOR3 pos = Camera1::GetInstance()->transformObjectPosition(position);
 	switch (this->direction) {
 	case RIGHT:
-		this->sprite->at(this->state)->DrawSprite(this->position, true);
+		this->sprite->at(this->state)->DrawSprite(pos, true);
 		break;
 	case LEFT:
-		this->sprite->at(this->state)->DrawSprite(this->position, false);
+		this->sprite->at(this->state)->DrawSprite(pos, false);
 		break;
 	default:
 		break;

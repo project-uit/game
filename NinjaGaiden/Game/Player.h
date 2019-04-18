@@ -16,6 +16,7 @@ private:
 	PLAYER_STATE last_state;
 	DIRECTION direction;
 	map<PLAYER_STATE,Sprite*>* sprite;
+	bool isOnGround;
 public:
 	Player();
 	~Player();
@@ -27,11 +28,15 @@ public:
 	bool GetStateActive();
 	PLAYER_STATE GetLastState();
 	void SetLastState(PLAYER_STATE last_state);
+	void SetOnGround(bool isOnGround);
+	bool GetOnGround();
 	Sprite* GetCurrentSprite();
 	void Reset(float  x, float y);
 	void Update(float t, vector<Object*> *object = NULL);
 	void Render();
 	void ResetSpriteState(PLAYER_STATE state);
+	void OnKeyUp();
+	void OnKeyDown();
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();
 		return _instance;

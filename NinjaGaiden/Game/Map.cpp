@@ -1,4 +1,5 @@
 ﻿#include "Map.h"
+#include "Camera1.h"
 Map::Map()
 {
 
@@ -57,23 +58,25 @@ bool Map::isRectOverlap(RECT r1, RECT r2) {
 
 void Map::drawMap()
 {
-	int tileMapWidth = 0;
-	for (int i = 0; i < this->list->size(); i++) {
-		for (int j = 0; j < this->list->at(i)->size(); j++) {
-			int number = this->list->at(i)->at(j);
-			D3DXVECTOR3 position(j * this->tileHeight, i * this->tileWidth, 0);
-			//lấy tọa độ vẽ tile
-			RECT tile;
-			tile.left = position.x;
-			tile.top = position.y;
-			tile.bottom = tile.top + this->tileHeight;
-			tile.right = tile.left + this->tileWidth;
-			if (number != 0 && isRectOverlap(tile, Camera::GetInstance()->getRECT())) {
-			/*	Game::GetInstance()->Draw(j * this->tileHeight + this->tileHeight / 2, i * this->tileWidth + this->tileWidth / 2
-					, this->texture, (number - 1) * 16, 0, number * 16, 16);*/
-				Game::GetInstance()->Draw(position.x, position.y, this->texture, (number - 1) * 16, 0, number*16, 16);
-			}
+	D3DXVECTOR2 camposition = Camera1::GetInstance()->getPosition();
 
+	int top, left, right, bottom;
+	int tileMapWidth = 0;
+	for (int i = 0; i < 208/tileHeight; i++) {
+		for (int j = 0; j < 320/tileWidth; j++) {
+			int number = this->list->at(i)->at(j);
+			if (number != 0) {
+				int a = i + camposition.y / tileWidth;
+				int b = j + camposition.x / tileHeight;
+				left = ((list->at(a)->at(b) - 1) % 79)*tileWidth;
+				top = ((list->at(a)->at(b) - 1) / 79)*tileHeight;
+				right = left + tileWidth;
+				bottom = top + tileHeight;
+				Game::GetInstance()->Draw(
+					j*tileWidth - (int)camposition.x % tileWidth, i*tileHeight - (int)camposition.y % tileHeight + 10,
+					texture,
+					left, top, right, bottom);
+			}
 		}
 	}
 }

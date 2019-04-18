@@ -70,7 +70,7 @@ void GameAction::Render()
 	if (d3ddv->BeginScene()) {
 		d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
 		Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
-		Camera::GetInstance()->SetTransForm(Game::GetInstance()->GetDirect3DDevice());
+		//Camera::GetInstance()->SetTransForm(Game::GetInstance()->GetDirect3DDevice());
 		World::GetInstance()->Render();		
 		Game::GetInstance()->GetSpriteHandler()->End();
 		d3ddv->EndScene();

@@ -124,7 +124,6 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 	//
 	// out, scaling centre, scaling rotation, scaling, rotation centre, rotation, translation
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(this->width / 2, this->height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
-	//D3DXMatrixRotationX(&mat, 3.14f);
 	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
 	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }

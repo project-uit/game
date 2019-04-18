@@ -1,8 +1,9 @@
 ﻿#include "World.h"
 #include "GameDebugDraw.h"
-
+#include "Camera1.h"
 World *World::_instance = NULL;
 GameDebugDraw* draw;
+
 World::World()
 {
 
@@ -28,13 +29,15 @@ void World::LoadResource()
 	this->objects = new vector<Object*>();
 	this->objects->push_back(item);
 	draw = new GameDebugDraw();
+	Camera1::GetInstance()->setWorldBoundary(2048);
+	Camera1::GetInstance()->setPosition(D3DXVECTOR2(0, 0));
 }
 
 void World::Update(float deltaTime)
 {
 	Player::GetInstance()->Update(deltaTime, this->objects);
 	item->Update(deltaTime);
-	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, 2048, 320);
+	Camera1::GetInstance()->Update(Player::GetInstance()->GetPosition());
 }
 
 void World::Render()

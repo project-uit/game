@@ -58,6 +58,12 @@
     <Filter Include="Source Files\Object\Square">
       <UniqueIdentifier>{bb5d10af-983c-4364-85e3-f359f45e7500}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Text">
+      <UniqueIdentifier>{1700f81a-324c-473d-b2ca-12ab41c04ff8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Health">
+      <UniqueIdentifier>{596e44a5-fa2b-4df4-ab30-0f2e6c65498a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -117,11 +123,11 @@
     <ClInclude Include="Square.h">
       <Filter>Header Files\Object\Square</Filter>
     </ClInclude>
-    <ClInclude Include="Cam.h">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClInclude>
     <ClInclude Include="GameDebugDraw.h">
       <Filter>Header Files\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera1.h">
+      <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,11 +182,11 @@
     <ClCompile Include="Square.cpp">
       <Filter>Source Files\Object\Square</Filter>
     </ClCompile>
-    <ClCompile Include="Cam.cpp">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClCompile>
     <ClCompile Include="GameDebugDraw.cpp">
       <Filter>Header Files\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera1.cpp">
+      <Filter>Header Files\FrameWork</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

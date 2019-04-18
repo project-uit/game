@@ -1,5 +1,5 @@
 #include "Item.h"
-
+#include "Camera1.h"
 Item::Item()
 {
 	this->SetObjectType(MAIN_CHARACTER);
@@ -26,6 +26,7 @@ void Item::Update(float t)
 
 void Item::Render()
 {
-	sprite->DrawSprite(this->position, true);
+	D3DXVECTOR3 pos = Camera1::GetInstance()->transformObjectPosition(position);
+	sprite->DrawSprite(pos, true);
 }
 
