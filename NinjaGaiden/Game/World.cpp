@@ -1,9 +1,10 @@
 ﻿#include "World.h"
 #include "GameDebugDraw.h"
-#include "Camera1.h"
+#include "Camera.h"
+#include "Text.h"
 World *World::_instance = NULL;
 GameDebugDraw* draw;
-
+Square* square;
 World::World()
 {
 
@@ -14,6 +15,10 @@ World::~World()
 
 }
 
+void World::SetScence(Scence* s) {
+	this->scence = s;
+}
+
 void World::LoadResource()
 {
 	Texture *texture = Texture::GetInstance();
@@ -21,30 +26,34 @@ void World::LoadResource()
 	texture->Add(ID_TEXTURE_MAIN, PATH_TEXTURE_MAIN, D3DCOLOR_XRGB(255, 163, 177));
 	//enemy
 	texture->Add(ID_TEXTURE_MAP_1_ENEMY, PATH_TEXTURE_MAP_1_ENEMY, D3DCOLOR_XRGB(255, 163, 177));
-	//map
-	map = new Map();
-	map->LoadMap(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
+	scence = new Scence1();
 	Player *main = Player::GetInstance();
 	item = new Item();
 	this->objects = new vector<Object*>();
+	square = new Square(48, 192, 528+16, 224);
 	this->objects->push_back(item);
+	this->objects->push_back(square);
 	draw = new GameDebugDraw();
-	Camera1::GetInstance()->setWorldBoundary(2048);
-	Camera1::GetInstance()->setPosition(D3DXVECTOR2(0, 0));
+	scence->GetObjects()->push_back(square);
+	Text::GetInstance();
 }
 
 void World::Update(float deltaTime)
 {
 	Player::GetInstance()->Update(deltaTime, this->objects);
-	item->Update(deltaTime);
-	Camera1::GetInstance()->Update(Player::GetInstance()->GetPosition());
+	square->Update(deltaTime);
+	scence->Update(deltaTime);
+	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
 }
 
 void World::Render()
 {
-	map->drawMap();
-	item->Render();
+	Text::GetInstance()->DrawString("SCORE - 000000 STAGE - 1 - 1", 0, 0, 200, 30);
+	Text::GetInstance()->DrawString("TIMER - 000 ", 0, 16, 50, 30);
+	Text::GetInstance()->DrawString("P - 01", 0, 32, 50, 30);
+	scence->Render();
 	Player::GetInstance()->Render();
-	draw->DrawRect(item->GetBoundingBox(), nullptr);
-	draw->DrawRect(Player::GetInstance()->GetBoundingBox(), nullptr);
+	draw->DrawRect(item->GetBoundingBox(), Camera::GetInstance());
+	draw->DrawRect(Player::GetInstance()->GetBoundingBox(), Camera::GetInstance());
+	draw->DrawRect(square->GetBoundingBox(), Camera::GetInstance());
 }

@@ -17,7 +17,6 @@ private:
 	vector<Object*>* objects;
 	Item* item;
 	Scence* scence;
-	Map* map;
 public:
 	World();
 	~World();
@@ -25,7 +24,7 @@ public:
 	void LoadResource();
 	void Update(float deltaTime);
 	void Render();
-
+	void SetScence(Scence* s);
 	static World* GetInstance() {
 		if (_instance == NULL) _instance = new World();
 		return _instance;

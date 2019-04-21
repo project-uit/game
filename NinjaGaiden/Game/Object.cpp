@@ -1,5 +1,7 @@
 ﻿#include "Object.h"
 #include "Debug.h"
+#include "Camera.h"
+#include "Game.h"
 Object::Object()
 {
 	this->isActive = true;
@@ -19,7 +21,7 @@ bool Object::checkAABB(Object * obj)
 	return !(curRect.right < otherRect.left || curRect.left > otherRect.right || curRect.top > otherRect.bottom || curRect.bottom < otherRect.top);
 }
 
-void Object::SweptAABB(Object * obj, float dx, float dy, float & collisionTime, float & nx, float &ny)
+void Object::SweptAABB(Object * obj, float dx, float dy, float &collisionTime, float & nx, float &ny)
 {
 	float dxEntry, dxExit, txEntry, txExit;
 	float dyEntry, dyExit, tyEntry, tyExit;
@@ -41,12 +43,12 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float & collisionTime, 
 
 	collisionTime = -1.0f;
 	nx = ny = 0;
-
+	//Vẽ broadphase
 	float bl = dx > 0 ? movingLeft : movingLeft + dx;
 	float bt = dy > 0 ? movingTop : movingTop + dy;
-	float br = dx > 0 ? movingRight + dx : movingRight;
-	float bb = dy > 0 ? movingBottom + dy : movingBottom;
-
+	float br = dx > 0 ? movingRight + dx : movingRight - dx;
+	float bb = dy > 0 ? movingBottom + dy : movingBottom - dy;
+	//Check AABB
 	if (br < staticLeft || bl >  staticRight
 		|| bb < staticTop || bt > staticBottom)
 		return;
@@ -76,8 +78,8 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float & collisionTime, 
 	}
 
 	if (dx == 0) {
-		txEntry = -std::numeric_limits<float>::infinity();
-		txExit = std::numeric_limits<float>::infinity();
+		txEntry = -99999999999;
+		txExit = 99999999999;
 	}
 	else {
 		txEntry = dxEntry / dx;
@@ -85,8 +87,8 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float & collisionTime, 
 	}
 
 	if (dy == 0) {
-		tyEntry = -std::numeric_limits<float>::infinity();
-		tyExit = std::numeric_limits<float>::infinity();
+		tyEntry = -99999999999;
+		tyExit = 99999999999;
 	}
 	else {
 		tyEntry = dyEntry / dy;
@@ -111,7 +113,7 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float & collisionTime, 
 	}
 }
 
-CollisionHandler * Object::GetCollsionObjectsBySweptAABB(Object * obj)
+CollisionHandler* Object::GetCollsionObjectsBySweptAABB(Object * obj)
 {
 	float dx = this->deltaX - obj->GetVeclocity().x*this->deltaTime;
 	float dy = this->deltaY - obj->GetVeclocity().y*this->deltaTime;
@@ -127,8 +129,8 @@ void Object::CalcPotentialCollisions(vector<Object*>* objects, vector<CollisionH
 {
 	for (UINT i = 0; i < objects->size(); i++) {
 		CollisionHandler* coEvent = this->GetCollsionObjectsBySweptAABB(objects->at(i));
-		
-		if (coEvent->GetCollisionTime() >= 0 && coEvent->GetCollisionTime() <= 1.0f)
+		float remainingTime = 1.0f - coEvent->collisionTime;
+		if (coEvent->collisionTime >= 0 && coEvent->collisionTime <= 1.0f)
 			coEvents->push_back(coEvent);
 		else
 			delete coEvent;
@@ -152,15 +154,15 @@ void Object::FilterCollision(vector<CollisionHandler*>* coEvents, vector<Collisi
 	for (UINT i = 0; i < coEvents->size(); i++) {
 		CollisionHandler* c = coEvents->at(i);
 
-		if (c->GetCollisionTime() < minTx && c->GetNx() != 0) {
-			minTx = c->GetCollisionTime();
-			nx = c->GetNx();
+		if (c->collisionTime < minTx && c->nx != 0) {
+			minTx = c->collisionTime;
+			nx = c->nx;
 			minIx = i;
 		}
 
-		if (c->GetCollisionTime() < minTy && c->GetNy() != 0) {
-			minTy = c->GetCollisionTime();
-			ny = c->GetNy();
+		if (c->collisionTime < minTy && c->ny != 0) {
+			minTy = c->collisionTime;
+			ny = c->ny;
 			minIy = i;
 		}
 	}
@@ -196,14 +198,6 @@ void Object::Update(float deltaTime, std::vector<Object*>* objects)
 	this->deltaY = this->veclocity.y * deltaTime;
 }
 
-CollisionHandler::CollisionHandler(float collisionTime, float nx, float ny, Object * obj)
-{
-	this->collisionTime = collisionTime;
-	this->nx = nx;
-	this->ny = ny;
-	this->obj = obj;
-}
-
-CollisionHandler::~CollisionHandler()
-{
+D3DXVECTOR3 Object::GetTransformObjectPositionByCamera() {
+	return Camera::GetInstance()->transformObjectPosition(position);
 }

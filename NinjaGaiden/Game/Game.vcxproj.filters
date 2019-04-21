@@ -72,9 +72,6 @@
     <ClInclude Include="Constants.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
@@ -126,8 +123,20 @@
     <ClInclude Include="GameDebugDraw.h">
       <Filter>Header Files\Logging</Filter>
     </ClInclude>
-    <ClInclude Include="Camera1.h">
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
       <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Katana.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Scence2.h">
+      <Filter>Header Files\Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="SoldierSword.h">
+      <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -135,9 +144,6 @@
       <Filter>Header Files\Logging</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
     <ClCompile Include="GameAction.cpp">
@@ -185,8 +191,14 @@
     <ClCompile Include="GameDebugDraw.cpp">
       <Filter>Header Files\Logging</Filter>
     </ClCompile>
-    <ClCompile Include="Camera1.cpp">
-      <Filter>Header Files\FrameWork</Filter>
+    <ClCompile Include="Text.cpp">
+      <Filter>Header Files\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SoldierSword.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

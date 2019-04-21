@@ -4,37 +4,25 @@
 #include <vector>
 #include <algorithm>
 #include "Constants.h"
+#define GRAVITY 0.00009f
 using namespace std;
 
 class Object;
 
-class CollisionHandler
+struct CollisionHandler
 {
-private:
-	Object* obj;
+
+	Object* object;
 	float collisionTime, nx, ny;
-public:
-	CollisionHandler(float collisionTime, float nx, float ny, Object* obj = NULL);
-	~CollisionHandler();
+	CollisionHandler(float collisionTime, float nx, float ny, Object* obj = NULL) {
+		this->collisionTime = collisionTime;
+		this->nx = nx;
+		this->ny = ny;
+		this->object = obj;
+	}
 
 	static bool Compare(CollisionHandler* a, CollisionHandler *b) {
 		return a->collisionTime < b->collisionTime;
-	}
-
-	float GetCollisionTime() {
-		return this->collisionTime;
-	}
-
-	float GetNx() {
-		return this->nx;
-	}
-
-	float GetNy() {
-		return this->ny;
-	}
-
-	Object* getObject() {
-		return this->obj;
 	}
 };
 
@@ -49,14 +37,12 @@ protected:
 	D3DXVECTOR2 positionColide;
 	OBJECT_TYPE objectType;
 	bool isActive;
-
 	Object* nextObj;
 	Object* preObj;
-
 	float deltaX;
 	float deltaY;
 	float deltaTime;
-	int hp;
+	
 public:
 	Object();
 	~Object();
@@ -64,7 +50,6 @@ public:
 	bool checkAABB(Object* obj);
 
 	void SweptAABB(Object* obj, float deltaX, float deltaY, float &collisionTime, float &nx, float& ny);
-
 	CollisionHandler* GetCollsionObjectsBySweptAABB(Object* obj);
 	void CalcPotentialCollisions(vector<Object*> *objects, vector<CollisionHandler*> *coEvents);
 	void FilterCollision(vector<CollisionHandler*> *coEvents, vector<CollisionHandler*> *coEventsResult, float &minTx, float &minTy, float &nx, float &ny);
@@ -74,6 +59,7 @@ public:
 
 	virtual void Update(float deltaTime, std::vector<Object*> *objects = NULL);
 	virtual void Render() = 0;
+	virtual void HandleCollision(vector<Object*> *objects) = 0;
 
 	D3DXVECTOR3 GetVeclocity() { return this->veclocity; }
 	void SetVeclocity(float vx, float vy) { this->veclocity.x = vx; this->veclocity.y = vy; }
@@ -83,6 +69,8 @@ public:
 	void SetVy(float vy) { 
 		this->veclocity.y = vy; 
 	}
+	//Tọa độ dùng để render
+	D3DXVECTOR3 GetTransformObjectPositionByCamera();
 
 	D3DXVECTOR3 GetPosition() { return this->position; }
 	void SetPosition(float x, float y) { 
@@ -116,13 +104,6 @@ public:
 
 	void SetPositionY(float y) {
 		this->position.y += y;
-	}
-
-	void SetHp(int hp) {
-		this->hp = hp;
-	}
-	int GetHp() {
-		return this->hp;
 	}
 
 	void SetObjectType(OBJECT_TYPE objectType) { this->objectType = objectType; }

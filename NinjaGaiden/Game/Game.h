@@ -9,7 +9,7 @@
 
 #define DIRECTINPUT_VERSION 0x0800
 #define KEYBOARD_BUFFER_SIZE 1024
-#define MAX_FRAME_RATE 30
+
 
 class Game
 {
@@ -44,6 +44,8 @@ public:
 	// Khởi tạo bàn phím
 	void InitKeyboard(InputDevice*);
 	int IsKeyDown(int keyCode);
+	int IsKeyUp(int keyCode);
+
 	void ProcessKeyboard();
 
 	LPDIRECT3DDEVICE9 GetDirect3DDevice() { return this->d3ddv; }
@@ -54,9 +56,13 @@ public:
 		if (_instance == NULL) _instance = new Game();
 		return _instance;
 	};
-
+	static void SweptAABB(
+		float ml, float mt, float mr, float mb,
+		float dx, float dy,
+		float sl, float st, float sr, float sb,
+		float &t, float &nx, float &ny);
 	HWND GetHWnd() { return this->hWnd; }
-
+	static bool isRectOverlap(RECT r1, RECT r2);
 	~Game();
 };
 

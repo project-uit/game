@@ -9,10 +9,12 @@
 #include "Player.h"
 #include "Constants.h"
 #include "Grid.h"
+#include "Map.h"
 class Scence {
 protected:
 	vector<Object*> *objects;
 	vector<RECT> *bricks;
+	Map* map;
 public:
 	Scence();
 	~Scence();
@@ -21,7 +23,7 @@ public:
 
 	// Dùng để cắt theo hàng dọc
 	void InitVerticalBrick(RECT rect);
-
+	vector<Object*>* GetObjects();
 	virtual void LoadResource() = 0;
 	virtual void Update(float deltaTime);
 	virtual void Render();

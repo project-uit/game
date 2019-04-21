@@ -4,14 +4,12 @@
 #include "Graphic.h"
 #include "Player.h"
 #include "Camera.h"
-
 class KeyboardHandler : public InputDevice {
 public:
 	virtual void KeyState(BYTE *states);
 	virtual void OnKeyDown(int KeyCode);
 	virtual void OnKeyUp(int KeyCode);
 };
-
 
 class GameAction
 {

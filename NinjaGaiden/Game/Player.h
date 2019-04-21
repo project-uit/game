@@ -17,6 +17,8 @@ private:
 	DIRECTION direction;
 	map<PLAYER_STATE,Sprite*>* sprite;
 	bool isOnGround;
+	bool isOnLadder;
+	int hp;
 public:
 	Player();
 	~Player();
@@ -35,8 +37,7 @@ public:
 	void Update(float t, vector<Object*> *object = NULL);
 	void Render();
 	void ResetSpriteState(PLAYER_STATE state);
-	void OnKeyUp();
-	void OnKeyDown();
+	void HandleCollision(vector<Object*> *object);
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();
 		return _instance;

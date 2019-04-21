@@ -111,7 +111,7 @@ vector<Object*>* Grid::GetCollisionObjects(Object * object)
 {
 	vector<Object*> *objects = new std::vector<Object*>();
 
-	if (object == nullptr || object->GetObjectType() == BRICK)
+	if (object == nullptr || object->GetObjectType() == OBJECT_TYPE::SQUARE)
 		return objects;
 
 	int row = (int)floor(object->GetPosition().y / CELL_SIZE);

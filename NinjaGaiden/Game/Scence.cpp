@@ -1,6 +1,7 @@
 #include "Scence.h"
 Scence::Scence()
 {
+	this->map = new Map();
 	this->objects = new vector<Object*>();
 	this->bricks = new vector<RECT>();
 }
@@ -63,26 +64,26 @@ void Scence::InitVerticalBrick(RECT rect)
 
 void Scence::Update(float deltaTime)
 {
-	for (int i = 0; i < this->objects->size(); i++) {
+	//for (int i = 0; i < this->objects->size(); i++) {
 
-		if (this->objects->at(i)->GetObjectType() != BRICK) {
-			vector<Object*>* collisionsObject = Grid::GetInstance()->GetCollisionObjects(this->objects->at(i));
+	//	if (this->objects->at(i)->GetObjectType() != OBJECT_TYPE::SQUARE) {
+	//		vector<Object*>* collisionsObject = Grid::GetInstance()->GetCollisionObjects(this->objects->at(i));
 
-			this->objects->at(i)->Update(deltaTime, collisionsObject);
+	//		this->objects->at(i)->Update(deltaTime, collisionsObject);
 
-			for (int j = 0; j < collisionsObject->size(); j++) {
-				Grid::GetInstance()->UpdateGrid(collisionsObject->at(j));
-			}
+	//		for (int j = 0; j < collisionsObject->size(); j++) {
+	//			Grid::GetInstance()->UpdateGrid(collisionsObject->at(j));
+	//		}
 
-		}
-		else {
-			this->objects->at(i)->Update(deltaTime, NULL);
-		}
+	//	}
+	//	else {
+	//		this->objects->at(i)->Update(deltaTime, NULL);
+	//	}
 
-		Grid::GetInstance()->UpdateGrid(this->objects->at(i));
+	//	Grid::GetInstance()->UpdateGrid(this->objects->at(i));
 
 
-	}
+	//}
 }
 
 void Scence::Render()
@@ -90,4 +91,8 @@ void Scence::Render()
 	for (int i = 0; i < this->objects->size(); i++) {
 		this->objects->at(i)->Render();
 	}
+}
+
+vector<Object*>* Scence::GetObjects() {
+	return this->objects;
 }

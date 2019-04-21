@@ -32,7 +32,7 @@ public:
 	~Map();
 	void LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP);
 	void drawMap();
-	bool isRectOverlap(RECT r1, RECT r2);
+
 	void SetWidth(int width) {
 		this->width = width;
 	}

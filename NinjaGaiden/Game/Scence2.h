@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Scence.h"
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -11,12 +11,13 @@
 #include "Constants.h"
 #include "Map.h"
 #include "Square.h"
-class Scence1 : public Scence {
+class Scence2 : public Scence {
 private:
 	Map* map;
 public:
-	Scence1();
-	~Scence1();
+	Scence2();
+	~Scence2();
+
 	void LoadResource();
 	void Update(float deltaTime);
 	void Render();

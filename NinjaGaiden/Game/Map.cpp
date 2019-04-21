@@ -1,5 +1,5 @@
 ﻿#include "Map.h"
-#include "Camera1.h"
+#include "Camera.h"
 Map::Map()
 {
 
@@ -48,21 +48,13 @@ Map::~Map()
 	delete this->list;
 }
 
-bool Map::isRectOverlap(RECT r1, RECT r2) {
-	if (r1.left > r2.right || r1.right < r2.left || r1.top > r2.bottom || r1.bottom < r2.top)
-	{
-		return false;
-	}
-	return true;
-}
-
 void Map::drawMap()
 {
-	D3DXVECTOR2 camposition = Camera1::GetInstance()->getPosition();
+	D3DXVECTOR2 camposition = Camera::GetInstance()->getPosition();
 
 	int top, left, right, bottom;
 	int tileMapWidth = 0;
-	for (int i = 0; i < 208/tileHeight; i++) {
+	for (int i = 0; i < 224/tileHeight; i++) {
 		for (int j = 0; j < 320/tileWidth; j++) {
 			int number = this->list->at(i)->at(j);
 			if (number != 0) {
@@ -73,7 +65,7 @@ void Map::drawMap()
 				right = left + tileWidth;
 				bottom = top + tileHeight;
 				Game::GetInstance()->Draw(
-					j*tileWidth - (int)camposition.x % tileWidth, i*tileHeight - (int)camposition.y % tileHeight + 10,
+					j*tileWidth - (int)camposition.x % tileWidth, i*tileHeight - (int)camposition.y % tileHeight,
 					texture,
 					left, top, right, bottom);
 			}

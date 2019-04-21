@@ -24,7 +24,9 @@ private:
 	float rotate;
 	float scale;
 	void SetSpritePositions(LPCWSTR filePath);
-
+	bool isComplete;
+	DWORD time;
+	DWORD lastFrameTime;
 public:
 	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale = 1.0f);
 	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, float scale = 1.0f);
@@ -33,6 +35,12 @@ public:
 	void SetIndex(int index);
 	int GetIndex();
 	void NextSprite();
+	bool GetIsComplete() {
+		return isComplete;
+	}
+	void setIsComplete(bool complete) {
+		this->isComplete = complete;
+	}
 	//Vẽ sprite bên phải ko bị lệch
 	void DrawSprite(D3DXVECTOR3 position, bool flagRight);
 	//Vẽ sprite bên trái bị lệch
@@ -42,6 +50,7 @@ public:
 	RECT GetBoudingBoxFromCurrentSprite();
 	RECT GetBoudingBoxFromCurrentSprite(DIRECTION direct);
 	RECT GetRectDrawSprite();
+	DWORD GetTime() { return time; }
 	void Reset();
 	void SetScale(float scale);
 	int GetCount();

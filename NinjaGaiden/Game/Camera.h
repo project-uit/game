@@ -1,43 +1,36 @@
-﻿#pragma once
-#include <DirectXMath.h>
+#pragma once
+#include <Windows.h>
 #include <d3dx9.h>
+#include <vector>
 #include "Constants.h"
+
 class Camera
 {
-private:
-	static Camera* _instance;
-	D3DXMATRIX orthographicMatrix;
-	D3DXMATRIX identityMatrix;
-	D3DXMATRIX viewMatrix;
+	static Camera * _instance;
 
-	D3DXVECTOR3 scaleFactors;
-	float angle;
-	int Width;
-	int Height;
-	int cameraX;
-	int cameraY;
+	D3DXVECTOR2 cameraPosition;
 
+	float worldBoundary;
 public:
-	Camera(int width, int height, float angle, D3DXVECTOR3 scaleFactors);
-
 	Camera();
-	//update lại vị trí camera
-	void Update(int x, int y, int WidthMap, int G_ScreenWidth);
-	//Thực hiện phép dời hình
-	void SetTransForm(LPDIRECT3DDEVICE9);
-	RECT getRECT();
+
+	void Update(D3DXVECTOR3 simonPosition);
+	D3DXVECTOR3 transformObjectPosition(D3DXVECTOR3 objectPosition);
+
+	D3DXVECTOR2 getPosition() { return cameraPosition; }
+	void setPosition(D3DXVECTOR2 a) { this->cameraPosition = a; }
+	RECT GetRECT() {
+		RECT r;
+		r.left = cameraPosition.x;
+		r.top = cameraPosition.y;
+
+	}
 	~Camera();
-	static void SetInstance(int width, int height, float angle, D3DXVECTOR3 scaleFactors) {
-		if (_instance == NULL) {
-			_instance = new Camera(width, height, angle, scaleFactors);
-		}
-	}
-	D3DXVECTOR3 GetPosition() {
-		return D3DXVECTOR3(cameraX, cameraY, 0.0f);
-	}
+
 	static Camera* GetInstance() {
+		if (_instance == NULL) _instance = new Camera();
 		return _instance;
 	}
 
-
+	void setWorldBoundary(float a) { this->worldBoundary = a; }
 };

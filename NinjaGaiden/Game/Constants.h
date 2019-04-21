@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 // ========= GAME
 #define GAME_SCREEN_320_240 0
 #define GAME_SCREEN_640_480 1
@@ -20,10 +20,15 @@
 // ========	Enemy
 #define ID_TEXTURE_MAP_1_ENEMY 101 
 #define PATH_TEXTURE_MAP_1_ENEMY L"sprite\\Enemies_Bosses.png"
-#define PATH_TEXTURE_MAP_1_ENEMY_LiNH L"sprite\\enemy\\linh.txt"
+//=========== Lính vàng cầm kiếm
+#define PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_follow L"sprite\\enemy\\SoldierSword_follow.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk L"sprite\\enemy\\SoldierSword_atk.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
+//=========== other
 enum OBJECT_TYPE {
-	BRICK,
-	MAIN_CHARACTER
+	SQUARE,
+	MAIN_CHARACTER,
+	SOLDIER_SWORD
 };
 
 enum PLAYER_STATE {
@@ -34,6 +39,13 @@ enum PLAYER_STATE {
 	SIT,
 	DIE,
 	SIT_ATK
+};
+
+enum ENEMY_STATE {
+	ATK,
+	FOLLOW,
+	DEAD,
+	DO_NOTHING
 };
 
 enum DIRECTION {

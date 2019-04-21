@@ -15,5 +15,6 @@ public:
 	~Item();
 	void Update(float t);
 	void Render();
+	void HandleCollision(vector<Object*> *object);
 };
 

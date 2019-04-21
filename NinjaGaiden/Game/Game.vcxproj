@@ -123,7 +123,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Camera1.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Game.h" />
@@ -133,19 +132,22 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Katana.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Scence1.h" />
+    <ClInclude Include="Scence2.h" />
+    <ClInclude Include="SoldierSword.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Square.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAction.cpp" />
@@ -158,10 +160,12 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Scence1.cpp" />
+    <ClCompile Include="SoldierSword.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Camera1.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Square.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>

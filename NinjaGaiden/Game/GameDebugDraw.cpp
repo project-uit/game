@@ -1,4 +1,4 @@
-#include "GameDebugDraw.h"
+﻿#include "GameDebugDraw.h"
 
 GameDebugDraw::GameDebugDraw()
 {
@@ -39,10 +39,9 @@ void GameDebugDraw::DrawRect(RECT rect, Camera *camera)
 {
 
 	D3DXVECTOR3 trans = D3DXVECTOR3(0, 0, 0);
-
 	if (camera)
 	{
-		trans = D3DXVECTOR3(304 / 2, 220 / 2, 0) - camera->GetPosition();
+		trans = - D3DXVECTOR3(camera->getPosition().x, camera->getPosition().y,0.0f);
 	}
 	D3DXVECTOR2 lines[] = { D3DXVECTOR2(rect.left + trans.x, rect.top + trans.y),
 							D3DXVECTOR2(rect.right + trans.x, rect.top + trans.y),

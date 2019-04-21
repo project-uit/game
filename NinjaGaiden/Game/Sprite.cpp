@@ -98,7 +98,17 @@ void Sprite::SetSpritePositions(LPCWSTR filePath)
 
 void Sprite::NextSprite()
 {
-	this->index = (this->index + 1) % count;
+	DWORD now = GetTickCount();
+	DWORD t = this->GetTime();
+	if (now - lastFrameTime > 87)
+	{
+		lastFrameTime = now;
+		this->index = (this->index + this->count) % this->count + 1;
+		if (this->index == count) {
+			isComplete = true;
+			this->index = 0;
+		}
+	}
 }
 
 void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
@@ -107,21 +117,15 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 		return;
 	RECT rect = ReadCurrentSpritePosition();	//đọc tọa độ của sprite trong file txt
 
-	// Texture being used is width by height:
 	D3DXVECTOR3 spriteCentre = D3DXVECTOR3((float)width, (float)height, 0);
 
-	// Build our matrix to rotate, scale and position our sprite
 	D3DXMATRIX mat;
-
-	// Biến này làm cho object quay theo trục X (trục dọc)
 	float tempTurnRight = 1.0f;
-
 	if (!flagRight) {
 		tempTurnRight = -1.0f;
 	}
 	
 	D3DXVECTOR3 scaling(tempTurnRight*this->scale, this->scale, 1.0f);
-	//
 	// out, scaling centre, scaling rotation, scaling, rotation centre, rotation, translation
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(this->width / 2, this->height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
 	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
@@ -178,27 +182,28 @@ RECT Sprite::GetBoudingBoxFromCurrentSprite()
 	rect.top = tempVector->at(5); //y
 	rect.right = rect.left + tempVector->at(6);// width
 	rect.bottom = rect.top + tempVector->at(7);//height
-
 	return rect;
 }
+
 RECT Sprite::GetBoudingBoxFromCurrentSprite(DIRECTION direct) {
-	if (direct == DIRECTION::RIGHT) {
-		return GetBoudingBoxFromCurrentSprite();
-	}
 	if (direct == DIRECTION::LEFT) {
 		RECT rect;
 		vector<int>* tempVector = this->spritePositions->at(this->index);
-		rect.left = - tempVector->at(4); //x
+		rect.left = -tempVector->at(4); //x
 		rect.top = tempVector->at(5); //y
 		rect.right = rect.left + tempVector->at(6);// width
 		rect.bottom = rect.top + tempVector->at(7);//height
 		return rect;
+	}
+	else {
+		return GetBoudingBoxFromCurrentSprite();
 	}
 }
 
 void Sprite::Reset()
 {
 	this->index = 0;
+	isComplete = false;
 }
 void Sprite::SetIndex(int idx) {
 	this->index = idx;

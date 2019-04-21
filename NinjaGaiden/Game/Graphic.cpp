@@ -20,7 +20,7 @@ void Graphic::SetDimension(int mode) {
 	{
 	case GAME_SCREEN_320_240:
 		this->screenWidth = 320;
-		this->screenHeight = 256;
+		this->screenHeight = 262;
 		break;
 	case GAME_SCREEN_640_480:
 		this->screenWidth = 640;	
