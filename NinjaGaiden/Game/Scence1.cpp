@@ -1,12 +1,14 @@
 #include "Scence1.h"
 #include "SoldierSword.h"
-
+#include "GameDebugDraw.h"
 SoldierSword* soldierSword;
+GameDebugDraw* drawScence1;
+Square* square;
+
 Scence1::Scence1()
 {
-
+	
 	this->LoadResource();
-	//Grid::GetInstance()->ReSetGrid(Scence1_HEIGHT, Scence1_WIDTH, false);
 }
 
 Scence1::~Scence1()
@@ -20,6 +22,11 @@ void Scence1::LoadResource()
 	map->LoadMap(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
 	Camera::GetInstance()->setWorldBoundary(2048);
 	soldierSword = new SoldierSword();
+	drawScence1 = new GameDebugDraw();
+	square = new Square(48, 192, 528 + 16, 224);
+	Grid::GetInstance(262, map->GetWidth(), false);
+	Grid::GetInstance()->Add(soldierSword);
+	Grid::GetInstance()->Add(square);
 	//this->objects->push_back(Player::GetInstance());
 
 	//this->map = new Map(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
@@ -53,19 +60,15 @@ void Scence1::LoadResource()
 	//for (int i = 0; i < this->objects->size(); i++) {
 	//	Grid::GetInstance()->Add(this->objects->at(i));
 	//}
-
 }
 
 void Scence1::Update(float deltaTime)
 {
 	Scence::Update(deltaTime);
-	soldierSword->Update(deltaTime, this->objects);
 }
 
 void Scence1::Render()
 {
-	//is->map->drawMap();
-	//map->drawMap();
-	soldierSword->Render();
+	map->drawMap();
 	Scence::Render();
 }

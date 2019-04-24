@@ -115,6 +115,7 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float &collisionTime, f
 
 CollisionHandler* Object::GetCollsionObjectsBySweptAABB(Object * obj)
 {
+	//this->veclocity.x * deltaTime
 	float dx = this->deltaX - obj->GetVeclocity().x*this->deltaTime;
 	float dy = this->deltaY - obj->GetVeclocity().y*this->deltaTime;
 	

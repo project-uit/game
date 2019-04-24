@@ -13,7 +13,7 @@ Square::Square(int left, int top, int right, int bottom)
 
 Square::~Square()
 {
-
+	
 }
 
 void Square::Update(float deltaTime, vector<Object*>* object)

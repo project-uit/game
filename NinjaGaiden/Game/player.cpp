@@ -15,6 +15,8 @@ Player::Player()
 	this->SetPosition(150, 100);
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
+	this->acceleratorX = 0.025;
+	this->acceleratorY = 0.025;
 	isOnGround = false;
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
@@ -90,6 +92,10 @@ void Player::ResetAllSprites()
 	}
 }
 
+void Player::SetAcceleratorX(float x) {
+	this->acceleratorX = x;
+}
+
 bool Player::GetStateActive()
 {
 	return this->isActive;
@@ -112,32 +118,59 @@ void Player::Reset(float x, float y)
 
 void Player::Update(float t, vector<Object*>* object)
 {
-	Object::Update(t);
 	
+	if (this->state == PLAYER_STATE::RUN) {
+		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
+			this->veclocity.x = PLAYER_VELOCITY_X;
+		}
+		if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
+			this->veclocity.x = -PLAYER_VELOCITY_X;
+		}
+	}
+
+	if (this->state == PLAYER_STATE::JUMP) {
+		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
+			this->veclocity.x = PLAYER_VELOCITY_X/3.5;
+		}
+		if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
+			this->veclocity.x = -PLAYER_VELOCITY_X/3.5;
+		}
+	}
+
+	if (this->state == PLAYER_STATE::STAND) {
+		acceleratorX = 0;
+		veclocity.x = 0;
+	}
+	
+	Object::Update(t);
 	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite(this->direction);
 
 	Object::updateBoundingBox(rect);
 
+	this->veclocity.x += acceleratorX * t;
 	this->veclocity.y += GRAVITY *t;
-
+	
 	if (this->last_state != this->state) {
 		ResetSpriteState(this->last_state);
-		this->sprite->at(this->state)->NextSprite();
 	}
 	
 	this->sprite->at(this->state)->NextSprite();
+
 	if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::STAND_ATK) {
 		state = PLAYER_STATE::STAND;
 	}
+
 	if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::SIT_ATK) {
 		state = PLAYER_STATE::SIT;
 	}
+
 	if (state == PLAYER_STATE::JUMP && isOnGround) {
 		//khi đáp đất tọa độ y cần dời lên lại để khi vẽ nhân vật trạng thái stand đảm bảo trên bounding box của mặt đất
 		state = PLAYER_STATE::STAND;
-		position.y -= 8.85;
+		position.y -= 8.75;
 		SetVx(0.0f);
 	}
+	
 	HandleCollision(object);
 }
 
@@ -146,13 +179,13 @@ void Player::HandleCollision(vector<Object*> *object) {
 	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
 	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
 	coEvents->clear();
+
 	if (this->state != PLAYER_STATE::DIE) {
 		Object::CalcPotentialCollisions(object, coEvents);
 	}
-
+	
 	if (coEvents->size() == 0) {
 		Object::PlusPosition(this->deltaX, this->deltaY);
-		isOnGround = false;
 	}
 	else {
 		float min_tx, min_ty, nx = 0, ny;
@@ -180,12 +213,12 @@ void Player::HandleCollision(vector<Object*> *object) {
 				Square *item = dynamic_cast<Square *>(e->object);
 				float x = item->GetPosition().x;
 				float y = item->GetPosition().y;
-				if (ny != 0) {
+				if (ny < 0) {
+					//DebugOut((wchar_t *)L"Va chạm trục X2!\n");
 					this->SetVy(0.0f);
 					isOnGround = true;
 				}
 			}
-
 		}
 	}
 

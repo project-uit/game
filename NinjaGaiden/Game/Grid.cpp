@@ -1,34 +1,34 @@
 ﻿#include "Grid.h"
-
+#include "Camera.h"
 
 Grid* Grid::_instance = NULL;
 
 
 Grid::Grid()
 {
+	
 }
 
 Grid::Grid(int mapHeight, int mapWidth, bool isArray)
 {
 	this->InitGrid(mapHeight, mapWidth, isArray);
+	cells = new vector<vector<vector<Object*>*>*>();
+	objects = new vector<Object*>();
+	cells->reserve(numOfRow);
+	for (size_t i = 0; i < numOfRow; i++) {
+		vector<vector<Object*>*> * tempList = new vector<vector<Object*>*>();
+		tempList->reserve(numOfColumn);
+		for (size_t j = 0; j < numOfColumn; j++) {
+			vector<Object*>* obj = new vector<Object*>();
+			tempList->push_back(obj);
+		}
+		cells->push_back(tempList);
+	}
 }
 
 Grid::~Grid()
 {
 	this->DeleteGrid();
-}
-
-void Grid::InitObjectForGrid()
-{
-	this->cells = new Object**[this->numOfRow];
-
-	for (int row = 0; row < this->numOfRow; row++) {
-		this->cells[row] = new Object*[this->numOfColumn];
-
-		for (int column = 0; column < this->numOfColumn; column++) {
-			this->cells[row][column] = NULL;
-		}
-	}
 }
 
 void Grid::PushObjectToVector(std::vector<Object*>* vector, Object * cell, Object* obj)
@@ -42,63 +42,39 @@ void Grid::PushObjectToVector(std::vector<Object*>* vector, Object * cell, Objec
 	}
 }
 
+void Grid::InitObject(std::vector<Object*> * vt) {
+	
+	for(int i = 0; i < vt->size(); i++) {
+		Add(vt->at(i));
+	}
+}
+
 void Grid::DeleteGrid()
 {
-	for (int row = 0; row < this->numOfRow; row++) {
-		for (int column = 0; column < this->numOfColumn; column++) {
-			while (this->cells[row][column] != NULL) {
-				Object* temp = this->cells[row][column];
-				this->cells[row][column] = this->cells[row][column]->GetNextObj();
-				this->cells[row][column]->SetPreObj(NULL);
-
-				temp->SetNextObj(NULL);
-
-				if (temp->GetObjectType() != MAIN_CHARACTER) {
-					delete temp;
-				}
+	for (int i = 0; i < cells->size(); i++) {
+		for (int j = 0; j < cells->at(i)->size(); j++) {
+			for (int k = 0; k < cells->at(i)->at(j)->size(); k++) {
+				delete cells->at(i)->at(j)->at(k);
 			}
-
-			if (this->cells[row][column] == NULL)
-				delete this->cells[row][column];
+			delete cells->at(i)->at(j);
 		}
-		delete[] this->cells[row];
+		delete cells->at(i);
 	}
-
-	delete[] this->cells;
+	delete cells;
 }
 
 void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
 {
-	if (isArray) {
-		this->numOfRow = (int)ceil((float)mapHeight * BRICK_SIZE / CELL_SIZE);
-		this->numOfColumn = (int)ceil((float)mapWidth * BRICK_SIZE / CELL_SIZE);
-	}
-	else {
-		this->numOfRow = (int)ceil((float)mapHeight / CELL_SIZE);
-		this->numOfColumn = (int)ceil((float)mapWidth / CELL_SIZE);
-	}
-
-	this->InitObjectForGrid();
+	this->numOfRow = (int)ceil((float)mapHeight / CELL_HEIGHT);
+	this->numOfColumn = (int)ceil((float)mapWidth / CELL_WIDTH);
 }
 
 void Grid::Add(Object * obj)
 {
-	// Lưu lại giá trị cũ của object sau mỗi lần update
 	obj->SetLastPos(obj->GetPosition());
-
-
-	// Xác định object đang nằm ở grid nào
-	int column = floor(obj->GetPosition().x / CELL_SIZE);
-	int row = floor(obj->GetPosition().y / CELL_SIZE);
-
-	// Thêm object vào đầu dslk
-	obj->SetPreObj(NULL);
-	obj->SetNextObj(this->cells[row][column]);
-	this->cells[row][column] = obj;
-
-	if (obj->GetNextObj() != NULL) {
-		obj->GetNextObj()->SetPreObj(obj);
-	}
+	int column = floor(obj->GetPosition().x / CELL_WIDTH);
+	int row = floor(obj->GetPosition().y / CELL_HEIGHT);
+	cells->at(row)->at(column)->push_back(obj);
 }
 
 void Grid::ReSetGrid(int height, int width, bool isArray)
@@ -107,78 +83,57 @@ void Grid::ReSetGrid(int height, int width, bool isArray)
 	this->InitGrid(height, width, isArray);
 }
 
-vector<Object*>* Grid::GetCollisionObjects(Object * object)
+void Grid::GetObjectsInCells(Object * object)
 {
-	vector<Object*> *objects = new std::vector<Object*>();
+	if (objects->size() > 0)
+		return;
 
 	if (object == nullptr || object->GetObjectType() == OBJECT_TYPE::SQUARE)
-		return objects;
+		return;
 
-	int row = (int)floor(object->GetPosition().y / CELL_SIZE);
-	int column = (int)floor(object->GetPosition().x / CELL_SIZE);
+	int row = (int)floor(object->GetPosition().y / CELL_HEIGHT);
+	int column = (int)floor(object->GetPosition().x / CELL_WIDTH);
 
-	// Lấy object ở cell hiện tại
-	this->PushObjectToVector(objects, this->cells[row][column], object);
+	RECT camREC  = Camera::GetInstance()->GetRECT();
+	//góc trái
+	int x1 = int(camREC.left/ CELL_WIDTH), y1 = int(camREC.top/CELL_HEIGHT);
+	//góc phải dưới
+	int x2 = int(camREC.right/ CELL_WIDTH), y2 = int(camREC.bottom/ CELL_HEIGHT);
 
-	// Lấy các cell ở kế bên
-
-	// Nếu đang đi qua trái
-	if (object->GetVeclocity().x < 0) {
-		if (column > 0) this->PushObjectToVector(objects, this->cells[row][column - 1], object); // Bên trái
-
-		if (column > 0 && row > 0) this->PushObjectToVector(objects, this->cells[row - 1][column - 1], object); // Trái trên
-
-		if (column > 0 && row < this->numOfRow - 1) this->PushObjectToVector(objects, this->cells[row + 1][column - 1], object); //Trái dưới
+	for (int i = y1; i < y2; i++) {
+		for (int j = x1; j < x2; j++) {
+			vector<Object*> *listObj = cells->at(i)->at(j);
+			for (int k = 0; k < listObj->size(); k++) {
+				this->objects->push_back(listObj->at(k));
+			}
+		}
 	}
-
-	// Nếu đang đi qua phải
-	else {
-		if (column < this->numOfColumn - 1) this->PushObjectToVector(objects, this->cells[row][column + 1], object); //Bên phải
-
-		if (column < this->numOfColumn - 1 && row > 0) this->PushObjectToVector(objects, this->cells[row - 1][column + 1], object); // Phải trên
-
-		if (column < this->numOfColumn - 1 && row < this->numOfRow - 1) this->PushObjectToVector(objects, this->cells[row + 1][column + 1], object); // Phải dưới
-	}
-
-	// Nếu đang đi lên
-	if (object->GetVeclocity().y < 0) {
-		if (row > 0) this->PushObjectToVector(objects, this->cells[row - 1][column], object);
-	}
-	// Nếu đang đi xuống
-	else {
-		if (row < this->numOfRow - 1) this->PushObjectToVector(objects, this->cells[row + 1][column], object);
-	}
-
-	return objects;
 }
 
 void Grid::UpdateGrid(Object * object)
 {
-	// Kiểm tra xem có thay đổi cell hay không
-	int oldRow = floor(object->GetLastPos().y / CELL_SIZE);
-	int oldColumn = floor(object->GetLastPos().x / CELL_SIZE);
+	int oldRow = floor(object->GetLastPos().y / CELL_WIDTH);
+	int oldColumn = floor(object->GetLastPos().x / CELL_WIDTH);
 
-	int newRow = floor(object->GetPosition().y / CELL_SIZE);
-	int newColumn = floor(object->GetPosition().x / CELL_SIZE);
+	int newRow = floor(object->GetPosition().y / CELL_WIDTH);
+	int newColumn = floor(object->GetPosition().x / CELL_WIDTH);
 
-	// Nếu không thay đổi thì thoát ra
 	if (oldRow == newRow && oldColumn == newColumn)
 		return;
+	objects->clear();
+	GetObjectsInCells(object);
+}
 
-	// Xóa object ra khỏi cell hiện tại và cập nhật lại cell mới
-	if (object->GetPreObj() != NULL) {
-		object->GetPreObj()->SetNextObj(object->GetNextObj());
+void Grid::UpdateObject(float t) {
+	for (int i = 0; i < objects->size(); i++) {
+		objects->at(i)->Update(t, objects);
 	}
-	if (object->GetNextObj() != NULL) {
-		object->GetNextObj()->SetPreObj(object->GetPreObj());
-	}
+}
 
-	// Nếu object đang đứng đầu
-	if (cells[oldRow][oldColumn] == object) {
-		cells[oldRow][oldColumn] = object->GetNextObj();
+void Grid::RenderObject() {
+	for (int i = 0; i < objects->size(); i++) {
+		objects->at(i)->Render();
 	}
-
-	this->Add(object);
 }
 
 Grid * Grid::GetInstance()
@@ -191,4 +146,8 @@ Grid * Grid::GetInstance(int mapHeight, int mapWidth, bool isArray)
 {
 	if (_instance == NULL) _instance = new Grid(mapHeight, mapWidth, isArray);
 	return _instance;
+}
+
+vector<Object*>* Grid::GetObjects() {
+	return objects;
 }

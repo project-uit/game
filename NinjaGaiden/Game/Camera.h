@@ -21,9 +21,8 @@ public:
 	void setPosition(D3DXVECTOR2 a) { this->cameraPosition = a; }
 	RECT GetRECT() {
 		RECT r;
-		r.left = cameraPosition.x;
-		r.top = cameraPosition.y;
-
+		SetRect(&r, cameraPosition.x, cameraPosition.y, cameraPosition.x + 320, cameraPosition.y + 262);
+		return r;
 	}
 	~Camera();
 

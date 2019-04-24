@@ -14,4 +14,5 @@ public:
 	void Update(float t, vector<Object*>* objects);
 	void Render();
 	void HandleCollision(vector<Object*> *object);
+	RECT GetMovingArea();
 };

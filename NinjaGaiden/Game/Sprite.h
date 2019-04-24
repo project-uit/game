@@ -27,6 +27,7 @@ private:
 	bool isComplete;
 	DWORD time;
 	DWORD lastFrameTime;
+	float timePerFrame;
 public:
 	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale = 1.0f);
 	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, float scale = 1.0f);

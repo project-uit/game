@@ -40,6 +40,7 @@ int GameAction::GameRun()
 		}
 		else {
 			Sleep(tickPerFrame - deltaTime);
+			deltaTime = tickPerFrame;
 		}
 	}
 	return 1;
@@ -71,24 +72,27 @@ void KeyboardHandler::KeyState(BYTE * states)
 
 void KeyboardHandler::OnKeyDown(int KeyCode)
 {
+	DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyUp: %d\n", KeyCode);
 	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
 
 		if (Player::GetInstance()->GetOnGround()) {
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-				Player::GetInstance()->SetVeclocity(-PLAYER_VELOCITY_X, NO_VELOCITY);
+				Player::GetInstance()->SetAcceleratorX(-0.025);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
 				Player::GetInstance()->SetState(PLAYER_STATE::RUN);
 			}
 			if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-				Player::GetInstance()->SetVeclocity(PLAYER_VELOCITY_X, NO_VELOCITY);
+				Player::GetInstance()->SetAcceleratorX(0.025);
 				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 				Player::GetInstance()->SetState(PLAYER_STATE::RUN);
 			}
 		}
 
 		if (Game::GetInstance()->IsKeyDown(DIK_DOWN)) {
-			Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
-			Player::GetInstance()->SetState(PLAYER_STATE::SIT);
+			if (Player::GetInstance()->GetState() == PLAYER_STATE::STAND) {
+				Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
+				Player::GetInstance()->SetState(PLAYER_STATE::SIT);
+			}
 		}
 
 		if (Player::GetInstance()->GetLastState() == PLAYER_STATE::SIT) {
@@ -118,11 +122,11 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 		if (Player::GetInstance()->GetState() == PLAYER_STATE::JUMP) {
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-				Player::GetInstance()->SetVx(-0.03525);
+				Player::GetInstance()->SetAcceleratorX(-0.025);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
-			} 
+			}
 			if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-				Player::GetInstance()->SetVx(0.03525);
+				Player::GetInstance()->SetAcceleratorX(0.025);
 				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 			}
 		}
@@ -131,7 +135,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
 {
-	//DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyUp: %d\n", KeyCode);
+	
 	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
 		if (KeyCode == DIK_RIGHT) {
 			if (Player::GetInstance()->GetState() == PLAYER_STATE::RUN) {
@@ -149,8 +153,10 @@ void KeyboardHandler::OnKeyUp(int KeyCode)
 			}
 		}
 
-		if (KeyCode == DIK_DOWN) {
-			Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+		if (Player::GetInstance()->GetState() == PLAYER_STATE::SIT) {
+			if (KeyCode == DIK_DOWN) {
+				Player::GetInstance()->SetState(PLAYER_STATE::STAND);
+			}
 		}
 	}
 }

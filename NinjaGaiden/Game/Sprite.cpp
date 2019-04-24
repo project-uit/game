@@ -100,7 +100,7 @@ void Sprite::NextSprite()
 {
 	DWORD now = GetTickCount();
 	DWORD t = this->GetTime();
-	if (now - lastFrameTime > 87)
+	if (now - lastFrameTime > 100)
 	{
 		lastFrameTime = now;
 		this->index = (this->index + this->count) % this->count + 1;

@@ -18,11 +18,6 @@ protected:
 public:
 	Scence();
 	~Scence();
-
-	void InitHorizontalBrick(RECT rect);
-
-	// Dùng để cắt theo hàng dọc
-	void InitVerticalBrick(RECT rect);
 	vector<Object*>* GetObjects();
 	virtual void LoadResource() = 0;
 	virtual void Update(float deltaTime);

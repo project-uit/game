@@ -14,8 +14,6 @@ class World
 {
 private:
 	static World * _instance;
-	vector<Object*>* objects;
-	Item* item;
 	Scence* scence;
 public:
 	World();

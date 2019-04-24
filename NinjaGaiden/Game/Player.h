@@ -4,9 +4,7 @@
 #include "Texture.h"
 #include <map>
 #include "Item.h"
-#define PLAYER_VELOCITY_X 0.12f
-#define PLAYER_VELOCITY_Y 0.1005f
-#define NO_VELOCITY 0.0f
+
 class Player : public Object
 {
 private:
@@ -19,6 +17,7 @@ private:
 	bool isOnGround;
 	bool isOnLadder;
 	int hp;
+	float acceleratorX, acceleratorY;
 public:
 	Player();
 	~Player();
@@ -34,6 +33,8 @@ public:
 	bool GetOnGround();
 	Sprite* GetCurrentSprite();
 	void Reset(float  x, float y);
+	void SetAcceleratorX(float x);
+	void SetAcceleratorY(float y);
 	void Update(float t, vector<Object*> *object = NULL);
 	void Render();
 	void ResetSpriteState(PLAYER_STATE state);

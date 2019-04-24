@@ -1,13 +1,19 @@
 ﻿#include "SoldierSword.h"
 #include "Square.h"
+#include "Player.h"
+
 SoldierSword::SoldierSword() {
 
 	this->SetObjectType(SOLDIER_SWORD);
-	this->SetPosition(239, 95);
+	this->SetPosition(239, 150);
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
 	this->direction = LEFT;
 	this->isActive = true;
+	movingArea.left = 200;
+	movingArea.right = 200 + 150;
+	movingArea.top = 150;
+	movingArea.bottom = 150 + 50;
 	state = FOLLOW;
 	this->sprite = new  map<ENEMY_STATE, Sprite*>();
 	this->sprite
@@ -15,7 +21,7 @@ SoldierSword::SoldierSword() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_follow, 2)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk, 1)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk, 2)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 1)));
@@ -25,14 +31,36 @@ SoldierSword::~SoldierSword() {
 
 }
 
+RECT SoldierSword::GetMovingArea() {
+	return this->movingArea;
+}
+
 void SoldierSword::Update(float t, vector<Object*>* objects) {
 	Object::Update(t);
-	//this->veclocity.y += GRAVITY * t;
+	this->veclocity.y += GRAVITY * t;
 	RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 	Object::updateBoundingBox(rect);
-	Object::PlusPosition(this->deltaX, this->deltaY);
 	sprite->at(this->state)->NextSprite();
+	//sprite->at(this->state)->SetIndex(1);
 	HandleCollision(objects);
+
+	Line left = Line(movingArea.left, movingArea.top,
+		movingArea.left, movingArea.bottom);
+
+	Line right = Line(movingArea.right, movingArea.top,
+		movingArea.right, movingArea.bottom);
+	
+	if (Game::AABB_BoxLine(GetBoundingBox(), left)) {
+		
+		/*SetVx(0.04625);
+		direction = RIGHT;*/
+	}
+
+	if (Game::AABB_BoxLine(GetBoundingBox(), right)) {
+		DebugOut((wchar_t *)L"[SoldierSword.cpp] chạm xx\n");
+		/*SetVx(-0.04625);
+		direction = LEFT;*/
+	}
 }
 
 void SoldierSword::HandleCollision(vector<Object*> *object) {
@@ -52,14 +80,11 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (dynamic_cast<Square *>(e->object)) {
 				Square *item = dynamic_cast<Square *>(e->object);
-				float x = item->GetPosition().x;
-				float y = item->GetPosition().y;
 				if (ny != 0) {
+					//DebugOut((wchar_t *)L"[SoldierSword.cpp] Va chạm gạch\n");
 					this->SetVy(0.0f);
 				}
-
 				if (nx != 0) {
-					DebugOut((wchar_t *)L"[SoldierSword.cpp] Va chạm gạch\n");
 					this->SetVx(0.0f);
 				}
 			}
@@ -72,6 +97,16 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 
 	delete coEvents;
 	delete coEventsResult;
+
+	if (Game::AABB(Player::GetInstance()->GetBoundingBox(), movingArea)) {
+		SetVx(-0.04625);
+	}
+	if (Game::AABB(Player::GetInstance()->GetBoundingBox(), GetBoundingBox())) {
+		state = ATK;
+	}
+	else {
+		state = FOLLOW;
+	}
 }
 
 void SoldierSword::Render() {
@@ -87,3 +122,4 @@ void SoldierSword::Render() {
 		break;
 	}
 }
+
