@@ -10,15 +10,17 @@
 #include "Constants.h"
 #include "Grid.h"
 #include "Map.h"
+#include "Square.h"
 class Scence {
 protected:
-	vector<Object*> *objects;
-	vector<RECT> *bricks;
+	vector<Square*> *bricks;
 	Map* map;
+	string name;
+	int score;
+	int timer;
 public:
 	Scence();
 	~Scence();
-	vector<Object*>* GetObjects();
 	virtual void LoadResource() = 0;
 	virtual void Update(float deltaTime);
 	virtual void Render();

@@ -22,8 +22,8 @@ private:
 	//Objects trong các cell mà Camera overlap
 	vector<Object*>* objects;
 	float deltaTime;
-	void PushObjectToVector(std::vector<Object*> * vector, Object* cell, Object * obj);
 	void DeleteGrid();
+	//map Height có thể là chiều cao ô cửa sổ hoặc chiều cao của map
 	void InitGrid(int mapHeight, int mapWidth, bool isArray);
 	void InitObject(std::vector<Object*> * vector);
 public:

@@ -1,8 +1,9 @@
 ﻿#include "Grid.h"
 #include "Camera.h"
-
+#include "Debug.h"
+#include "GameDebugDraw.h"
 Grid* Grid::_instance = NULL;
-
+GameDebugDraw* draw1;
 
 Grid::Grid()
 {
@@ -11,6 +12,7 @@ Grid::Grid()
 
 Grid::Grid(int mapHeight, int mapWidth, bool isArray)
 {
+	draw1 = new GameDebugDraw();
 	this->InitGrid(mapHeight, mapWidth, isArray);
 	cells = new vector<vector<vector<Object*>*>*>();
 	objects = new vector<Object*>();
@@ -29,17 +31,6 @@ Grid::Grid(int mapHeight, int mapWidth, bool isArray)
 Grid::~Grid()
 {
 	this->DeleteGrid();
-}
-
-void Grid::PushObjectToVector(std::vector<Object*>* vector, Object * cell, Object* obj)
-{
-	while (cell != NULL) {
-
-		if (cell != obj) {
-			vector->push_back(cell);
-		}
-		cell = cell->GetNextObj();
-	}
 }
 
 void Grid::InitObject(std::vector<Object*> * vt) {
@@ -88,13 +79,14 @@ void Grid::GetObjectsInCells(Object * object)
 	if (objects->size() > 0)
 		return;
 
-	if (object == nullptr || object->GetObjectType() == OBJECT_TYPE::SQUARE)
+	if (object == nullptr)
 		return;
-
+	//Cách lấy index của grid từ vị trí object
 	int row = (int)floor(object->GetPosition().y / CELL_HEIGHT);
 	int column = (int)floor(object->GetPosition().x / CELL_WIDTH);
-
+	//Lấy bound của Cam để xét với từng cell bị overlap
 	RECT camREC  = Camera::GetInstance()->GetRECT();
+
 	//góc trái
 	int x1 = int(camREC.left/ CELL_WIDTH), y1 = int(camREC.top/CELL_HEIGHT);
 	//góc phải dưới
@@ -112,12 +104,11 @@ void Grid::GetObjectsInCells(Object * object)
 
 void Grid::UpdateGrid(Object * object)
 {
-	int oldRow = floor(object->GetLastPos().y / CELL_WIDTH);
+	int oldRow = floor(object->GetLastPos().y / CELL_HEIGHT);
 	int oldColumn = floor(object->GetLastPos().x / CELL_WIDTH);
 
-	int newRow = floor(object->GetPosition().y / CELL_WIDTH);
+	int newRow = floor(object->GetPosition().y / CELL_HEIGHT);
 	int newColumn = floor(object->GetPosition().x / CELL_WIDTH);
-
 	if (oldRow == newRow && oldColumn == newColumn)
 		return;
 	objects->clear();
@@ -133,6 +124,7 @@ void Grid::UpdateObject(float t) {
 void Grid::RenderObject() {
 	for (int i = 0; i < objects->size(); i++) {
 		objects->at(i)->Render();
+		draw1->DrawRect(objects->at(i)->GetBoundingBox(), Camera::GetInstance());
 	}
 }
 

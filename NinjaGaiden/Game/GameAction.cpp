@@ -77,12 +77,12 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 		if (Player::GetInstance()->GetOnGround()) {
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-				Player::GetInstance()->SetAcceleratorX(-0.025);
+				Player::GetInstance()->SetVx(-PLAYER_VELOCITY_X);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
 				Player::GetInstance()->SetState(PLAYER_STATE::RUN);
 			}
 			if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-				Player::GetInstance()->SetAcceleratorX(0.025);
+				Player::GetInstance()->SetVx(PLAYER_VELOCITY_X);
 				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 				Player::GetInstance()->SetState(PLAYER_STATE::RUN);
 			}
@@ -122,11 +122,11 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 		if (Player::GetInstance()->GetState() == PLAYER_STATE::JUMP) {
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-				Player::GetInstance()->SetAcceleratorX(-0.025);
+				Player::GetInstance()->SetVx(-0.03325);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
 			}
 			if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-				Player::GetInstance()->SetAcceleratorX(0.025);
+				Player::GetInstance()->SetVx(0.03325);
 				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 			}
 		}

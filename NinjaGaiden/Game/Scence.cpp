@@ -3,8 +3,7 @@
 Scence::Scence()
 {
 	this->map = new Map();
-	this->objects = new vector<Object*>();
-	this->bricks = new vector<RECT>();
+	this->bricks = new vector<Square*>();
 }
 
 Scence::~Scence()
@@ -22,8 +21,4 @@ void Scence::Update(float deltaTime)
 void Scence::Render()
 {
 	Grid::GetInstance()->RenderObject();
-}
-
-vector<Object*>* Scence::GetObjects() {
-	return this->objects;
 }

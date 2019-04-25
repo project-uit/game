@@ -18,13 +18,13 @@ SoldierSword::SoldierSword() {
 	this->sprite = new  map<ENEMY_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::FOLLOW,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_follow, 2)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_follow, 2, 100)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk, 2)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk, 2,100)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 1)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 1,100)));
 }
 
 SoldierSword::~SoldierSword() {
@@ -52,14 +52,14 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 	
 	if (Game::AABB_BoxLine(GetBoundingBox(), left)) {
 		
-		/*SetVx(0.04625);
-		direction = RIGHT;*/
+		SetVx(0.04625);
+		direction = RIGHT;
 	}
 
 	if (Game::AABB_BoxLine(GetBoundingBox(), right)) {
 		DebugOut((wchar_t *)L"[SoldierSword.cpp] chạm xx\n");
-		/*SetVx(-0.04625);
-		direction = LEFT;*/
+		SetVx(-0.04625);
+		direction = LEFT;
 	}
 }
 
@@ -81,7 +81,6 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 			if (dynamic_cast<Square *>(e->object)) {
 				Square *item = dynamic_cast<Square *>(e->object);
 				if (ny != 0) {
-					//DebugOut((wchar_t *)L"[SoldierSword.cpp] Va chạm gạch\n");
 					this->SetVy(0.0f);
 				}
 				if (nx != 0) {
@@ -100,9 +99,11 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 
 	if (Game::AABB(Player::GetInstance()->GetBoundingBox(), movingArea)) {
 		SetVx(-0.04625);
+		direction = LEFT;
 	}
 	if (Game::AABB(Player::GetInstance()->GetBoundingBox(), GetBoundingBox())) {
 		state = ATK;
+		SetVx(0.0f);
 	}
 	else {
 		state = FOLLOW;

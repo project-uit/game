@@ -15,28 +15,27 @@ Player::Player()
 	this->SetPosition(150, 100);
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
-	this->acceleratorX = 0.025;
-	this->acceleratorY = 0.025;
+	this->acceleratorX = 0.015;
 	isOnGround = false;
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 100)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::RUN,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 100)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 100)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 100)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 100)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::JUMP,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 80)));
 }
 
 Player::~Player()
@@ -119,35 +118,35 @@ void Player::Reset(float x, float y)
 void Player::Update(float t, vector<Object*>* object)
 {
 	
-	if (this->state == PLAYER_STATE::RUN) {
-		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
-			this->veclocity.x = PLAYER_VELOCITY_X;
-		}
-		if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
-			this->veclocity.x = -PLAYER_VELOCITY_X;
-		}
-	}
+	//if (this->state == PLAYER_STATE::RUN) {
+	//	if (this->veclocity.x >= PLAYER_VELOCITY_X) {
+	//		this->veclocity.x = PLAYER_VELOCITY_X;
+	//	}
+	//	if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
+	//		this->veclocity.x = -PLAYER_VELOCITY_X;
+	//	}
+	//}
 
-	if (this->state == PLAYER_STATE::JUMP) {
-		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
-			this->veclocity.x = PLAYER_VELOCITY_X/3.5;
-		}
-		if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
-			this->veclocity.x = -PLAYER_VELOCITY_X/3.5;
-		}
-	}
+	//if (this->state == PLAYER_STATE::JUMP) {
+	//	if (this->veclocity.x >= PLAYER_VELOCITY_X) {
+	//		this->veclocity.x = PLAYER_VELOCITY_X/3.5;
+	//	}
+	//	if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
+	//		this->veclocity.x = -PLAYER_VELOCITY_X/3.5;
+	//	}
+	//}
 
-	if (this->state == PLAYER_STATE::STAND) {
-		acceleratorX = 0;
-		veclocity.x = 0;
-	}
+	//if (this->state == PLAYER_STATE::STAND) {
+	//	acceleratorX = 0;
+	//	veclocity.x = 0;
+	//}
 	
 	Object::Update(t);
-	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite(this->direction);
+	SetLastPos(D3DXVECTOR3(position.x, position.y, 0.0f));
+	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 
 	Object::updateBoundingBox(rect);
 
-	this->veclocity.x += acceleratorX * t;
 	this->veclocity.y += GRAVITY *t;
 	
 	if (this->last_state != this->state) {
@@ -155,7 +154,9 @@ void Player::Update(float t, vector<Object*>* object)
 	}
 	
 	this->sprite->at(this->state)->NextSprite();
-
+	//if (this->sprite->at(this->state)->GetCount() > 2) {
+	//	this->sprite->at(this->state)->SetIndex(2);
+	//}
 	if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::STAND_ATK) {
 		state = PLAYER_STATE::STAND;
 	}
@@ -167,7 +168,7 @@ void Player::Update(float t, vector<Object*>* object)
 	if (state == PLAYER_STATE::JUMP && isOnGround) {
 		//khi đáp đất tọa độ y cần dời lên lại để khi vẽ nhân vật trạng thái stand đảm bảo trên bounding box của mặt đất
 		state = PLAYER_STATE::STAND;
-		position.y -= 8.75;
+		position.y -= 8.5;
 		SetVx(0.0f);
 	}
 	

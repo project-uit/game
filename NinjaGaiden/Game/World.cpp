@@ -28,7 +28,6 @@ void World::LoadResource()
 	texture->Add(ID_TEXTURE_MAP_1_ENEMY, PATH_TEXTURE_MAP_1_ENEMY, D3DCOLOR_XRGB(255, 163, 177));
 	scence = new Scence1();
 	Player *main = Player::GetInstance();
-	
 	draw = new GameDebugDraw();
 	Text::GetInstance();
 }
@@ -47,5 +46,4 @@ void World::Render()
 	scence->Render();
 	Player::GetInstance()->Render();
 	draw->DrawRect(Player::GetInstance()->GetBoundingBox(), Camera::GetInstance());
-	/*draw->DrawRect(Camera::GetInstance()->GetRECT(), Camera::GetInstance());*/
 }

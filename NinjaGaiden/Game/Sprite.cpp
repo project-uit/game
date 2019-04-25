@@ -1,4 +1,5 @@
 ﻿#include  "Sprite.h"
+#include "Debug.h"
 Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale)
 {
 
@@ -16,7 +17,7 @@ Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int widt
 	this->SetSpritePositions(filePath);
 }
 
-Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count,float scale)
+Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, float t, float scale)
 {
 	if (texture == NULL) {
 		return;
@@ -26,7 +27,7 @@ Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count,float sca
 	this->index = 0;
 	this->scale = scale;
 	this->spritePositions = new vector<vector<int>*>();
-
+	this->timePerFrame = t;
 	this->SetSpritePositions(filePath);
 	this->width = this->spritePositions->at(this->index)->at(2);
 	this->height = this->spritePositions->at(this->index)->at(3);
@@ -100,7 +101,7 @@ void Sprite::NextSprite()
 {
 	DWORD now = GetTickCount();
 	DWORD t = this->GetTime();
-	if (now - lastFrameTime > 100)
+	if (now - lastFrameTime >= timePerFrame)
 	{
 		lastFrameTime = now;
 		this->index = (this->index + this->count) % this->count + 1;
@@ -124,8 +125,8 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 	if (!flagRight) {
 		tempTurnRight = -1.0f;
 	}
-	
-	D3DXVECTOR3 scaling(tempTurnRight*this->scale, this->scale, 1.0f);
+	directionX = tempTurnRight * this->scale;
+	D3DXVECTOR3 scaling(tempTurnRight * this->scale, this->scale, 1.0f);
 	// out, scaling centre, scaling rotation, scaling, rotation centre, rotation, translation
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(this->width / 2, this->height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
 	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
@@ -152,8 +153,8 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, int x, int y)
 		position.x += x;
 		position.y += y;
 	}
-
-	D3DXVECTOR3 scaling(tempTurnRight*this->scale, this->scale, 1.0f);
+	directionX = tempTurnRight * this->scale;
+	D3DXVECTOR3 scaling(tempTurnRight * this->scale, this->scale, 1.0f);
 	// out, scaling centre, scaling rotation, scaling, rotation centre, rotation, translation
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(this->width / 2, this->height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
 	//D3DXMatrixRotationX(&mat, 3.14f);
@@ -178,26 +179,26 @@ RECT Sprite::GetBoudingBoxFromCurrentSprite()
 {
 	RECT rect;
 	vector<int>* tempVector = this->spritePositions->at(this->index);
-	rect.left = tempVector->at(4); //x
-	rect.top = tempVector->at(5); //y
-	rect.right = rect.left + tempVector->at(6);// width
-	rect.bottom = rect.top + tempVector->at(7);//height
-	return rect;
-}
+	//tempVector->at(4); //x
+	//tempVector->at(5); //y
+	//rect.left + tempVector->at(6);// width
+	//rect.top + tempVector->at(7);//height
 
-RECT Sprite::GetBoudingBoxFromCurrentSprite(DIRECTION direct) {
-	if (direct == DIRECTION::LEFT) {
-		RECT rect;
-		vector<int>* tempVector = this->spritePositions->at(this->index);
-		rect.left = -tempVector->at(4); //x
-		rect.top = tempVector->at(5); //y
-		rect.right = rect.left + tempVector->at(6);// width
-		rect.bottom = rect.top + tempVector->at(7);//height
-		return rect;
+	//Nếu hướng phải (mặc định)
+	SetRect(&rect, tempVector->at(4), tempVector->at(5),
+		tempVector->at(4) + tempVector->at(6), tempVector->at(5) + tempVector->at(7));
+	//Nếu hướng trái
+	if (directionX < 0) {
+		if (tempVector->size() > 8) {
+			//Left, top, right, bottom
+			DebugOut((wchar_t *)L"Va chạm trục X1!\n");
+			rect.left = -tempVector->at(8);
+			rect.top = tempVector->at(5);
+			rect.right = -tempVector->at(8) + tempVector->at(6);
+			rect.bottom = tempVector->at(5) + tempVector->at(7);
+		}
 	}
-	else {
-		return GetBoudingBoxFromCurrentSprite();
-	}
+	return rect;
 }
 
 void Sprite::Reset()

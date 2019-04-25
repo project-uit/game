@@ -28,9 +28,10 @@ private:
 	DWORD time;
 	DWORD lastFrameTime;
 	float timePerFrame;
+	int directionX;
 public:
 	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale = 1.0f);
-	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, float scale = 1.0f);
+	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, float timePerFrame = 0.0f,  float scale = 1.0f);
 	Sprite(LPDIRECT3DTEXTURE9 texture, int index, int count, int width, int height);
 	~Sprite();
 	void SetIndex(int index);
@@ -48,8 +49,8 @@ public:
 	void DrawSprite(D3DXVECTOR3 position, bool flagRight, int x, int y);
 	//Đọc tọa độ ảnh
 	RECT ReadCurrentSpritePosition();
+	//Đọc độ lệch bounding box
 	RECT GetBoudingBoxFromCurrentSprite();
-	RECT GetBoudingBoxFromCurrentSprite(DIRECTION direct);
 	RECT GetRectDrawSprite();
 	DWORD GetTime() { return time; }
 	void Reset();

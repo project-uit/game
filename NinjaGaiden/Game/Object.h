@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "Constants.h"
 #define GRAVITY 0.00009625f
-#define PLAYER_VELOCITY_X 0.12f
+#define PLAYER_VELOCITY_X 0.15f
 #define PLAYER_VELOCITY_Y 0.1005f
 #define NO_VELOCITY 0.0f
 
@@ -41,8 +41,8 @@ protected:
 	D3DXVECTOR2 positionColide;
 	OBJECT_TYPE objectType;
 	bool isActive;
-	Object* nextObj;
-	Object* preObj;
+	//Object* nextObj;
+	//Object* preObj;
 	float deltaX;
 	float deltaY;
 	float deltaTime;
@@ -73,7 +73,7 @@ public:
 	void SetVy(float vy) { 
 		this->veclocity.y = vy; 
 	}
-	//Tọa độ dùng để render
+	//Tọa độ dùng để render khi có Camera
 	D3DXVECTOR3 GetTransformObjectPositionByCamera();
 
 	D3DXVECTOR3 GetPosition() { return this->position; }
@@ -86,12 +86,7 @@ public:
 		this->position.y += y; 
 	}
 
-	void updateBoundingBox(RECT rect) {
-		positionColide.x = rect.left;
-		positionColide.y = rect.top;
-		SetBoundingBox(rect.right - rect.left, rect.bottom - rect.top);
-	}
-
+	void updateBoundingBox(RECT rect);
 	void SetBoundingBox(int width, int height) { 
 		this->objectWidth = width; 
 		this->objectHeight = height; 
@@ -113,11 +108,11 @@ public:
 	void SetObjectType(OBJECT_TYPE objectType) { this->objectType = objectType; }
 	OBJECT_TYPE GetObjectType() { return this->objectType; }
 
-	void SetNextObj(Object* obj) { this->nextObj = obj; }
-	Object* GetNextObj() { return this->nextObj; }
+	//void SetNextObj(Object* obj) { this->nextObj = obj; }
+	//Object* GetNextObj() { return this->nextObj; }
 
-	void SetPreObj(Object* obj) { this->preObj = obj; }
-	Object* GetPreObj() { return this->preObj; }
+	//void SetPreObj(Object* obj) { this->preObj = obj; }
+	//Object* GetPreObj() { return this->preObj; }
 
 	void SetLastPos(float x, float y) { this->lastPos.x = x; this->lastPos.y = y; }
 	void SetLastPos(D3DXVECTOR3 pos) { this->lastPos.x = pos.x; this->lastPos.y = pos.y; }

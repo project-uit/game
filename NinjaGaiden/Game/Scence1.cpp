@@ -2,7 +2,7 @@
 #include "SoldierSword.h"
 #include "GameDebugDraw.h"
 SoldierSword* soldierSword;
-GameDebugDraw* drawScence1;
+
 Square* square;
 
 Scence1::Scence1()
@@ -22,7 +22,6 @@ void Scence1::LoadResource()
 	map->LoadMap(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
 	Camera::GetInstance()->setWorldBoundary(2048);
 	soldierSword = new SoldierSword();
-	drawScence1 = new GameDebugDraw();
 	square = new Square(48, 192, 528 + 16, 224);
 	Grid::GetInstance(262, map->GetWidth(), false);
 	Grid::GetInstance()->Add(soldierSword);
@@ -69,6 +68,6 @@ void Scence1::Update(float deltaTime)
 
 void Scence1::Render()
 {
-	map->drawMap();
+//	map->drawMap();
 	Scence::Render();
 }

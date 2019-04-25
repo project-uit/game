@@ -2,11 +2,12 @@
 #include "Debug.h"
 #include "Camera.h"
 #include "Game.h"
+#include "Debug.h"
 Object::Object()
 {
 	this->isActive = true;
-	this->nextObj = NULL;
-	this->preObj = NULL;
+	//this->nextObj = NULL;
+	//this->preObj = NULL;
 }
 
 Object::~Object()
@@ -201,4 +202,10 @@ void Object::Update(float deltaTime, std::vector<Object*>* objects)
 
 D3DXVECTOR3 Object::GetTransformObjectPositionByCamera() {
 	return Camera::GetInstance()->transformObjectPosition(position);
+}
+
+void Object::updateBoundingBox(RECT rect) {
+	positionColide.x = rect.left;
+	positionColide.y = rect.top;
+	SetBoundingBox(rect.right - rect.left, rect.bottom - rect.top);
 }
