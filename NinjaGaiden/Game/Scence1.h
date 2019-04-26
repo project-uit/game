@@ -12,8 +12,6 @@
 #include "Map.h"
 #include "Square.h"
 class Scence1 : public Scence {
-private:
-	Map* map;
 public:
 	Scence1();
 	~Scence1();

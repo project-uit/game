@@ -168,7 +168,7 @@ void Player::Update(float t, vector<Object*>* object)
 	if (state == PLAYER_STATE::JUMP && isOnGround) {
 		//khi đáp đất tọa độ y cần dời lên lại để khi vẽ nhân vật trạng thái stand đảm bảo trên bounding box của mặt đất
 		state = PLAYER_STATE::STAND;
-		position.y -= 8.5;
+		position.y -= 8.85;
 		SetVx(0.0f);
 	}
 	
@@ -193,23 +193,18 @@ void Player::HandleCollision(vector<Object*> *object) {
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 		//this->PlusPosition(min_tx * this->deltaX + nx * 0.4f, min_ty*this->deltaY + ny*0.4f);
 
-		if (nx > 0) {
-			DebugOut((wchar_t *)L"Va chạm trục X1!\n");
-			this->SetVx(0.0f);
-		}
+		//if (nx > 0) {
+		//	DebugOut((wchar_t *)L"Va chạm trục X1!\n");
+		//	this->SetVx(0.0f);
+		//}
 
-		if (nx < 0) {
-			DebugOut((wchar_t *)L"Va chạm trục X2!\n");
-			this->SetVx(0.0f);
-		}
+		//if (nx < 0) {
+		//	DebugOut((wchar_t *)L"Va chạm trục X2!\n");
+		//	this->SetVx(0.0f);
+		//}
 
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
-			if (dynamic_cast<Item *>(e->object)) {
-				Item *item = dynamic_cast<Item *>(e->object);
-				float x = item->GetPosition().x;
-				float y = item->GetPosition().y;
-			}
 			if (dynamic_cast<Square *>(e->object)) {
 				Square *item = dynamic_cast<Square *>(e->object);
 				float x = item->GetPosition().x;

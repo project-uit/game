@@ -58,10 +58,13 @@
     <Filter Include="Source Files\Object\Square">
       <UniqueIdentifier>{bb5d10af-983c-4364-85e3-f359f45e7500}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Text">
+    <Filter Include="Header Files\HUD">
+      <UniqueIdentifier>{f506177b-e79e-42f7-bebe-1ffd0b3c5f30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\HUD\Text">
       <UniqueIdentifier>{1700f81a-324c-473d-b2ca-12ab41c04ff8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Health">
+    <Filter Include="Header Files\HUD\Health">
       <UniqueIdentifier>{596e44a5-fa2b-4df4-ab30-0f2e6c65498a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -124,7 +127,7 @@
       <Filter>Header Files\Logging</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
-      <Filter>Header Files\Text</Filter>
+      <Filter>Header Files\HUD\Text</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\FrameWork</Filter>
@@ -192,13 +195,16 @@
       <Filter>Header Files\Logging</Filter>
     </ClCompile>
     <ClCompile Include="Text.cpp">
-      <Filter>Header Files\Text</Filter>
+      <Filter>Header Files\HUD\Text</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
     <ClCompile Include="SoldierSword.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files\Framework</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

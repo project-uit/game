@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "Object.h"
@@ -18,7 +18,7 @@ private:
 public:
 	World();
 	~World();
-
+	//Khởi tạo texture, object, map, player
 	void LoadResource();
 	void Update(float deltaTime);
 	void Render();

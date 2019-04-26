@@ -1,6 +1,7 @@
 ﻿#include "World.h"
 #include "GameDebugDraw.h"
 #include "Camera.h"
+#include "Sound.h"
 #include "Text.h"
 World *World::_instance = NULL;
 GameDebugDraw* draw;
@@ -12,7 +13,9 @@ World::World()
 
 World::~World()
 {
-
+	if (scence) {
+		delete scence;
+	}
 }
 
 void World::SetScence(Scence* s) {
@@ -27,9 +30,10 @@ void World::LoadResource()
 	//enemy
 	texture->Add(ID_TEXTURE_MAP_1_ENEMY, PATH_TEXTURE_MAP_1_ENEMY, D3DCOLOR_XRGB(255, 163, 177));
 	scence = new Scence1();
+	Sound* sound = Sound::GetInstance();
 	Player *main = Player::GetInstance();
 	draw = new GameDebugDraw();
-	Text::GetInstance();
+	Text* text = Text::GetInstance();
 }
 
 void World::Update(float deltaTime)

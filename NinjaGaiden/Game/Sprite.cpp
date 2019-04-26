@@ -57,7 +57,7 @@ Sprite::~Sprite()
 	for (int i = 0; i < this->spritePositions->size(); i++) {
 		delete this->spritePositions->at(i);
 	}
-
+	spritePositions->clear();
 	delete this->spritePositions;
 }
 

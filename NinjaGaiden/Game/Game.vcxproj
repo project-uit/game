@@ -161,6 +161,7 @@
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Scence1.cpp" />
     <ClCompile Include="SoldierSword.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Sprite.cpp" />

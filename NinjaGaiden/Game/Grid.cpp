@@ -52,6 +52,7 @@ void Grid::DeleteGrid()
 		delete cells->at(i);
 	}
 	delete cells;
+	objects->clear();
 }
 
 void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
@@ -87,7 +88,7 @@ void Grid::GetObjectsInCells(Object * object)
 	//Lấy bound của Cam để xét với từng cell bị overlap
 	RECT camREC  = Camera::GetInstance()->GetRECT();
 
-	//góc trái
+	//góc trái trên
 	int x1 = int(camREC.left/ CELL_WIDTH), y1 = int(camREC.top/CELL_HEIGHT);
 	//góc phải dưới
 	int x2 = int(camREC.right/ CELL_WIDTH), y2 = int(camREC.bottom/ CELL_HEIGHT);
