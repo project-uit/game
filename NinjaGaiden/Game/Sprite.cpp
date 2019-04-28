@@ -99,17 +99,37 @@ void Sprite::SetSpritePositions(LPCWSTR filePath)
 
 void Sprite::NextSprite()
 {
-	DWORD now = GetTickCount();
-	DWORD t = this->GetTime();
-	if (now - lastFrameTime >= timePerFrame)
-	{
-		lastFrameTime = now;
+	//DWORD now = GetTickCount();
+	//DWORD t = this->GetTime();
+	//if (now - lastFrameTime >= 86)
+	//{
+	//	lastFrameTime = now;
+	//	this->index = (this->index + this->count) % this->count + 1;
+	//	if (this->index == count) {
+	//		isComplete = true;
+	//		this->index = 0;
+	//	}
+	//}
+}
+
+void Sprite::NextSprite(float t) {
+	if (count <= 1) {
+		isComplete = true;
+		return;
+	}
+
+	if (deltaTime >= timePerFrame) {
 		this->index = (this->index + this->count) % this->count + 1;
+		deltaTime = 0;
 		if (this->index == count) {
 			isComplete = true;
-			this->index = 0;
+			this->index = 0;		
 		}
 	}
+	else {
+		deltaTime += t;
+	}
+	
 }
 
 void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
@@ -127,7 +147,6 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 	}
 	directionX = tempTurnRight * this->scale;
 	D3DXVECTOR3 scaling(tempTurnRight * this->scale, this->scale, 1.0f);
-	// out, scaling centre, scaling rotation, scaling, rotation centre, rotation, translation
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(this->width / 2, this->height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
 	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
 	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
@@ -191,7 +210,6 @@ RECT Sprite::GetBoudingBoxFromCurrentSprite()
 	if (directionX < 0) {
 		if (tempVector->size() > 8) {
 			//Left, top, right, bottom
-			DebugOut((wchar_t *)L"Va chạm trục X1!\n");
 			rect.left = -tempVector->at(8);
 			rect.top = tempVector->at(5);
 			rect.right = -tempVector->at(8) + tempVector->at(6);

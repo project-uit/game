@@ -1,15 +1,15 @@
 #pragma once
 #include <Windows.h>
-
 class GameTime
 {
 public:
-	float elapsedTime;
-	float totalGameTime;
+	void StartCounter();
+	float GetCouter();
+	static GameTime* GetInstance();
+	~GameTime();
 
-	bool Initialize();
-	void Update();
 private:
-	LONGLONG start;
-	float frequencySeconds;
+	GameTime();
+	LARGE_INTEGER mStartTime, mEndTime, mDelta, mClockRate;
+	static GameTime *mInstance;
 };

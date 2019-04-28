@@ -1,5 +1,5 @@
 #include "Camera.h"
-
+#include "Graphic.h"
 Camera* Camera::_instance = NULL;
 
 Camera::Camera()
@@ -27,10 +27,10 @@ D3DXVECTOR3 Camera::transformObjectPosition(D3DXVECTOR3 objectPosition)
 
 void Camera::Update(D3DXVECTOR3 simonPosition)
 {
-	cameraPosition = { simonPosition.x - 320 / 2,cameraPosition.y };
+	cameraPosition = { simonPosition.x - Graphic::GetInstance()->GetWidth() / 2,cameraPosition.y };
 	if (cameraPosition.x < 0)
 		cameraPosition = { 0 ,cameraPosition.y };
-	if (cameraPosition.x + 320 > worldBoundary)
-		cameraPosition = { worldBoundary - 320,cameraPosition.y };
+	if (cameraPosition.x + Graphic::GetInstance()->GetWidth() > worldBoundary)
+		cameraPosition = { worldBoundary - Graphic::GetInstance()->GetWidth() ,cameraPosition.y };
 
 }

@@ -14,6 +14,7 @@ Grid::Grid(int mapHeight, int mapWidth, bool isArray)
 {
 	draw1 = new GameDebugDraw();
 	this->InitGrid(mapHeight, mapWidth, isArray);
+	squares = new  vector<Square*>();
 	cells = new vector<vector<vector<Object*>*>*>();
 	objects = new vector<Object*>();
 	cells->reserve(numOfRow);
@@ -53,6 +54,7 @@ void Grid::DeleteGrid()
 	}
 	delete cells;
 	objects->clear();
+	squares->clear();
 }
 
 void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
@@ -82,9 +84,14 @@ void Grid::GetObjectsInCells(Object * object)
 
 	if (object == nullptr)
 		return;
+	
+	//add object player
+	objects->push_back(object);
+
 	//Cách lấy index của grid từ vị trí object
 	int row = (int)floor(object->GetPosition().y / CELL_HEIGHT);
 	int column = (int)floor(object->GetPosition().x / CELL_WIDTH);
+
 	//Lấy bound của Cam để xét với từng cell bị overlap
 	RECT camREC  = Camera::GetInstance()->GetRECT();
 
@@ -93,12 +100,20 @@ void Grid::GetObjectsInCells(Object * object)
 	//góc phải dưới
 	int x2 = int(camREC.right/ CELL_WIDTH), y2 = int(camREC.bottom/ CELL_HEIGHT);
 
+	//dòng của grid
 	for (int i = y1; i < y2; i++) {
+		//cột của grid
 		for (int j = x1; j < x2; j++) {
 			vector<Object*> *listObj = cells->at(i)->at(j);
 			for (int k = 0; k < listObj->size(); k++) {
 				this->objects->push_back(listObj->at(k));
 			}
+		}
+	}
+	//Add square
+	for (int i = 0; i < squares->size(); i++) {
+		if (Game::AABB(camREC, squares->at(i)->GetBoundingBox())) {
+			this->objects->push_back(squares->at(i));
 		}
 	}
 }
@@ -127,6 +142,10 @@ void Grid::RenderObject() {
 		objects->at(i)->Render();
 		draw1->DrawRect(objects->at(i)->GetBoundingBox(), Camera::GetInstance());
 	}
+}
+
+void Grid::AddSquare(Square* s) {
+	squares->push_back(s);
 }
 
 Grid * Grid::GetInstance()

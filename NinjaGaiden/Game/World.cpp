@@ -19,7 +19,25 @@ World::~World()
 }
 
 void World::SetScence(Scence* s) {
+	if (this->scence) {
+		delete this->scence;
+	}
 	this->scence = s;
+}
+
+void World::ReplaceScence(SCENCE scenceType) {
+	this->scenceType = scenceType;
+	switch (this->scenceType) {
+		case SCENCE::SCENCE_1:
+			SetScence(new Scence1());
+			break;
+		case SCENCE::SCENCE_2:
+			break;
+		case SCENCE::SCENCE_3:
+			break;
+		default:
+			break;
+	}
 }
 
 void World::LoadResource()
@@ -29,17 +47,16 @@ void World::LoadResource()
 	texture->Add(ID_TEXTURE_MAIN, PATH_TEXTURE_MAIN, D3DCOLOR_XRGB(255, 163, 177));
 	//enemy
 	texture->Add(ID_TEXTURE_MAP_1_ENEMY, PATH_TEXTURE_MAP_1_ENEMY, D3DCOLOR_XRGB(255, 163, 177));
-	scence = new Scence1();
 	Sound* sound = Sound::GetInstance();
 	Player *main = Player::GetInstance();
 	draw = new GameDebugDraw();
 	Text* text = Text::GetInstance();
+	ReplaceScence(SCENCE::SCENCE_1);
 }
 
 void World::Update(float deltaTime)
 {
 	scence->Update(deltaTime);
-	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
 }
 
 void World::Render()
@@ -48,6 +65,4 @@ void World::Render()
 	Text::GetInstance()->DrawString("TIMER - 000 ", 0, 16, 50, 30);
 	Text::GetInstance()->DrawString("P - 01", 0, 32, 50, 30);
 	scence->Render();
-	Player::GetInstance()->Render();
-	draw->DrawRect(Player::GetInstance()->GetBoundingBox(), Camera::GetInstance());
 }

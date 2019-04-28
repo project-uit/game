@@ -15,6 +15,7 @@ class World
 private:
 	static World * _instance;
 	Scence* scence;
+	SCENCE scenceType;
 public:
 	World();
 	~World();
@@ -22,6 +23,7 @@ public:
 	void LoadResource();
 	void Update(float deltaTime);
 	void Render();
+	void ReplaceScence(SCENCE scenceType);
 	void SetScence(Scence* s);
 	static World* GetInstance() {
 		if (_instance == NULL) _instance = new World();

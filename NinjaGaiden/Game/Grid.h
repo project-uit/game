@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include "Square.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ private:
 	vector<vector<vector<Object*>*>*>* cells;
 	//Objects trong các cell mà Camera overlap
 	vector<Object*>* objects;
+	vector<Square*>* squares;
 	float deltaTime;
 	void DeleteGrid();
 	//map Height có thể là chiều cao ô cửa sổ hoặc chiều cao của map
@@ -36,6 +38,8 @@ public:
 	void UpdateGrid(Object* object);
 	void UpdateObject(float t);
 	void RenderObject();
+	void LoadSquares();
+	void AddSquare(Square* square);
 	vector<Object*>* GetObjects();
 	static Grid* GetInstance();
 	static Grid* GetInstance(int mapHeight, int mapWidth, bool isArray = true);

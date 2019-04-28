@@ -7,8 +7,8 @@ private:
 
 	static Graphic* _instance;
 
-	HINSTANCE hInstance;	// Handle of the game instance
-	LPCWSTR nameOfGame;			// Tên của game
+	HINSTANCE hInstance;
+	LPCWSTR nameOfGame;	//tên ô cửa sổ
 	HWND hWnd;
 
 	int screenWidth;
@@ -25,6 +25,10 @@ public:
 	int GetHeight() { return this->screenHeight; }
 	static Graphic* GetInstance(HINSTANCE hInstance, int nShowCmd, LPCWSTR nameOfGame, int gameMode) {
 		if (_instance == NULL) _instance = new Graphic(hInstance, nShowCmd, nameOfGame, gameMode);
+		return _instance;
+	};
+
+	static Graphic* GetInstance() {
 		return _instance;
 	};
 };

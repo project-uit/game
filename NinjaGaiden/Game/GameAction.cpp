@@ -1,5 +1,6 @@
 ﻿#include "GameAction.h"
-#define MAX_FRAME_RATE 60
+#include "GameTime.h"
+#define MAX_FRAME_RATE 60.0f
 GameAction *GameAction::_instance = NULL;
 
 GameAction::GameAction(HINSTANCE hInstance, int nShowCmd)
@@ -11,6 +12,7 @@ GameAction::GameAction(HINSTANCE hInstance, int nShowCmd)
 	game->InitKeyboard(this->keyHandler);
 	World *world = World::GetInstance();
 	world->LoadResource();
+	GameTime::GetInstance();
 }
 
 int GameAction::GameRun()
@@ -19,43 +21,53 @@ int GameAction::GameRun()
 	int done = 0;
 
 	DWORD frameStart = GetTickCount();
-	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
+	float tickPerFrame = 1.0f / MAX_FRAME_RATE, delta = 0;
 
 	while (!done) {
+		GameTime::GetInstance()->StartCounter();
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			if (msg.message == WM_QUIT) done = 1;
 
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		
-		DWORD now = GetTickCount();	
-		DWORD deltaTime = now - frameStart;
-		if (deltaTime >= tickPerFrame)
+		delta += GameTime::GetInstance()->GetCouter();
+		//DWORD now = GetTickCount();	
+		//DWORD deltaTime = now - frameStart;
+		if (delta >= tickPerFrame)
 		{
-			frameStart = now;
+			//frameStart = now;
 			Game::GetInstance()->ProcessKeyboard();
-			this->Update(deltaTime);
+			this->Update(delta);
 			this->Render();
+			delta = 0;
 		}
 		else {
-			Sleep(tickPerFrame - deltaTime);
-			deltaTime = tickPerFrame;
+			Sleep(tickPerFrame - delta);
+			delta = tickPerFrame;
 		}
 	}
 	return 1;
 }
 
-void GameAction::Update(DWORD dt)
+void GameAction::Update(float dt)
 {
-	World::GetInstance()->Update( (float) dt);
+	World::GetInstance()->Update(dt);
 }
 
 void GameAction::Render()
 {
 	LPDIRECT3DDEVICE9 d3ddv = Game::GetInstance()->GetDirect3DDevice();
-	
-	if (d3ddv->BeginScene()) {
+	//if (d3ddv->BeginScene()) {
+	//	d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
+	//	Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
+	//	World::GetInstance()->Render();
+	//	Game::GetInstance()->GetSpriteHandler()->End();
+	//	d3ddv->EndScene();
+	//}
+	d3ddv->Clear(0, NULL, D3DCLEAR_TARGET, NULL, 0.0f, 0);
+	 {
+		d3ddv->BeginScene();
 		d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
 		Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
 		World::GetInstance()->Render();
@@ -72,17 +84,18 @@ void KeyboardHandler::KeyState(BYTE * states)
 
 void KeyboardHandler::OnKeyDown(int KeyCode)
 {
-	DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyUp: %d\n", KeyCode);
+	DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyDown: %d\n", KeyCode);
 	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
 
 		if (Player::GetInstance()->GetOnGround()) {
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
 				Player::GetInstance()->SetVx(-PLAYER_VELOCITY_X);
+				Player::GetInstance()->SetAcceleratorX(-25.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
 				Player::GetInstance()->SetState(PLAYER_STATE::RUN);
 			}
 			if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-				Player::GetInstance()->SetVx(PLAYER_VELOCITY_X);
+				Player::GetInstance()->SetAcceleratorX(25.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 				Player::GetInstance()->SetState(PLAYER_STATE::RUN);
 			}
@@ -109,6 +122,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
 				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
 				Player::GetInstance()->SetOnGround(false);
+			
 			}
 		}
 
@@ -122,11 +136,11 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 		if (Player::GetInstance()->GetState() == PLAYER_STATE::JUMP) {
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-				Player::GetInstance()->SetVx(-0.03325);
+				Player::GetInstance()->SetAcceleratorX(-20.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
 			}
 			if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-				Player::GetInstance()->SetVx(0.03325);
+				Player::GetInstance()->SetAcceleratorX(20.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 			}
 		}
@@ -140,6 +154,7 @@ void KeyboardHandler::OnKeyUp(int KeyCode)
 		if (KeyCode == DIK_RIGHT) {
 			if (Player::GetInstance()->GetState() == PLAYER_STATE::RUN) {
 				Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
+				Player::GetInstance()->SetAcceleratorX(0.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 				Player::GetInstance()->SetState(PLAYER_STATE::STAND);
 			}
@@ -148,6 +163,7 @@ void KeyboardHandler::OnKeyUp(int KeyCode)
 		if (KeyCode == DIK_LEFT) {
 			if (Player::GetInstance()->GetState() == PLAYER_STATE::RUN) {
 				Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
+				Player::GetInstance()->SetAcceleratorX(0.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
 				Player::GetInstance()->SetState(PLAYER_STATE::STAND);
 			}

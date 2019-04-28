@@ -19,7 +19,7 @@ private:
 public:
 	GameAction(HINSTANCE hInstance, int nShowCmd);
 	int GameRun();
-	void Update(DWORD dt);
+	void Update(float dt);
 	void Render();
 	static GameAction* GetInstance(HINSTANCE hInstance, int nShowCmd) {
 		if (_instance == NULL) {

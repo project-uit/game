@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "Camera.h"
 #include "Square.h"
+#include "SoldierSword.h"
 
 Player* Player::_instance = NULL;
 
@@ -13,29 +14,30 @@ Player::Player()
 	this->objectWidth = 32;
 	this->objectHeight = 32;
 	this->SetPosition(150, 100);
+	this->SetLastPos({ -1.0f, -1.0f, 0 });
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
-	this->acceleratorX = 0.015;
+	this->acceleratorX = 0.0f;
 	isOnGround = false;
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 100)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 0.0f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::RUN,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 100)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 0.1f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 100)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 0.02)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 100)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 0.06)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 100)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 0.06)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::JUMP,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 80)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 0.0615)));
 }
 
 Player::~Player()
@@ -118,28 +120,29 @@ void Player::Reset(float x, float y)
 void Player::Update(float t, vector<Object*>* object)
 {
 	
-	//if (this->state == PLAYER_STATE::RUN) {
-	//	if (this->veclocity.x >= PLAYER_VELOCITY_X) {
-	//		this->veclocity.x = PLAYER_VELOCITY_X;
-	//	}
-	//	if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
-	//		this->veclocity.x = -PLAYER_VELOCITY_X;
-	//	}
-	//}
+	if (this->state == PLAYER_STATE::RUN) {
+		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
+			this->veclocity.x = PLAYER_VELOCITY_X;
+		}
+		if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
+			this->veclocity.x = -PLAYER_VELOCITY_X;
+		}
+	}
 
-	//if (this->state == PLAYER_STATE::JUMP) {
-	//	if (this->veclocity.x >= PLAYER_VELOCITY_X) {
-	//		this->veclocity.x = PLAYER_VELOCITY_X/3.5;
-	//	}
-	//	if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
-	//		this->veclocity.x = -PLAYER_VELOCITY_X/3.5;
-	//	}
-	//}
+	if (this->state == PLAYER_STATE::JUMP) {
 
-	//if (this->state == PLAYER_STATE::STAND) {
-	//	acceleratorX = 0;
-	//	veclocity.x = 0;
-	//}
+		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
+			this->veclocity.x = PLAYER_VELOCITY_X/3.5f;
+		}
+		if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
+			this->veclocity.x = -PLAYER_VELOCITY_X/3.5f;
+		}
+	}
+
+	if (this->state == PLAYER_STATE::STAND) {
+		acceleratorX = 0;
+		veclocity.x = 0;
+	}
 	
 	Object::Update(t);
 	SetLastPos(D3DXVECTOR3(position.x, position.y, 0.0f));
@@ -147,13 +150,14 @@ void Player::Update(float t, vector<Object*>* object)
 
 	Object::updateBoundingBox(rect);
 
-	this->veclocity.y += GRAVITY *t;
-	
+	this->veclocity.y += GRAVITY;
+	this->veclocity.x += acceleratorX;
+
 	if (this->last_state != this->state) {
 		ResetSpriteState(this->last_state);
 	}
 	
-	this->sprite->at(this->state)->NextSprite();
+	this->sprite->at(this->state)->NextSprite(t);
 	//if (this->sprite->at(this->state)->GetCount() > 2) {
 	//	this->sprite->at(this->state)->SetIndex(2);
 	//}
@@ -167,9 +171,13 @@ void Player::Update(float t, vector<Object*>* object)
 
 	if (state == PLAYER_STATE::JUMP && isOnGround) {
 		//khi đáp đất tọa độ y cần dời lên lại để khi vẽ nhân vật trạng thái stand đảm bảo trên bounding box của mặt đất
-		state = PLAYER_STATE::STAND;
-		position.y -= 8.85;
-		SetVx(0.0f);
+		if (state != PLAYER_STATE::RUN) {
+			state = PLAYER_STATE::STAND;
+			this->PlusPosition(0, -8.85f);
+			SetVx(0.0f);
+			acceleratorX = 0;
+		}
+		
 	}
 	
 	HandleCollision(object);
@@ -191,28 +199,19 @@ void Player::HandleCollision(vector<Object*> *object) {
 	else {
 		float min_tx, min_ty, nx = 0, ny;
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		//this->PlusPosition(min_tx * this->deltaX + nx * 0.4f, min_ty*this->deltaY + ny*0.4f);
-
-		//if (nx > 0) {
-		//	DebugOut((wchar_t *)L"Va chạm trục X1!\n");
-		//	this->SetVx(0.0f);
-		//}
-
-		//if (nx < 0) {
-		//	DebugOut((wchar_t *)L"Va chạm trục X2!\n");
-		//	this->SetVx(0.0f);
-		//}
+		/*this->PlusPosition(min_tx * this->deltaX + nx * 0.4f, min_ty*this->deltaY + ny*0.4f);*/
 
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (dynamic_cast<Square *>(e->object)) {
-				Square *item = dynamic_cast<Square *>(e->object);
-				float x = item->GetPosition().x;
-				float y = item->GetPosition().y;
-				if (ny < 0) {
-					//DebugOut((wchar_t *)L"Va chạm trục X2!\n");
+				if (e->ny < 0) {				
 					this->SetVy(0.0f);
 					isOnGround = true;
+				}
+			}
+			if (dynamic_cast<SoldierSword *>(e->object)) {
+				if (e->nx != 0) {
+
 				}
 			}
 		}

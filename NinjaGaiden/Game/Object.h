@@ -4,9 +4,9 @@
 #include <vector>
 #include <algorithm>
 #include "Constants.h"
-#define GRAVITY 0.00009625f
-#define PLAYER_VELOCITY_X 0.15f
-#define PLAYER_VELOCITY_Y 0.1005f
+#define GRAVITY 10.0f
+#define PLAYER_VELOCITY_X 160.0f
+#define PLAYER_VELOCITY_Y 250.0f
 #define NO_VELOCITY 0.0f
 
 using namespace std;

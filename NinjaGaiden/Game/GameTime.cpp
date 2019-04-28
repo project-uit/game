@@ -1,27 +1,39 @@
 #include "GameTime.h"
-bool GameTime::Initialize()
+
+GameTime* GameTime::mInstance = NULL;
+
+GameTime::GameTime()
 {
-	LARGE_INTEGER i;
 
-	if (!QueryPerformanceFrequency(&i))
-		return false;
-
-	frequencySeconds = (float)(i.QuadPart);
-
-	QueryPerformanceCounter(&i);
-	start = i.QuadPart;
-	totalGameTime = 0;
-
-	return true;
 }
 
-void GameTime::Update()
+GameTime::~GameTime()
 {
-	LARGE_INTEGER i;
+}
 
-	QueryPerformanceCounter(&i);
-	elapsedTime = (float)(i.QuadPart - start) / frequencySeconds;
+GameTime* GameTime::GetInstance()
+{
+	if (!mInstance)
+		mInstance = new GameTime();
 
-	start = i.QuadPart;
-	totalGameTime += elapsedTime;
+	return mInstance;
+}
+
+void GameTime::StartCounter()
+{
+	if (!QueryPerformanceFrequency(&mClockRate))
+	{
+		return;
+	}
+
+	QueryPerformanceCounter(&mStartTime);
+
+}
+
+float GameTime::GetCouter()
+{
+	QueryPerformanceCounter(&mEndTime);
+	mDelta.QuadPart = mEndTime.QuadPart - mStartTime.QuadPart;
+
+	return ((float)mDelta.QuadPart / mClockRate.QuadPart);
 }

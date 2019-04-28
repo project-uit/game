@@ -28,6 +28,7 @@ private:
 	DWORD time;
 	DWORD lastFrameTime;
 	float timePerFrame;
+	float deltaTime;
 	int directionX;
 public:
 	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale = 1.0f);
@@ -37,6 +38,7 @@ public:
 	void SetIndex(int index);
 	int GetIndex();
 	void NextSprite();
+	void NextSprite(float t);
 	bool GetIsComplete() {
 		return isComplete;
 	}
