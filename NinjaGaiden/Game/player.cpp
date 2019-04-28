@@ -173,7 +173,7 @@ void Player::Update(float t, vector<Object*>* object)
 		//khi đáp đất tọa độ y cần dời lên lại để khi vẽ nhân vật trạng thái stand đảm bảo trên bounding box của mặt đất
 		if (state != PLAYER_STATE::RUN) {
 			state = PLAYER_STATE::STAND;
-			this->PlusPosition(0, -8.85f);
+			this->PlusPosition(0, -8.96f);
 			SetVx(0.0f);
 			acceleratorX = 0;
 		}
@@ -209,9 +209,9 @@ void Player::HandleCollision(vector<Object*> *object) {
 					isOnGround = true;
 				}
 			}
-			if (dynamic_cast<SoldierSword *>(e->object)) {
+			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD) {
 				if (e->nx != 0) {
-
+					
 				}
 			}
 		}

@@ -209,3 +209,10 @@ void Object::updateBoundingBox(RECT rect) {
 	positionColide.y = rect.top;
 	SetBoundingBox(rect.right - rect.left, rect.bottom - rect.top);
 }
+
+DIRECTION Object::GetObjectDirection() {
+	if (veclocity.x < 0) {
+		return DIRECTION::LEFT;
+	}
+	return DIRECTION::RIGHT;
+}

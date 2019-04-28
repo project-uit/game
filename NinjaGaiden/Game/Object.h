@@ -117,5 +117,6 @@ public:
 	void SetLastPos(float x, float y) { this->lastPos.x = x; this->lastPos.y = y; }
 	void SetLastPos(D3DXVECTOR3 pos) { this->lastPos.x = pos.x; this->lastPos.y = pos.y; }
 	D3DXVECTOR3 GetLastPos() { return this->lastPos; }
+	DIRECTION GetObjectDirection();
 };
 

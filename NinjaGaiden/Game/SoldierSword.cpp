@@ -21,7 +21,7 @@ SoldierSword::SoldierSword() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_follow, 2, 0.05f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk, 2,0.05f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk, 2,0.07f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 1, 0.05f)));
