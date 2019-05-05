@@ -12,11 +12,13 @@
 #define PATH_POS_SIT_ATK L"sprite\\main\\MAIN_SIT_ATK.txt"
 #define PATH_POS_STAND_ATK L"sprite\\main\\MAIN_STAND_ATK.txt"
 #define PATH_POS_JUMP L"sprite\\main\\MAIN_JUMP.txt"
+#define PATH_POS_WOUNDED L"sprite\\main\\MAIN_WOUNDED.txt"
 // =====	Map 1
 #define ID_TEXTURE_MAP_1 100
 #define PATH_TEXTURE_MAP_1 L"sprite\\Stage1\\Map1.png"
 #define PATH_POS_MAP_1 L"sprite\\Stage1\\Map1.txt"
-#define PATH_POS_GROUND_MAP_1 "sprite\\Stage1\\ground.txt"
+#define PATH_POS_GROUND_MAP_1 L"sprite\\Stage1\\ground.txt"
+#define PATH_POS_ENEMY_MAP_1 L"sprite\\Stage1\\enemy.txt"
 // ========	Enemy
 #define ID_TEXTURE_MAP_1_ENEMY 101 
 #define PATH_TEXTURE_MAP_1_ENEMY L"sprite\\Enemies_Bosses.png"
@@ -38,7 +40,8 @@ enum PLAYER_STATE {
 	JUMP,
 	SIT,
 	DIE,
-	SIT_ATK
+	SIT_ATK,
+	WOUNDED
 };
 
 enum ENEMY_STATE {

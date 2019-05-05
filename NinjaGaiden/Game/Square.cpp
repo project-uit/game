@@ -9,6 +9,7 @@ Square::Square(int left, int top, int right, int bottom)
 	this->SetObjectType(OBJECT_TYPE::SQUARE);
 	this->positionColide = D3DXVECTOR2(0.0f, 0.0f);
 	this->position.z = 0.0f;
+	this->SetLastPos(GetPosition());
 }
 
 Square::~Square()

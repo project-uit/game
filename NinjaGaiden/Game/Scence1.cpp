@@ -15,17 +15,11 @@ Scence1::~Scence1()
 
 void Scence1::LoadResource()
 {
-	SoldierSword* soldierSword;
-	Square* square;
-	Square* square1 = new Square(200, 192, 352, 224);
-	Square* square2 = new Square(352, 192, 600, 224);
 	map->LoadMap(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
 	Camera::GetInstance()->setWorldBoundary(2048);
-	soldierSword = new SoldierSword();
-	square = new Square(48, 192, 528, 224);
 	Grid::GetInstance(262, map->GetWidth(), false);
-	Grid::GetInstance()->Add(soldierSword);
-	Grid::GetInstance()->AddSquare(square);
+	Grid::GetInstance()->LoadSquares(PATH_POS_GROUND_MAP_1);
+	Grid::GetInstance()->LoadObjets(PATH_POS_ENEMY_MAP_1);
 }
 
 void Scence1::Update(float deltaTime)

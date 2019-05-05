@@ -45,6 +45,7 @@ public:
 	void setIsComplete(bool complete) {
 		this->isComplete = complete;
 	}
+	void DrawSprite(D3DXVECTOR3 position, bool flagRight, int x);
 	//Vẽ sprite bên phải ko bị lệch
 	void DrawSprite(D3DXVECTOR3 position, bool flagRight);
 	//Vẽ sprite bên trái bị lệch
@@ -53,6 +54,7 @@ public:
 	RECT ReadCurrentSpritePosition();
 	//Đọc độ lệch bounding box
 	RECT GetBoudingBoxFromCurrentSprite();
+
 	RECT GetRectDrawSprite();
 	DWORD GetTime() { return time; }
 	void Reset();

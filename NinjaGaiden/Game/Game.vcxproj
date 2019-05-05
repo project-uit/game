@@ -136,6 +136,7 @@
     <ClInclude Include="Katana.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Panther.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Scence1.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Panther.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Scence1.cpp" />

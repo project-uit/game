@@ -2,20 +2,16 @@
 #include "Object.h"
 #include "Sprite.h"
 #include <map>
-class SoldierSword :public Object {
+class Panther : Object{
 private:
 	RECT movingArea;
 	map<ENEMY_STATE, Sprite*>* sprite;
 	ENEMY_STATE state;
 	DIRECTION direction;
-	float time;
-	void init();
 public:
-	SoldierSword();
-	SoldierSword(RECT movingArea, int positionX, int positionY, DIRECTION direction);
-	~SoldierSword();
+	Panther();
+	~Panther();
 	void Update(float t, vector<Object*>* objects);
 	void Render();
 	void HandleCollision(vector<Object*> *object);
-	RECT GetMovingArea();
 };

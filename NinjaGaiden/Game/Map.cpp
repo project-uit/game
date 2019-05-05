@@ -15,7 +15,7 @@ Map::Map(int tileWidth, int tileHeight, int numOfColumn, int numOfRow) {
 void Map::LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP)
 {
 	fstream fs(filePath);
-	fs >> numOfRow >> numOfColumn >> tileWidth >> tileHeight;
+	fs >> numOfColumnTileSet >> numOfRowTileSet >> numOfRow >> numOfColumn >> tileWidth >> tileHeight;
 
 	this->list = new vector<vector<int>*>();
 
@@ -60,8 +60,8 @@ void Map::drawMap()
 			if (number != 0) {
 				int a = i + camposition.y / tileWidth;
 				int b = j + camposition.x / tileHeight;
-				left = ((list->at(a)->at(b) - 1) % 79)*tileWidth;
-				top = ((list->at(a)->at(b) - 1) / 79)*tileHeight;
+				left = ((list->at(a)->at(b) - 1) % numOfColumnTileSet)*tileWidth;
+				top = ((list->at(a)->at(b) - 1) / numOfColumnTileSet)*tileHeight;
 				right = left + tileWidth;
 				bottom = top + tileHeight;
 				Game::GetInstance()->Draw(

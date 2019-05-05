@@ -1,6 +1,6 @@
 ﻿#include "GameAction.h"
 #include "GameTime.h"
-#define MAX_FRAME_RATE 60.0f
+#define MAX_FRAME_RATE 170
 GameAction *GameAction::_instance = NULL;
 
 GameAction::GameAction(HINSTANCE hInstance, int nShowCmd)
@@ -58,16 +58,7 @@ void GameAction::Update(float dt)
 void GameAction::Render()
 {
 	LPDIRECT3DDEVICE9 d3ddv = Game::GetInstance()->GetDirect3DDevice();
-	//if (d3ddv->BeginScene()) {
-	//	d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
-	//	Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
-	//	World::GetInstance()->Render();
-	//	Game::GetInstance()->GetSpriteHandler()->End();
-	//	d3ddv->EndScene();
-	//}
-	d3ddv->Clear(0, NULL, D3DCLEAR_TARGET, NULL, 0.0f, 0);
-	 {
-		d3ddv->BeginScene();
+	if (d3ddv->BeginScene()) {
 		d3ddv->ColorFill(Game::GetInstance()->GetBackBuffer(), NULL, D3DCOLOR_XRGB(0, 0, 0));
 		Game::GetInstance()->GetSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
 		World::GetInstance()->Render();
@@ -84,7 +75,7 @@ void KeyboardHandler::KeyState(BYTE * states)
 
 void KeyboardHandler::OnKeyDown(int KeyCode)
 {
-	DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyDown: %d\n", KeyCode);
+	/*DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyDown: %d\n", KeyCode);*/
 	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
 
 		if (Player::GetInstance()->GetOnGround()) {
@@ -118,7 +109,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 			if (KeyCode == DIK_Z) {
 				Player::GetInstance()->SetState(PLAYER_STATE::STAND_ATK);
 			}
-			if (KeyCode == DIK_X && Player::GetInstance()->GetOnGround()) {
+			if (KeyCode == DIK_X) {
 				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
 				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
 				Player::GetInstance()->SetOnGround(false);

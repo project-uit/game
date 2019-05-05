@@ -4,7 +4,6 @@
 #include "Sound.h"
 #include "Text.h"
 World *World::_instance = NULL;
-GameDebugDraw* draw;
 
 World::World()
 {
@@ -49,7 +48,6 @@ void World::LoadResource()
 	texture->Add(ID_TEXTURE_MAP_1_ENEMY, PATH_TEXTURE_MAP_1_ENEMY, D3DCOLOR_XRGB(255, 163, 177));
 	Sound* sound = Sound::GetInstance();
 	Player *main = Player::GetInstance();
-	draw = new GameDebugDraw();
 	Text* text = Text::GetInstance();
 	ReplaceScence(SCENCE::SCENCE_1);
 }

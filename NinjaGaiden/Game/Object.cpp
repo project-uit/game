@@ -15,13 +15,6 @@ Object::~Object()
 
 }
 
-bool Object::checkAABB(Object * obj)
-{
-	RECT curRect = this->GetBoundingBox();
-	RECT otherRect = obj->GetBoundingBox();
-	return !(curRect.right < otherRect.left || curRect.left > otherRect.right || curRect.top > otherRect.bottom || curRect.bottom < otherRect.top);
-}
-
 void Object::SweptAABB(Object * obj, float dx, float dy, float &collisionTime, float & nx, float &ny)
 {
 	float dxEntry, dxExit, txEntry, txExit;
@@ -116,13 +109,19 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float &collisionTime, f
 
 CollisionHandler* Object::GetCollsionObjectsBySweptAABB(Object * obj)
 {
-	//this->veclocity.x * deltaTime
+	RECT statiRect = obj->GetBoundingBox();
+	float sl = statiRect.left, st = statiRect.top, sr = statiRect.right, sb = statiRect.bottom;
+	float ml = GetBoundingBox().left, mt = GetBoundingBox().top, mr = GetBoundingBox().right, mb = GetBoundingBox().bottom;
 	float dx = this->deltaX - obj->GetVeclocity().x*this->deltaTime;
 	float dy = this->deltaY - obj->GetVeclocity().y*this->deltaTime;
 	
 	float collisionTime, nx, ny;
 
-	this->SweptAABB(obj, dx, dy, collisionTime, nx, ny);
+	Game::SweptAABB(
+		ml, mt, mr, mb,
+		dx, dy,
+		sl, st, sr, sb,
+		collisionTime, nx, ny);
 	
 	return new CollisionHandler(collisionTime, nx, ny, obj);
 }
@@ -141,7 +140,11 @@ void Object::CalcPotentialCollisions(vector<Object*>* objects, vector<CollisionH
 	sort(coEvents->begin(), coEvents->end(), CollisionHandler::Compare);
 }
 
-void Object::FilterCollision(vector<CollisionHandler*>* coEvents, vector<CollisionHandler*>* coEventsResult, float & minTx, float & minTy, float & nx, float & ny)
+void Object::FilterCollision(
+	vector<CollisionHandler*>* coEvents, 
+	vector<CollisionHandler*>* coEventsResult, 
+	float & minTx, float & minTy, 
+	float & nx, float & ny)
 {
 	minTx = 1.0f;
 	minTy = 1.0f;

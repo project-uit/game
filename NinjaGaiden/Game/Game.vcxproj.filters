@@ -144,6 +144,9 @@
     <ClInclude Include="GameTime.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="Panther.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -211,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="GameTime.cpp">
       <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Panther.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -96,6 +96,11 @@ public:
 	static bool AABB(RECT r1, RECT r2);
 	static bool AABB_LineLine(Line A, Line B);
 	static bool AABB_BoxLine(RECT rect, Line L);
+	static void SweptAABB(
+		float ml, float mt, float mr, float mb,
+		float dx, float dy,
+		float sl, float st, float sr, float sb,
+		float &t, float &nx, float &ny);
 	~Game();
 };
 

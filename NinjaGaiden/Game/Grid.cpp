@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Debug.h"
 #include "GameDebugDraw.h"
+#include "SoldierSword.h"
 Grid* Grid::_instance = NULL;
 GameDebugDraw* draw1;
 
@@ -99,6 +100,12 @@ void Grid::GetObjectsInCells(Object * object)
 	int x1 = int(camREC.left/ CELL_WIDTH), y1 = int(camREC.top/CELL_HEIGHT);
 	//góc phải dưới
 	int x2 = int(camREC.right/ CELL_WIDTH), y2 = int(camREC.bottom/ CELL_HEIGHT);
+	//Add square
+	for (int i = 0; i < squares->size(); i++) {
+		if (Game::AABB(camREC, squares->at(i)->GetBoundingBox())) {
+			this->objects->push_back(squares->at(i));
+		}
+	}
 
 	//dòng của grid
 	for (int i = y1; i < y2; i++) {
@@ -108,12 +115,6 @@ void Grid::GetObjectsInCells(Object * object)
 			for (int k = 0; k < listObj->size(); k++) {
 				this->objects->push_back(listObj->at(k));
 			}
-		}
-	}
-	//Add square
-	for (int i = 0; i < squares->size(); i++) {
-		if (Game::AABB(camREC, squares->at(i)->GetBoundingBox())) {
-			this->objects->push_back(squares->at(i));
 		}
 	}
 }
@@ -148,6 +149,43 @@ void Grid::AddSquare(Square* s) {
 	squares->push_back(s);
 }
 
+void Grid::LoadSquares(LPCWSTR filePath) {
+	fstream f;
+	try
+	{
+		f.open(filePath);
+	}
+	catch (fstream::failure e)
+	{
+		trace(L"Error when init grid %s", filePath);
+		return;
+	}
+	string line;
+	while (!f.eof()) {
+		getline(f, line);
+
+		string splitString;
+
+		istringstream iss(line);
+
+		vector<int> * tempVector = new vector<int>();
+
+		while (getline(iss, splitString, '\t'))
+		{
+			tempVector->push_back(stoi(splitString));
+		}
+		if (tempVector->size() > 1) {
+			int left = tempVector->at(0), top = tempVector->at(1),
+				right = tempVector->at(2), bottom = tempVector->at(3);
+			Square* square = new Square(left, top, right, bottom);
+			squares->push_back(square);
+		}
+		tempVector->clear();
+		delete tempVector;
+	}
+	f.close();
+}
+
 Grid * Grid::GetInstance()
 {
 	if (_instance == NULL) _instance = new Grid();
@@ -162,4 +200,60 @@ Grid * Grid::GetInstance(int mapHeight, int mapWidth, bool isArray)
 
 vector<Object*>* Grid::GetObjects() {
 	return objects;
+}
+
+void Grid::LoadObjets(LPCWSTR filePath) {
+	fstream f;
+	try
+	{
+		f.open(filePath);
+	}
+	catch (fstream::failure e)
+	{
+		trace(L"Error when init grid %s", filePath);
+		return;
+	}
+	string line;
+	while (!f.eof()) {
+		getline(f, line);
+
+		string splitString;
+
+		istringstream iss(line);
+
+		vector<int> * tempVector = new vector<int>();
+
+		while (getline(iss, splitString, '\t'))
+		{
+			tempVector->push_back(stoi(splitString));
+		}
+		if (tempVector->size() > 1) {
+			int id = tempVector->at(0);
+			int TypeObject = tempVector->at(1);
+			int positionX = tempVector->at(2);
+			int positionY = tempVector->at(3);
+			int direction = tempVector->at(4);//0: left, 1: right
+			DIRECTION direct = direction == 0 ? LEFT : RIGHT;
+			RECT movingArea;
+			if (tempVector->size() > 5) {
+				int left = tempVector->at(5);
+				int top = tempVector->at(6);
+				int right = tempVector->at(7);
+				int bottom = tempVector->at(8);
+				SetRect(&movingArea, left, top, right, bottom);
+			}
+			Object* object;
+			switch (TypeObject) {
+				case 1:
+					object = new SoldierSword(movingArea, positionX, positionY, direct);
+					Add(object);
+					break;
+				case 2:
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	f.close();
 }

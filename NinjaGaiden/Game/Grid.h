@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define CELL_WIDTH 84
+#define CELL_WIDTH 160
 #define CELL_HEIGHT 131
 #define BRICK_SIZE 16
 
@@ -38,9 +38,10 @@ public:
 	void UpdateGrid(Object* object);
 	void UpdateObject(float t);
 	void RenderObject();
-	void LoadSquares();
 	void AddSquare(Square* square);
 	vector<Object*>* GetObjects();
+	void LoadSquares(LPCWSTR filePath);
+	void LoadObjets(LPCWSTR filePath);
 	static Grid* GetInstance();
 	static Grid* GetInstance(int mapHeight, int mapWidth, bool isArray = true);
 };

@@ -6,7 +6,7 @@
 #include "Constants.h"
 #define GRAVITY 10.0f
 #define PLAYER_VELOCITY_X 160.0f
-#define PLAYER_VELOCITY_Y 250.0f
+#define PLAYER_VELOCITY_Y 370.0f
 #define NO_VELOCITY 0.0f
 
 using namespace std;
@@ -50,9 +50,6 @@ protected:
 public:
 	Object();
 	~Object();
-
-	bool checkAABB(Object* obj);
-
 	void SweptAABB(Object* obj, float deltaX, float deltaY, float &collisionTime, float &nx, float& ny);
 	CollisionHandler* GetCollsionObjectsBySweptAABB(Object* obj);
 	void CalcPotentialCollisions(vector<Object*> *objects, vector<CollisionHandler*> *coEvents);
@@ -107,12 +104,6 @@ public:
 
 	void SetObjectType(OBJECT_TYPE objectType) { this->objectType = objectType; }
 	OBJECT_TYPE GetObjectType() { return this->objectType; }
-
-	//void SetNextObj(Object* obj) { this->nextObj = obj; }
-	//Object* GetNextObj() { return this->nextObj; }
-
-	//void SetPreObj(Object* obj) { this->preObj = obj; }
-	//Object* GetPreObj() { return this->preObj; }
 
 	void SetLastPos(float x, float y) { this->lastPos.x = x; this->lastPos.y = y; }
 	void SetLastPos(D3DXVECTOR3 pos) { this->lastPos.x = pos.x; this->lastPos.y = pos.y; }
