@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "Constants.h"
 #define GRAVITY 10.0f
-#define PLAYER_VELOCITY_X 160.0f
+#define PLAYER_VELOCITY_X 175.0f
 #define PLAYER_VELOCITY_Y 370.0f
 #define NO_VELOCITY 0.0f
 

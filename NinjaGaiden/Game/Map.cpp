@@ -51,10 +51,9 @@ Map::~Map()
 void Map::drawMap()
 {
 	D3DXVECTOR2 camposition = Camera::GetInstance()->getPosition();
-
 	int top, left, right, bottom;
 	int tileMapWidth = 0;
-	for (int i = 0; i < 224/tileHeight; i++) {
+	for (int i = 0; i < 208/tileHeight; i++) {
 		for (int j = 0; j < 320/tileWidth; j++) {
 			int number = this->list->at(i)->at(j);
 			if (number != 0) {

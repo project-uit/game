@@ -134,6 +134,11 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 				Player::GetInstance()->SetAcceleratorX(20.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 			}
+			if (KeyCode == DIK_Z) {
+				Player::GetInstance()->SetState(PLAYER_STATE::STAND_ATK);
+				Player::GetInstance()->SetAcceleratorX(0.0f);
+				Player::GetInstance()->SetVx(0.0f);
+			}
 		}
 	}
 }

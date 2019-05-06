@@ -17,7 +17,7 @@ void Scence1::LoadResource()
 {
 	map->LoadMap(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
 	Camera::GetInstance()->setWorldBoundary(2048);
-	Grid::GetInstance(262, map->GetWidth(), false);
+	Grid::GetInstance(246, map->GetWidth(), false);
 	Grid::GetInstance()->LoadSquares(PATH_POS_GROUND_MAP_1);
 	Grid::GetInstance()->LoadObjets(PATH_POS_ENEMY_MAP_1);
 }

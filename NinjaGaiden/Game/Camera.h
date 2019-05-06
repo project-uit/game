@@ -9,7 +9,7 @@ class Camera
 	static Camera * _instance;
 
 	D3DXVECTOR2 cameraPosition;
-
+	D3DXVECTOR2 RECTPosition;
 	float worldBoundary;
 public:
 	Camera();
@@ -19,11 +19,8 @@ public:
 
 	D3DXVECTOR2 getPosition() { return cameraPosition; }
 	void setPosition(D3DXVECTOR2 a) { this->cameraPosition = a; }
-	RECT GetRECT() {
-		RECT r;
-		SetRect(&r, cameraPosition.x, cameraPosition.y, cameraPosition.x + 320.0f, cameraPosition.y + 262.0f);
-		return r;
-	}
+	RECT GetRECT();
+	void SetRECT(RECT rect);
 	~Camera();
 
 	static Camera* GetInstance() {

@@ -147,6 +147,9 @@
     <ClInclude Include="Panther.h">
       <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Shuriken.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="Panther.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Katana.cpp">
+      <Filter>Source Files\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

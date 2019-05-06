@@ -13,19 +13,23 @@ Player::Player()
 	this->SetDirection(DIRECTION::RIGHT);
 	this->objectWidth = 32;
 	this->objectHeight = 32;
-	this->SetPosition(295, 130); //1121 150
+	this->SetPosition(450, 100); //1121 150
 	this->SetLastPos({ -1.0f, -1.0f, 0 });
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
 	this->acceleratorX = 0.0f;
 	isOnGround = false;
+	isWounded = false;
+	katana = new Katana();
+	time = 0;
+	count = 0;
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_STAND, 1, 0.0f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::RUN,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 0.07f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_MAIN_RUN, 3, 0.045f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 0.02)));
@@ -37,7 +41,7 @@ Player::Player()
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 0.06f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::JUMP,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 0.0575f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 0.0475f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::WOUNDED,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_WOUNDED, 1, 0.0f)));
@@ -52,6 +56,9 @@ Player::~Player()
 		}
 		delete this->sprite;
 	}
+	if (katana) {
+		delete katana;
+	}
 }
 
 void Player::SetDirection(DIRECTION direct) {
@@ -65,6 +72,10 @@ DIRECTION Player::GetDirection() {
 PLAYER_STATE Player::GetState()
 {
 	return this->state;
+}
+
+Katana* Player::GetKatana() {
+	return katana;
 }
 
 void Player::SetState(PLAYER_STATE value)
@@ -122,7 +133,6 @@ void Player::Reset(float x, float y)
 
 void Player::Update(float t, vector<Object*>* object)
 {
-	
 	if (this->state == PLAYER_STATE::RUN) {
 		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
 			this->veclocity.x = PLAYER_VELOCITY_X;
@@ -146,7 +156,49 @@ void Player::Update(float t, vector<Object*>* object)
 		acceleratorX = 0;
 		veclocity.x = 0;
 	}
-	
+
+	if (this->state == PLAYER_STATE::STAND_ATK && this->sprite->at(this->state)->GetIndex() == 1) {
+		RECT rect;
+		if (direction == RIGHT) {
+			rect.left = position.x + 26;
+		}
+		else {
+			rect.left = position.x - 24;
+		}
+		rect.right = rect.left + 13;
+		rect.top = position.y + 8;
+		rect.bottom = rect.top + 6;
+		katana->SetBoundingBox(rect);
+	}
+	else if (this->state == PLAYER_STATE::SIT_ATK && this->sprite->at(this->state)->GetIndex() == 1) {
+		RECT rect;
+		if (direction == RIGHT) {
+			rect.left = position.x + 26;
+		}
+		else {
+			rect.left = position.x - 24;
+		}
+		rect.right = rect.left + 13;
+		rect.top = position.y +15;
+		rect.bottom = rect.top + 6;
+		katana->SetBoundingBox(rect);
+	}
+	else {
+		katana->Reset();
+	}
+	if (isWounded) {
+		if (time >= 0.025f) {
+			time = 0;
+			if (count == 200) {
+				count = 0;
+				isWounded = false;
+			}
+		}
+		else {
+			time += t;
+			count++;
+		}
+	}
 	Object::Update(t);
 	SetLastPos(GetPosition());
 	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
@@ -161,8 +213,8 @@ void Player::Update(float t, vector<Object*>* object)
 	}
 	
 	this->sprite->at(this->state)->NextSprite(t);
-	//if (this->sprite->at(this->state)->GetCount() > 3) {
-	//	this->sprite->at(this->state)->SetIndex(2);
+	//if (this->sprite->at(this->state)->GetCount() > 2) {
+	//	this->sprite->at(this->state)->SetIndex(1);
 	//}
 	if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::STAND_ATK) {
 		state = PLAYER_STATE::STAND;
@@ -199,21 +251,19 @@ void Player::HandleCollision(vector<Object*> *object) {
 					//DebugOut((wchar_t *)L"time: %d\n", e->collisionTime > 0);
 					this->SetVy(0.0f);
 					isOnGround = true;
-					if (state == PLAYER_STATE::JUMP && isOnGround ) {
-						//khi đáp đất tọa độ y cần dời lên lại để khi vẽ nhân vật trạng thái stand đảm bảo trên bounding box của mặt đất
-						if (state != PLAYER_STATE::RUN) {
-							//state = PLAYER_STATE::STAND;
-							//
-							SetVx(0.0f);
-							acceleratorX = 0;
-							SetVy(0.0f);
-						}
-					}
 					if (state == PLAYER_STATE::WOUNDED) {
 						state = PLAYER_STATE::STAND;
 						this->PlusPosition(0, min_ty*this->deltaY + ny * 14.0f);
 						SetVx(0.0f);
 						acceleratorX = 0;
+					}
+					//Khi nhân vật đáp đất sẽ tạo 1 phản lực lại 
+					if (isOnGround && state == PLAYER_STATE::JUMP) {
+						state = PLAYER_STATE::STAND;
+						this->PlusPosition(0, -1 * 20.0f);
+						SetVx(0.0f);
+						acceleratorX = 0;
+						SetVy(0.0f);
 					}
 				}
 				if (e->ny > 0) {
@@ -225,7 +275,14 @@ void Player::HandleCollision(vector<Object*> *object) {
 				}
 			}
 
+			//Bị thương thì ngắt vòng lặp, không xét với các object ở sau vòng if này
+			if (isWounded && e->object->GetObjectType() != OBJECT_TYPE::SQUARE) {
+				Object::PlusPosition(deltaX, 0.0f);
+				break;
+			}
+
 			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD) {
+				isWounded = true;
 				if (e->nx != 0) {
 					state = PLAYER_STATE::WOUNDED;
 					SetVy(-200.0f);
@@ -244,6 +301,8 @@ void Player::HandleCollision(vector<Object*> *object) {
 					}
 				}
 			}
+
+			
 		}
 	}
 
@@ -254,10 +313,7 @@ void Player::HandleCollision(vector<Object*> *object) {
 	delete coEvents;
 	delete coEventsResult;
 
-	if (isOnGround && state == PLAYER_STATE::JUMP) {
-		state = PLAYER_STATE::STAND;
-		this->PlusPosition(0, -1 * 20.0f);
-	}
+
 }
 
 
@@ -265,25 +321,29 @@ void Player::Render()
 {
 	switch (this->direction) {
 	case RIGHT:
-		if (state == PLAYER_STATE::JUMP) {
-			this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true, -4);
+		if (count % 2 == 0) {
+			if (state == PLAYER_STATE::JUMP) {
+				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true, -4);
+			}
+			else {
+				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
+			break;
 		}
-		else {
-			this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
-		}
-		break;
 	case LEFT:
-		if (state == PLAYER_STATE::STAND_ATK) {
-			this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -24, 0);
-		}
-		else if (state == PLAYER_STATE::SIT_ATK) {
-			this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -24, 0);
-		}
-		else if (state == PLAYER_STATE::JUMP) {
-			this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -4, 0);
-		}
-		else {
-			this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+		if (count % 2 == 0) {
+			if (state == PLAYER_STATE::STAND_ATK) {
+				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -24, 0);
+			}
+			else if (state == PLAYER_STATE::SIT_ATK) {
+				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -24, 0);
+			}
+			else if (state == PLAYER_STATE::JUMP) {
+				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -4, 0);
+			}
+			else {
+				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
 		}
 		break;
 	default:

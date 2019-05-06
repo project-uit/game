@@ -1,10 +1,12 @@
 #include "Camera.h"
 #include "Graphic.h"
+#include "Debug.h"
 Camera* Camera::_instance = NULL;
 
 Camera::Camera()
 {
 	cameraPosition = { 0,0 };
+	RECTPosition = { 0, 0 };
 	worldBoundary = 0;
 }
 
@@ -25,12 +27,26 @@ D3DXVECTOR3 Camera::transformObjectPosition(D3DXVECTOR3 objectPosition)
 	return D3DXVECTOR3(vp_pos.x, vp_pos.y, 0);
 }
 
-void Camera::Update(D3DXVECTOR3 simonPosition)
+void Camera::Update(D3DXVECTOR3 playerPosition)
 {
-	cameraPosition = { simonPosition.x - Graphic::GetInstance()->GetWidth() / 2,cameraPosition.y };
-	if (cameraPosition.x < 0)
+	cameraPosition = { playerPosition.x - Graphic::GetInstance()->GetWidth() / 2, cameraPosition.y };
+	RECTPosition = { playerPosition.x, playerPosition.y };
+	
+	if (cameraPosition.x < 0) {
 		cameraPosition = { 0 ,cameraPosition.y };
-	if (cameraPosition.x + Graphic::GetInstance()->GetWidth() > worldBoundary)
-		cameraPosition = { worldBoundary - Graphic::GetInstance()->GetWidth() ,cameraPosition.y };
+	}
 
+	if (cameraPosition.x + Graphic::GetInstance()->GetWidth() > worldBoundary) {
+		cameraPosition = { worldBoundary - Graphic::GetInstance()->GetWidth() ,cameraPosition.y };
+	}
+}
+
+RECT Camera::GetRECT() {
+	RECT r;
+	float x = RECTPosition.x - Graphic::GetInstance()->GetWidth() / 2;
+	int width = Graphic::GetInstance()->GetWidth();
+	int height = Graphic::GetInstance()->GetHeight();
+	//DebugOut((wchar_t *)L"pos: %f\n", x);
+	SetRect(&r, cameraPosition.x, cameraPosition.y, cameraPosition.x + width, cameraPosition.y + height);
+	return r;
 }

@@ -8,8 +8,8 @@
 
 using namespace std;
 
-#define CELL_WIDTH 160
-#define CELL_HEIGHT 131
+#define CELL_WIDTH 128
+#define CELL_HEIGHT 123
 #define BRICK_SIZE 16
 
 class Grid

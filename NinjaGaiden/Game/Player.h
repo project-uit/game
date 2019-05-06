@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include <map>
 #include "Item.h"
+#include "Katana.h"
 
 class Player : public Object
 {
@@ -16,8 +17,12 @@ private:
 	map<PLAYER_STATE,Sprite*>* sprite;
 	bool isOnGround;
 	bool isOnLadder;
+	bool isWounded;
 	int hp;
 	float acceleratorX, acceleratorY;
+	Katana* katana;
+	float time;
+	int count;
 public:
 	Player();
 	~Player();
@@ -39,6 +44,7 @@ public:
 	void Render();
 	void ResetSpriteState(PLAYER_STATE state);
 	void HandleCollision(vector<Object*> *object);
+	Katana* GetKatana();
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();
 		return _instance;

@@ -141,6 +141,7 @@
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Scence1.h" />
     <ClInclude Include="Scence2.h" />
+    <ClInclude Include="Shuriken.h" />
     <ClInclude Include="SoldierSword.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Katana.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Panther.cpp" />

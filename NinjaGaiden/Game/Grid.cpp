@@ -3,6 +3,7 @@
 #include "Debug.h"
 #include "GameDebugDraw.h"
 #include "SoldierSword.h"
+#include "Player.h"
 Grid* Grid::_instance = NULL;
 GameDebugDraw* draw1;
 
@@ -95,22 +96,21 @@ void Grid::GetObjectsInCells(Object * object)
 
 	//Lấy bound của Cam để xét với từng cell bị overlap
 	RECT camREC  = Camera::GetInstance()->GetRECT();
-
 	//góc trái trên
-	int x1 = int(camREC.left/ CELL_WIDTH), y1 = int(camREC.top/CELL_HEIGHT);
+	int x1 = ceil(camREC.left/ CELL_WIDTH), y1 = ceil(camREC.top/CELL_HEIGHT);
 	//góc phải dưới
-	int x2 = int(camREC.right/ CELL_WIDTH), y2 = int(camREC.bottom/ CELL_HEIGHT);
+	int x2 = ceil(camREC.right/ CELL_WIDTH), y2 = ceil(camREC.bottom/ CELL_HEIGHT);
+	DebugOut((wchar_t *)L"time: %d %d %f %f\n",x1, x2, camREC.left, camREC.right);
 	//Add square
 	for (int i = 0; i < squares->size(); i++) {
 		if (Game::AABB(camREC, squares->at(i)->GetBoundingBox())) {
 			this->objects->push_back(squares->at(i));
 		}
 	}
-
 	//dòng của grid
 	for (int i = y1; i < y2; i++) {
 		//cột của grid
-		for (int j = x1; j < x2; j++) {
+		for (int j = x1; j <= x2; j++) {
 			vector<Object*> *listObj = cells->at(i)->at(j);
 			for (int k = 0; k < listObj->size(); k++) {
 				this->objects->push_back(listObj->at(k));
@@ -143,6 +143,7 @@ void Grid::RenderObject() {
 		objects->at(i)->Render();
 		draw1->DrawRect(objects->at(i)->GetBoundingBox(), Camera::GetInstance());
 	}
+	draw1->DrawRect(Player::GetInstance()->GetKatana()->GetBoundingBox(), Camera::GetInstance());
 }
 
 void Grid::AddSquare(Square* s) {
@@ -254,6 +255,8 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 					break;
 			}
 		}
+		tempVector->clear();
+		delete tempVector;
 	}
 	f.close();
 }

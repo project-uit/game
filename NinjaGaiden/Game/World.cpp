@@ -49,6 +49,7 @@ void World::LoadResource()
 	Sound* sound = Sound::GetInstance();
 	Player *main = Player::GetInstance();
 	Text* text = Text::GetInstance();
+	Camera* camera = Camera::GetInstance();
 	ReplaceScence(SCENCE::SCENCE_1);
 }
 
@@ -59,8 +60,8 @@ void World::Update(float deltaTime)
 
 void World::Render()
 {
-	Text::GetInstance()->DrawString("SCORE - 000000 STAGE - 1 - 1", 0, 0, 200, 30);
+	/*Text::GetInstance()->DrawString("SCORE - 000000 STAGE - 1 - 1", 0, 0, 200, 30);
 	Text::GetInstance()->DrawString("TIMER - 000 ", 0, 16, 50, 30);
-	Text::GetInstance()->DrawString("P - 01", 0, 32, 50, 30);
+	Text::GetInstance()->DrawString("P - 01", 0, 32, 50, 30);*/
 	scence->Render();
 }
