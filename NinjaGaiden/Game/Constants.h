@@ -26,12 +26,16 @@
 #define PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_follow L"sprite\\enemy\\SoldierSword_follow.txt"
 #define PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk L"sprite\\enemy\\SoldierSword_atk.txt"
 #define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
-#define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DISAPPEAR L"sprite\\enemy\\disappear.txt"
+//=========== Báo vàng
+#define PATH_TEXTURE_MAP_1_ENEMY_Panther_follow L"sprite\\enemy\\SoldierSword_follow.txt"
+//=========== Trạng thái chết của enemy thường
+#define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
 //=========== other
 enum OBJECT_TYPE {
 	SQUARE,
 	MAIN_CHARACTER,
-	SOLDIER_SWORD
+	SOLDIER_SWORD,
+	PANTHER
 };
 
 enum PLAYER_STATE {

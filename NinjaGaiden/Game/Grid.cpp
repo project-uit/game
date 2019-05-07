@@ -4,6 +4,7 @@
 #include "GameDebugDraw.h"
 #include "SoldierSword.h"
 #include "Player.h"
+#include "Panther.h"
 Grid* Grid::_instance = NULL;
 GameDebugDraw* draw1;
 
@@ -250,6 +251,8 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 					Add(object);
 					break;
 				case 2:
+					object = new Panther(movingArea, positionX, positionY, direct);
+					Add(object);
 					break;
 				default:
 					break;

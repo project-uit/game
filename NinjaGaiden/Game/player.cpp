@@ -189,7 +189,7 @@ void Player::Update(float t, vector<Object*>* object)
 	if (isWounded) {
 		if (time >= 0.025f) {
 			time = 0;
-			if (count == 200) {
+			if (count == 120) {
 				count = 0;
 				isWounded = false;
 			}
@@ -214,7 +214,7 @@ void Player::Update(float t, vector<Object*>* object)
 	
 	this->sprite->at(this->state)->NextSprite(t);
 	//if (this->sprite->at(this->state)->GetCount() > 2) {
-	//	this->sprite->at(this->state)->SetIndex(1);
+	//	this->sprite->at(this->state)->SetIndex(0);
 	//}
 	if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::STAND_ATK) {
 		state = PLAYER_STATE::STAND;
@@ -315,7 +315,6 @@ void Player::HandleCollision(vector<Object*> *object) {
 
 
 }
-
 
 void Player::Render()
 {
