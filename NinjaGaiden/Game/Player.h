@@ -23,6 +23,7 @@ private:
 	Katana* katana;
 	float time;
 	int count;
+	float y;
 public:
 	Player();
 	~Player();
@@ -36,6 +37,7 @@ public:
 	void SetLastState(PLAYER_STATE last_state);
 	void SetOnGround(bool isOnGround);
 	bool GetOnGround();
+	bool GetWounded();
 	Sprite* GetCurrentSprite();
 	void Reset(float  x, float y);
 	void SetAcceleratorX(float x);

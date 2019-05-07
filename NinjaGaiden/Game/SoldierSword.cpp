@@ -127,8 +127,13 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 					this->SetVy(0.0f);
 				}
 			}
+			//else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+			//	if (Player::GetInstance()->GetWounded()) {
+			//		this->PlusPosition(this->deltaX, 0.0f);
+			//	}
+			//}
 			else {
-				Object::PlusPosition(this->deltaX, this->deltaY);
+				Object::PlusPosition(this->deltaX, 0.0f);
 			}
 		}
 	}

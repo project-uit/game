@@ -16,9 +16,10 @@ Scence::~Scence()
 
 void Scence::Update(float deltaTime)
 {
+	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
 	Grid::GetInstance()->UpdateGrid(Player::GetInstance());
 	Grid::GetInstance()->UpdateObject(deltaTime);
-	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
+	
 }
 
 void Scence::Render()
