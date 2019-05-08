@@ -13,7 +13,7 @@
 #include "Square.h"
 class Scence {
 protected:
-	vector<Square*> *bricks;
+	SCENCE scenceType;
 	Map* map;
 	string name;
 	int score;

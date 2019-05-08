@@ -61,6 +61,7 @@ public:
 	virtual void Update(float deltaTime, std::vector<Object*> *objects = NULL);
 	virtual void Render() = 0;
 	virtual void HandleCollision(vector<Object*> *objects) = 0;
+	virtual void ResetState();
 
 	D3DXVECTOR3 GetVeclocity() { return this->veclocity; }
 	void SetVeclocity(float vx, float vy) { this->veclocity.x = vx; this->veclocity.y = vy; }

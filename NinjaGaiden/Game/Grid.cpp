@@ -5,6 +5,7 @@
 #include "SoldierSword.h"
 #include "Player.h"
 #include "Panther.h"
+#include <algorithm>
 Grid* Grid::_instance = NULL;
 GameDebugDraw* draw1;
 
@@ -20,6 +21,7 @@ Grid::Grid(int mapHeight, int mapWidth, bool isArray)
 	squares = new  vector<Square*>();
 	cells = new vector<vector<vector<Object*>*>*>();
 	objects = new vector<Object*>();
+	cellLoading = new vector<Cell*>();
 	cells->reserve(numOfRow);
 	for (size_t i = 0; i < numOfRow; i++) {
 		vector<vector<Object*>*> * tempList = new vector<vector<Object*>*>();
@@ -58,6 +60,7 @@ void Grid::DeleteGrid()
 	delete cells;
 	objects->clear();
 	squares->clear();
+	cellLoading->clear();
 }
 
 void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
@@ -115,7 +118,6 @@ void Grid::GetObjectsInCells(Object * object)
 	int x1 = ceil(camREC.left/ CELL_WIDTH), y1 = ceil(camREC.top/CELL_HEIGHT);
 	//góc phải dưới
 	int x2 = ceil(camREC.right/ CELL_WIDTH), y2 = ceil(camREC.bottom/ CELL_HEIGHT);
-	DebugOut((wchar_t *)L"time: %d %d %f %f\n",x1, x2, camREC.left, camREC.right);
 	//Add square
 	for (int i = 0; i < squares->size(); i++) {
 		if (Game::AABB(camREC, squares->at(i)->GetBoundingBox())) {
@@ -126,10 +128,25 @@ void Grid::GetObjectsInCells(Object * object)
 	for (int i = y1; i < y2; i++) {
 		//cột của grid
 		for (int j = x1; j < x2; j++) {
+			Cell* cell = new Cell(i, j);
+			//Kiểm tra hàng-cột hiện tại đã loaded object chưa?
+			bool flag = Cell::FindCell(cellLoading, cell);
 			vector<Object*> *listObj = cells->at(i)->at(j);
 			for (int k = 0; k < listObj->size(); k++) {
+				//Reset lại object mới
+				if (flag == false) {
+					listObj->at(k)->ResetState();
+				}
 				this->objects->push_back(listObj->at(k));
 			}
+		}
+	}
+	cellLoading->clear();
+	//Lưu lại các index của cell đã load trong grid
+	for (int i = y1; i < y2; i++) {
+		for (int j = x1; j < x2; j++) {
+			Cell* cell = new Cell(i, j);
+			cellLoading->push_back(cell);
 		}
 	}
 }
@@ -141,7 +158,6 @@ void Grid::UpdateGrid(Object * object)
 
 	int newRow = ceil(object->GetPosition().y / CELL_HEIGHT);
 	int newColumn = ceil(object->GetPosition().x / CELL_WIDTH);
-	//DebugOut((wchar_t *)L"pos: %d %d %d %d\n", oldRow, oldColumn, newRow, newColumn);
 	if (oldRow == newRow && oldColumn == newColumn)
 		return;
 	objects->clear();
@@ -160,7 +176,7 @@ void Grid::RenderObject() {
 		objects->at(i)->Render();
 		draw1->DrawRect(objects->at(i)->GetBoundingBox(), Camera::GetInstance());
 	}
-	//DrawGrid();
+	DrawGrid();
 	//draw1->DrawRect(Camera::GetInstance()->GetRECT(), Camera::GetInstance());
 	//draw1->DrawRect(Player::GetInstance()->GetKatana()->GetBoundingBox(), Camera::GetInstance());
 }
@@ -272,18 +288,23 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 			int positionY = tempVector->at(3);
 			int direction = tempVector->at(4);//0: left, 1: right
 			DIRECTION direct = direction == 0 ? LEFT : RIGHT;
-			RECT movingArea;
+			RECT movingArea, movingBox;
 			if (tempVector->size() > 5) {
 				int left = tempVector->at(5);
 				int top = tempVector->at(6);
 				int right = tempVector->at(7);
 				int bottom = tempVector->at(8);
 				SetRect(&movingArea, left, top, right, bottom);
+				left = tempVector->at(9);
+				top = tempVector->at(10);
+				right = tempVector->at(11);
+				bottom = tempVector->at(12);
+				SetRect(&movingBox, left, top, right, bottom);
 			}
 			Object* object;
 			switch (TypeObject) {
 				case 1:
-					object = new SoldierSword(movingArea, positionX, positionY, direct);
+					object = new SoldierSword(movingArea, movingBox, positionX, positionY, direct);
 					Add(object);
 					break;
 				case 2:

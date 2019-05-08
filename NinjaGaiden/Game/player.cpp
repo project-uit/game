@@ -13,13 +13,14 @@ Player::Player()
 	this->SetDirection(DIRECTION::RIGHT);
 	this->objectWidth = 32;
 	this->objectHeight = 32;
-	this->SetPosition(129, 100); //1121 150
+	this->SetPosition(0, 100); //1121 150
 	this->SetLastPos({ -1.0f, -1.0f, 0 });
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
 	this->acceleratorX = 0.0f;
 	isOnGround = false;
 	isWounded = false;
+	resetObject = false;
 	katana = new Katana();
 	time = 0;
 	count = 0;
@@ -113,6 +114,14 @@ void Player::ResetAllSprites()
 
 void Player::SetAcceleratorX(float x) {
 	this->acceleratorX = x;
+}
+
+void Player::SetResetObject(bool rs) {
+	resetObject = rs;
+}
+
+bool Player::GetResetObject() {
+	return resetObject;
 }
 
 bool Player::GetStateActive()
@@ -231,8 +240,6 @@ void Player::Update(float t, vector<Object*>* object)
 		state = PLAYER_STATE::SIT;
 	}
 
-
-
 	HandleCollision(object);
 }
 
@@ -245,9 +252,10 @@ void Player::HandleCollision(vector<Object*> *object) {
 	if (this->state != PLAYER_STATE::DIE) {
 		Object::CalcPotentialCollisions(object, coEvents);
 	}
-	
+	//DebugOut((wchar_t *)L"OnGround: %d\n", isOnGround);
 	if (coEvents->size() == 0) {
 		Object::PlusPosition(this->deltaX, this->deltaY);
+		//isOnGround = false;
 	}
 	else {
 		float min_tx, min_ty, nx = 0, ny;
@@ -274,11 +282,10 @@ void Player::HandleCollision(vector<Object*> *object) {
 					}
 				}
 				if (e->ny > 0) {
-					Object::PlusPosition(this->deltaX, this->deltaY);
+					Object::PlusPosition(0.0f, this->deltaY);
 				}
 				if (e->nx != 0) {
-					this->SetVx(0.0f);
-					acceleratorX = 0.0f;
+					Object::PlusPosition(this->deltaX, 0.0f);
 				}
 			}
 			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD) {
@@ -324,6 +331,18 @@ void Player::HandleCollision(vector<Object*> *object) {
 	delete coEventsResult;
 }
 
+void Player::ResetObject(SCENCE scence) {
+	switch (scence) {
+	case SCENCE::SCENCE_1:
+		RECT rect; // vùng đánh dấu để reset object
+
+		resetObject = false;
+		break;
+	default:
+		break;
+	}
+}
+
 void Player::Render()
 {
 	switch (this->direction) {
@@ -356,6 +375,10 @@ void Player::Render()
 	default:
 		break;
 	}
+}
+
+void Player::ResetState() {
+
 }
 
 

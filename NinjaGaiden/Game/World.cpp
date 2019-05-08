@@ -25,8 +25,7 @@ void World::SetScence(Scence* s) {
 }
 
 void World::ReplaceScence(SCENCE scenceType) {
-	this->scenceType = scenceType;
-	switch (this->scenceType) {
+	switch (scenceType) {
 		case SCENCE::SCENCE_1:
 			SetScence(new Scence1());
 			break;

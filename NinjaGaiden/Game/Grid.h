@@ -8,20 +8,43 @@
 
 using namespace std;
 
-#define CELL_WIDTH 128
-#define CELL_HEIGHT 123
+#define CELL_WIDTH 120
+#define CELL_HEIGHT 115
 #define BRICK_SIZE 16
+
+struct  Cell
+{
+	int row;
+	int column;
+	Cell(int row, int column) { 
+		this->row = row;
+		this->column = column;
+	}
+	static bool FindCell(vector<Cell*>* cells, Cell* cell) {
+		bool flag = false;
+		for (int i = 0; i < cells->size(); i++) {
+			int col_1 = cells->at(i)->column;
+			int row_1 = cells->at(i)->row;
+			if (col_1 == cell->column && row_1 == cell->row) {
+				flag = true;
+				break;
+			}
+		}
+		return flag;
+	}
+};
 
 class Grid
 {
 private:
 	static Grid* _instance;
-
 	int numOfRow;
 	int numOfColumn;
 	vector<vector<vector<Object*>*>*>* cells;
+	vector<Cell*>* cellLoading;
 	//Objects trong các cell mà Camera overlap
 	vector<Object*>* objects;
+	//Ground
 	vector<Square*>* squares;
 	float deltaTime;
 	void DeleteGrid();

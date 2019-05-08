@@ -3,7 +3,6 @@
 Scence::Scence()
 {
 	this->map = new Map();
-	this->bricks = new vector<Square*>();
 	this->score = 0;
 	this->timer = 0;
 	this->name = "";
@@ -19,11 +18,11 @@ void Scence::Update(float deltaTime)
 	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
 	Grid::GetInstance()->UpdateGrid(Player::GetInstance());
 	Grid::GetInstance()->UpdateObject(deltaTime);
-	
+	Player::GetInstance()->ResetObject(scenceType);
 }
 
 void Scence::Render()
 {
-	map->drawMap();
+	//map->drawMap();
 	Grid::GetInstance()->RenderObject();
 }

@@ -4,8 +4,6 @@
 #include "GameDebugDraw.h"
 GameDebugDraw* draw2;
 SoldierSword::SoldierSword() {
-
-	
 }
 void SoldierSword::init() {
 	this->SetObjectType(SOLDIER_SWORD);
@@ -33,8 +31,10 @@ void SoldierSword::init() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
 }
 
-SoldierSword::SoldierSword(RECT movingArea, int posX, int posY, DIRECTION direction) {
+SoldierSword::SoldierSword(RECT movingArea, RECT movingBox, int posX, int posY, DIRECTION direction) {
 	this->movingArea = movingArea;
+	this->movingBox.push_back(movingArea);
+	this->movingBox.push_back(movingBox);
 	this->direction = direction;
 	SetPosition((float)posX, (float)posY);
 	init();
@@ -54,10 +54,17 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 	RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 	Object::updateBoundingBox(rect);
 	sprite->at(this->state)->NextSprite(t);
+
 	if (state == ENEMY_STATE::DEAD) {
 		if (sprite->at(this->state)->GetIsComplete()) {
 			sprite->at(this->state)->SetIndex(1);
+			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
+			this->sprite->at(ENEMY_STATE::ATK)->Reset();
 		}
+	}
+
+	if (Player::GetInstance()->GetPosition().x >= 350) {
+		
 	}
 	
 	HandleCollision(objects);
@@ -127,11 +134,6 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 					this->SetVy(0.0f);
 				}
 			}
-			//else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
-			//	if (Player::GetInstance()->GetWounded()) {
-			//		this->PlusPosition(this->deltaX, 0.0f);
-			//	}
-			//}
 			else {
 				Object::PlusPosition(this->deltaX, 0.0f);
 			}
@@ -145,7 +147,26 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 	delete coEvents;
 	delete coEventsResult;
 }
+void SoldierSword::ResetState() {
+	this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+	state = ENEMY_STATE::FOLLOW;
+	SetPosition(lastPos.x, lastPos.y);
 
+	if (Player::GetInstance()->GetPosition().x < position.x) {
+		direction = LEFT;
+		movingArea = movingBox.at(0);
+	}
+	else {
+		direction = RIGHT;
+		movingArea = movingBox.at(1);
+	}
+	if (direction == LEFT) {
+		this->SetVeclocity(-40.0f, 0.0f);
+	}
+	else {
+		this->SetVeclocity(40.0f, 0.0f);
+	}
+}
 void SoldierSword::Render() {
 	
 	//draw2->DrawRect(movingArea, Camera::GetInstance());

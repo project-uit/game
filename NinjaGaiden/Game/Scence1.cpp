@@ -15,6 +15,7 @@ Scence1::~Scence1()
 
 void Scence1::LoadResource()
 {
+	scenceType = SCENCE::SCENCE_1;
 	map->LoadMap(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
 	Camera::GetInstance()->setWorldBoundary(2048);
 	Grid::GetInstance(246, map->GetWidth(), false);

@@ -29,7 +29,7 @@ D3DXVECTOR3 Camera::transformObjectPosition(D3DXVECTOR3 objectPosition)
 
 void Camera::Update(D3DXVECTOR3 playerPosition)
 {
-	cameraPosition = { playerPosition.x - Graphic::GetInstance()->GetWidth() / 2 + 50, cameraPosition.y };
+	cameraPosition = { playerPosition.x - Graphic::GetInstance()->GetWidth() / 2 + 20, cameraPosition.y };
 	RECTPosition = { playerPosition.x, playerPosition.y };
 	
 	if (cameraPosition.x < 0) {
@@ -43,7 +43,7 @@ void Camera::Update(D3DXVECTOR3 playerPosition)
 
 RECT Camera::GetRECT() {
 	RECT r;
-	int width = 290;
+	int width = 330;
 	int height = Graphic::GetInstance()->GetHeight();
 	SetRect(&r, cameraPosition.x, cameraPosition.y, cameraPosition.x + width, cameraPosition.y + height);
 	return r;

@@ -23,7 +23,7 @@ private:
 	Katana* katana;
 	float time;
 	int count;
-	float y;
+	bool resetObject;
 public:
 	Player();
 	~Player();
@@ -41,11 +41,14 @@ public:
 	Sprite* GetCurrentSprite();
 	void Reset(float  x, float y);
 	void SetAcceleratorX(float x);
-	void SetAcceleratorY(float y);
+	void SetResetObject(bool rs);
+	bool GetResetObject();
+	void ResetObject(SCENCE scence);
 	void Update(float t, vector<Object*> *object = NULL);
 	void Render();
 	void ResetSpriteState(PLAYER_STATE state);
 	void HandleCollision(vector<Object*> *object);
+	void ResetState();
 	Katana* GetKatana();
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();

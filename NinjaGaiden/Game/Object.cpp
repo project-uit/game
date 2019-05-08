@@ -205,6 +205,10 @@ void Object::Update(float deltaTime, std::vector<Object*>* objects)
 	this->deltaY = this->veclocity.y * deltaTime;
 }
 
+void Object::ResetState() {
+
+}
+
 D3DXVECTOR3 Object::GetTransformObjectPositionByCamera() {
 	return Camera::GetInstance()->transformObjectPosition(position);
 }
