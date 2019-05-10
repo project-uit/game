@@ -185,7 +185,6 @@ void SoldierSword::ResetState() {
 	if (this->state == DEAD) {
 		this->sprite->at(ENEMY_STATE::DEAD)->Reset();
 	}
-
 	state = ENEMY_STATE::FOLLOW;
 	SetPosition(lastPos.x, lastPos.y);
 }
