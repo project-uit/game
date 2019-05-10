@@ -110,5 +110,7 @@ public:
 	void SetLastPos(D3DXVECTOR3 pos) { this->lastPos.x = pos.x; this->lastPos.y = pos.y; }
 	D3DXVECTOR3 GetLastPos() { return this->lastPos; }
 	DIRECTION GetObjectDirection();
+	void SetActive(bool active);
+	bool GetActive();
 };
 

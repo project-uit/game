@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Square.h"
 #include "SoldierSword.h"
+#include "BigShuriken.h"
 
 Player* Player::_instance = NULL;
 
@@ -20,8 +21,8 @@ Player::Player()
 	this->acceleratorX = 0.0f;
 	isOnGround = false;
 	isWounded = false;
-	resetObject = false;
 	katana = new Katana();
+	weapon = new BigShuriken();
 	time = 0;
 	count = 0;
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
@@ -116,13 +117,6 @@ void Player::SetAcceleratorX(float x) {
 	this->acceleratorX = x;
 }
 
-void Player::SetResetObject(bool rs) {
-	resetObject = rs;
-}
-
-bool Player::GetResetObject() {
-	return resetObject;
-}
 
 bool Player::GetStateActive()
 {
@@ -241,6 +235,9 @@ void Player::Update(float t, vector<Object*>* object)
 	}
 
 	HandleCollision(object);
+	if (weapon) {
+		weapon->Update(t, object);
+	}
 }
 
 void Player::HandleCollision(vector<Object*> *object) {
@@ -331,18 +328,6 @@ void Player::HandleCollision(vector<Object*> *object) {
 	delete coEventsResult;
 }
 
-void Player::ResetObject(SCENCE scence) {
-	switch (scence) {
-	case SCENCE::SCENCE_1:
-		RECT rect; // vùng đánh dấu để reset object
-
-		resetObject = false;
-		break;
-	default:
-		break;
-	}
-}
-
 void Player::Render()
 {
 	switch (this->direction) {
@@ -375,8 +360,40 @@ void Player::Render()
 	default:
 		break;
 	}
+	if (weapon) {
+		weapon->Render();
+	}
 }
 
+void Player::UseWeapon() {
+	if (weapon) {
+		if (weapon->GetActive() == false) {
+			weapon->SetActive(true);
+			if (weapon->GetObjectType() == OBJECT_TYPE::SMALL_SHURIKEN) {
+				if (this->direction == LEFT) {
+					weapon->SetPosition(position.x, position.y + 10);
+					weapon->SetVx(-180.0f);
+				}
+				else {
+					weapon->SetPosition(position.x + 10, position.y + 10);
+					weapon->SetVx(180.0f);
+				}
+			}
+			if (weapon->GetObjectType() == OBJECT_TYPE::BIG_SHURIKEN) {
+				BigShuriken *bigShuriken = dynamic_cast<BigShuriken *>(weapon);
+				bigShuriken->SetOrbitMoving(isOnGround);
+				if (this->direction == LEFT) {
+					bigShuriken->SetPosition(position.x - 8, position.y + 7);
+					bigShuriken->SetVx(-400.0f);
+				}
+				else {
+					bigShuriken->SetPosition(position.x + 15, position.y + 7);
+					bigShuriken->SetVx(400.0f);
+				}
+			}
+		}
+	}
+}
 void Player::ResetState() {
 
 }

@@ -13,6 +13,9 @@
 #define PATH_POS_STAND_ATK L"sprite\\main\\MAIN_STAND_ATK.txt"
 #define PATH_POS_JUMP L"sprite\\main\\MAIN_JUMP.txt"
 #define PATH_POS_WOUNDED L"sprite\\main\\MAIN_WOUNDED.txt"
+// ======== Vũ khí player
+#define PATH_POS_SmallShuriken L"sprite\\main\\SmallShuriken.txt"
+#define PATH_POS_BigShuriken L"sprite\\main\\BigShuriken.txt"
 // =====	Map 1
 #define ID_TEXTURE_MAP_1 100
 #define PATH_TEXTURE_MAP_1 L"sprite\\Stage1\\Map1.png"
@@ -35,7 +38,9 @@ enum OBJECT_TYPE {
 	SQUARE,
 	MAIN_CHARACTER,
 	SOLDIER_SWORD,
-	PANTHER
+	PANTHER,
+	SMALL_SHURIKEN,
+	BIG_SHURIKEN
 };
 
 enum PLAYER_STATE {

@@ -152,6 +152,27 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }
 
+void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, float angle)
+{
+	if (this->texture == NULL)
+		return;
+	RECT rect = ReadCurrentSpritePosition();	//đọc tọa độ của sprite trong file txt
+
+	D3DXVECTOR3 spriteCentre = D3DXVECTOR3((float)width, (float)height, 0);
+
+	D3DXMATRIX mat;
+	float tempTurnRight = 1.0f;
+	if (!flagRight) {
+		tempTurnRight = -1.0f;
+	}
+	directionX = tempTurnRight * this->scale;
+	D3DXVECTOR3 scaling(tempTurnRight * this->scale, this->scale, 1.0f);
+	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(this->width / 2, this->height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
+	D3DXMatrixRotationZ(&mat, angle);
+	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
+	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+}
+
 void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, int x, int y)
 {
 	if (this->texture == NULL)

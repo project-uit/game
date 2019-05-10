@@ -5,7 +5,7 @@
 #include <map>
 #include "Item.h"
 #include "Katana.h"
-
+#include "SmallShuriken.h"
 class Player : public Object
 {
 private:
@@ -21,9 +21,11 @@ private:
 	int hp;
 	float acceleratorX, acceleratorY;
 	Katana* katana;
+	Weapon* weapon;
 	float time;
 	int count;
-	bool resetObject;
+	int itemPoint;
+	int lifePoint;
 public:
 	Player();
 	~Player();
@@ -41,14 +43,12 @@ public:
 	Sprite* GetCurrentSprite();
 	void Reset(float  x, float y);
 	void SetAcceleratorX(float x);
-	void SetResetObject(bool rs);
-	bool GetResetObject();
-	void ResetObject(SCENCE scence);
 	void Update(float t, vector<Object*> *object = NULL);
 	void Render();
 	void ResetSpriteState(PLAYER_STATE state);
 	void HandleCollision(vector<Object*> *object);
 	void ResetState();
+	void UseWeapon();
 	Katana* GetKatana();
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();

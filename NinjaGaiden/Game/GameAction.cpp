@@ -140,6 +140,13 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 				Player::GetInstance()->SetVx(0.0f);
 			}
 		}
+
+		if (Player::GetInstance()->GetState() == PLAYER_STATE::STAND 
+			|| Player::GetInstance()->GetState() == PLAYER_STATE::JUMP) {
+			if (KeyCode == DIK_C) {
+				Player::GetInstance()->UseWeapon();
+			}
+		}
 	}
 }
 

@@ -50,6 +50,7 @@ public:
 	void DrawSprite(D3DXVECTOR3 position, bool flagRight);
 	//Vẽ sprite bên trái bị lệch
 	void DrawSprite(D3DXVECTOR3 position, bool flagRight, int x, int y);
+	void DrawSprite(D3DXVECTOR3 position, bool flagRight, float angle);
 	//Đọc tọa độ ảnh
 	RECT ReadCurrentSpritePosition();
 	//Đọc độ lệch bounding box

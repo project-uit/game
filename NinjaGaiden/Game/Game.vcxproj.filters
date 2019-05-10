@@ -147,7 +147,19 @@
     <ClInclude Include="Panther.h">
       <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Shuriken.h">
+    <ClInclude Include="SmallShuriken.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BigShuriken.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixFire.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleFire.h">
       <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
@@ -222,6 +234,12 @@
       <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Katana.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SmallShuriken.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BigShuriken.cpp">
       <Filter>Source Files\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>

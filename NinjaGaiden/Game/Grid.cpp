@@ -314,6 +314,11 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 				activeArea.push_back(left);
 				activeArea.push_back(right);
 			}
+			int row = 0; // dòng muốn add vào grid (chỉ dùng cho các object đặc biệt)
+			int column = 0; // cột muốn add vào grid (chỉ dùng cho các object đặc biệt)
+			if (tempVector->size() > 12) {
+
+			}
 			Object* object;
 			switch (TypeObject) {
 				case 1:

@@ -204,3 +204,6 @@ void SoldierSword::Render() {
 	}
 }
 
+void SoldierSword::SetState(ENEMY_STATE state) {
+	this->state = state;
+}

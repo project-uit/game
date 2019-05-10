@@ -225,3 +225,11 @@ DIRECTION Object::GetObjectDirection() {
 	}
 	return DIRECTION::RIGHT;
 }
+
+void Object::SetActive(bool active) {
+	isActive = active;
+}
+
+bool Object::GetActive() {
+	return isActive;
+}
