@@ -7,15 +7,9 @@ SoldierSword::SoldierSword() {
 }
 void SoldierSword::init() {
 	this->SetObjectType(SOLDIER_SWORD);
-	if (direction == LEFT) {
-		this->SetVeclocity(-40.0f, 0.0f);
-	}
-	else {
-		this->SetVeclocity(40.0f, 0.0f);
-	}
-	
+	objectWidth = objectHeight = 1;
 	this->position.z = 0.0f;
-	this->isActive = true;
+	this->isActive = false;
 	time = 0;
 	state = FOLLOW;
 	draw2 = new GameDebugDraw();
@@ -31,85 +25,123 @@ void SoldierSword::init() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
 }
 
-SoldierSword::SoldierSword(RECT movingArea, RECT movingBox, int posX, int posY, DIRECTION direction) {
-	this->movingArea = movingArea;
-	this->movingBox.push_back(movingArea);
-	this->movingBox.push_back(movingBox);
-	this->direction = direction;
-	SetPosition((float)posX, (float)posY);
+SoldierSword::SoldierSword(vector<int> movingLimit, vector<int> activeArea, int positionX, int positionY) {
+	this->movingLimit = movingLimit;
+	this->activeArea = activeArea;
+	SetPosition((float)positionX, (float)positionY);
 	init();
 }
 
 SoldierSword::~SoldierSword() {
 
 }
-
-RECT SoldierSword::GetMovingArea() {
-	return this->movingArea;
-}
-
-void SoldierSword::Update(float t, vector<Object*>* objects) {
-	Object::Update(t);
-	this->veclocity.y += GRAVITY;
-	RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
-	Object::updateBoundingBox(rect);
-	sprite->at(this->state)->NextSprite(t);
-
-	if (state == ENEMY_STATE::DEAD) {
-		if (sprite->at(this->state)->GetIsComplete()) {
-			sprite->at(this->state)->SetIndex(1);
-			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
-			this->sprite->at(ENEMY_STATE::ATK)->Reset();
-		}
-	}
-
-	if (Player::GetInstance()->GetPosition().x >= 350) {
-		
-	}
-	
-	HandleCollision(objects);
-
-	if (state != ENEMY_STATE::DEAD) {
-		Line left = Line(movingArea.left, movingArea.top,
-			movingArea.left, movingArea.bottom);
-
-		Line right = Line(movingArea.right, movingArea.top,
-			movingArea.right, movingArea.bottom);
-
-		if (Game::AABB_BoxLine(GetBoundingBox(), left)) {
-			SetVx(40.0f);
-			direction = RIGHT;
-		}
-
-		if (Game::AABB_BoxLine(GetBoundingBox(), right)) {
-			SetVx(-40.0f);
-			direction = LEFT;
-		}
-		if (time >= 0.675f) {
-			state = ATK;
-			time = 0.0f;
+void SoldierSword::UpdateActiveArea(float t) {
+	if (state == DEAD && isActive) {
+		if (time >= 0.8f) {
+			time = 0;
+			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
+				&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
+				&& Player::GetInstance()->GetDirection() == RIGHT) {
+				this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+				SetPosition(lastPos.x, lastPos.y);
+				state = FOLLOW;
+			}
+			else {
+				if (Player::GetInstance()->GetPosition().x >= activeArea.at(2)
+					&& Player::GetInstance()->GetPosition().x <= activeArea.at(3)
+					&& Player::GetInstance()->GetDirection() == LEFT) {
+					this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+					SetPosition(lastPos.x, lastPos.y);
+					state = FOLLOW;
+				}
+			}
 		}
 		else {
 			time += t;
 		}
-
-		if (sprite->at(this->state)->GetIsComplete() && state == ATK) {
-			sprite->at(this->state)->Reset();
-			state = FOLLOW;
-			if (direction == LEFT) {
-				SetVx(-40.0f);
-			}
-			else {
-				SetVx(40.0f);
-			}
+	}
+	if (state != DEAD) {
+		if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
+			&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
+			&& Player::GetInstance()->GetDirection() == RIGHT) {
+			isActive = true;
+			direction = LEFT;
+			this->SetVeclocity(-40.0f, 0.0f);
+			leftMoving = movingLimit.at(0);
+			rightMoving = movingLimit.at(1);
 		}
-
-		if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
-			state = ENEMY_STATE::DEAD;
-			SetVx(0.0f);
-			Object::PlusPosition(0, -3.0f);
+		else {
+			if (Player::GetInstance()->GetPosition().x >= activeArea.at(2)
+				&& Player::GetInstance()->GetPosition().x <= activeArea.at(3)
+				&& Player::GetInstance()->GetDirection() == LEFT) {
+				isActive = true;
+				direction = RIGHT;
+				this->SetVeclocity(40.0f, 0.0f);
+				leftMoving = movingLimit.at(2);
+				rightMoving = movingLimit.at(3);
+			}
 		}
 	}
+	
+	
+}
+
+void SoldierSword::Update(float t, vector<Object*>* objects) {
+	
+	UpdateActiveArea(t);
+	if (this->isActive) {
+		Object::Update(t);
+		this->veclocity.y += GRAVITY;
+		RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
+		Object::updateBoundingBox(rect);
+		sprite->at(this->state)->NextSprite(t);
+
+		if (state == ENEMY_STATE::DEAD) {
+			if (sprite->at(this->state)->GetIsComplete()) {
+				sprite->at(this->state)->SetIndex(1);
+			}
+			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
+			this->sprite->at(ENEMY_STATE::ATK)->Reset();
+			SetVx(0.0f);
+		}
+		HandleCollision(objects);
+		if (state != ENEMY_STATE::DEAD) {
+			float width = GetBoundingBox().right - GetBoundingBox().left;
+			if (position.x + width <= leftMoving) {
+				SetVx(40.0f);
+				direction = RIGHT;
+			}
+			if (position.x + width >= rightMoving) {
+				SetVx(-40.0f);
+				direction = LEFT;
+			}
+			if (time >= 0.675f) {
+				state = ATK;
+				time = 0.0f;
+			}
+			else {
+				time += t;
+			}
+
+			if (sprite->at(this->state)->GetIsComplete() && state == ATK) {
+				sprite->at(this->state)->Reset();
+				state = FOLLOW;
+				if (direction == LEFT) {
+					SetVx(-40.0f);
+				}
+				else {
+					SetVx(40.0f);
+				}
+			}
+
+			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
+				state = ENEMY_STATE::DEAD;
+				SetVx(0.0f);
+				Object::PlusPosition(0, -3.0f);
+			}
+		}
+	}
+
 }
 
 void SoldierSword::HandleCollision(vector<Object*> *object) {
@@ -147,38 +179,29 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 	delete coEvents;
 	delete coEventsResult;
 }
+
 void SoldierSword::ResetState() {
-	this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+	this->isActive = false;
+	if (this->state == DEAD) {
+		this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+	}
+
 	state = ENEMY_STATE::FOLLOW;
 	SetPosition(lastPos.x, lastPos.y);
-
-	if (Player::GetInstance()->GetPosition().x < position.x) {
-		direction = LEFT;
-		movingArea = movingBox.at(0);
-	}
-	else {
-		direction = RIGHT;
-		movingArea = movingBox.at(1);
-	}
-	if (direction == LEFT) {
-		this->SetVeclocity(-40.0f, 0.0f);
-	}
-	else {
-		this->SetVeclocity(40.0f, 0.0f);
-	}
 }
+
 void SoldierSword::Render() {
-	
-	//draw2->DrawRect(movingArea, Camera::GetInstance());
-	switch (this->direction) {
-	case RIGHT:
-		sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
-		break;
-	case LEFT:
-		sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
-		break;
-	default:
-		break;
+	if (this->isActive) {
+		switch (this->direction) {
+		case RIGHT:
+			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			break;
+		case LEFT:
+			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			break;
+		default:
+			break;
+		}
 	}
 }
 

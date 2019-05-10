@@ -4,8 +4,10 @@
 #include <map>
 class SoldierSword :public Object {
 private:
-	RECT movingArea;
-	vector<RECT> movingBox;
+	int leftMoving;
+	int rightMoving;
+	vector<int> movingLimit;
+	vector<int> activeArea;
 	map<ENEMY_STATE, Sprite*>* sprite;
 	ENEMY_STATE state;
 	DIRECTION direction;
@@ -13,11 +15,11 @@ private:
 	void init();
 public:
 	SoldierSword();
-	SoldierSword(RECT movingArea, RECT movingBox, int positionX, int positionY, DIRECTION direction);
+	SoldierSword(vector<int> movingLimit, vector<int> activeArea, int positionX, int positionY);
 	~SoldierSword();
 	void Update(float t, vector<Object*>* objects);
 	void Render();
 	void HandleCollision(vector<Object*> *object);
 	void ResetState();
-	RECT GetMovingArea();
+	void UpdateActiveArea(float t);
 };

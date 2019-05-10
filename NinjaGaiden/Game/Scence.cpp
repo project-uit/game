@@ -23,6 +23,6 @@ void Scence::Update(float deltaTime)
 
 void Scence::Render()
 {
-	//map->drawMap();
+	map->drawMap();
 	Grid::GetInstance()->RenderObject();
 }

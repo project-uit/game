@@ -20,7 +20,7 @@ public:
 	D3DXVECTOR2 getPosition() { return cameraPosition; }
 	void setPosition(D3DXVECTOR2 a) { this->cameraPosition = a; }
 	RECT GetRECT();
-	void SetRECT(RECT rect);
+	RECT GetRECTx();
 	~Camera();
 
 	static Camera* GetInstance() {

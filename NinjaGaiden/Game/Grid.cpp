@@ -137,7 +137,9 @@ void Grid::GetObjectsInCells(Object * object)
 				if (flag == false) {
 					listObj->at(k)->ResetState();
 				}
-				this->objects->push_back(listObj->at(k));
+				if (Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
+					this->objects->push_back(listObj->at(k));
+				}				
 			}
 		}
 	}
@@ -176,7 +178,7 @@ void Grid::RenderObject() {
 		objects->at(i)->Render();
 		draw1->DrawRect(objects->at(i)->GetBoundingBox(), Camera::GetInstance());
 	}
-	DrawGrid();
+	//DrawGrid();
 	//draw1->DrawRect(Camera::GetInstance()->GetRECT(), Camera::GetInstance());
 	//draw1->DrawRect(Player::GetInstance()->GetKatana()->GetBoundingBox(), Camera::GetInstance());
 }
@@ -286,30 +288,41 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 			int TypeObject = tempVector->at(1);
 			int positionX = tempVector->at(2);
 			int positionY = tempVector->at(3);
-			int direction = tempVector->at(4);//0: left, 1: right
-			DIRECTION direct = direction == 0 ? LEFT : RIGHT;
-			RECT movingArea, movingBox;
-			if (tempVector->size() > 5) {
-				int left = tempVector->at(5);
-				int top = tempVector->at(6);
-				int right = tempVector->at(7);
-				int bottom = tempVector->at(8);
-				SetRect(&movingArea, left, top, right, bottom);
-				left = tempVector->at(9);
-				top = tempVector->at(10);
+			vector<int> movingLimit, activeArea;
+			//RECT movingArea, movingBox;
+			if (tempVector->size() > 4) {
+				//======== movingLimit
+				//==== Vùng di chuyển khi direction object là left
+				int left = tempVector->at(4); 
+				int right = tempVector->at(5);
+				movingLimit.push_back(left);
+				movingLimit.push_back(right);
+				//==== Vùng di chuyển khi direction object là right
+				left = tempVector->at(6);
+				right = tempVector->at(7);				
+				movingLimit.push_back(left);
+				movingLimit.push_back(right);
+				//======== activeArea
+				//==== Vùng kích hoạt khi direction object là left
+				left = tempVector->at(8);
+				right = tempVector->at(9);
+				activeArea.push_back(left);
+				activeArea.push_back(right);
+				//==== Vùng kích hoạt khi direction object là right
+				left = tempVector->at(10);
 				right = tempVector->at(11);
-				bottom = tempVector->at(12);
-				SetRect(&movingBox, left, top, right, bottom);
+				activeArea.push_back(left);
+				activeArea.push_back(right);
 			}
 			Object* object;
 			switch (TypeObject) {
 				case 1:
-					object = new SoldierSword(movingArea, movingBox, positionX, positionY, direct);
+					object = new SoldierSword(movingLimit, activeArea, positionX, positionY);
 					Add(object);
 					break;
 				case 2:
-					object = new Panther(movingArea, positionX, positionY, direct);
-					Add(object);
+					/*object = new Panther(movingArea, positionX, positionY, direct);
+					Add(object);*/
 					break;
 				default:
 					break;

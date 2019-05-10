@@ -48,3 +48,11 @@ RECT Camera::GetRECT() {
 	SetRect(&r, cameraPosition.x, cameraPosition.y, cameraPosition.x + width, cameraPosition.y + height);
 	return r;
 }
+
+RECT Camera::GetRECTx() {
+	RECT r;
+	int width = Graphic::GetInstance()->GetWidth();
+	int height = Graphic::GetInstance()->GetHeight();
+	SetRect(&r, cameraPosition.x, cameraPosition.y, cameraPosition.x + width, cameraPosition.y + height);
+	return r;
+}
