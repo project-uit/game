@@ -260,6 +260,10 @@ void Player::HandleCollision(vector<Object*> *object) {
 		this->PlusPosition(min_tx * this->deltaX + nx * 0.3f, min_ty*this->deltaY + ny*0.3f);
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
+			if (!e->object->GetActive()) {
+				Object::PlusPosition(deltaX, 0.0f);
+				continue;
+			}
 			if (e->object->GetObjectType() == OBJECT_TYPE::SQUARE) {
 				if (e->ny < 0) {	
 					this->SetVy(0.0f);

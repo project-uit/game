@@ -32,7 +32,14 @@ void BigShuriken::Orbit(float t) {
 		SetVx(400.0f);
 	}
 	if (!orbitMoving) {
+		/*if (Player::GetInstance()->GetPosition().y < position.y) {
+			this->veclocity.y -= 110.0f*t;
+		}
+		else {
+			
+		}*/
 		this->veclocity.y += 110.0f*t;
+		
 	}
 }
 
