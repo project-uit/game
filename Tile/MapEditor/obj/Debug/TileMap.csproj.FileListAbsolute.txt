@@ -1,0 +1,24 @@
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\TileMap.csprojAssemblyReference.cache
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\SplitTools.FrmMapEditor.resources
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\TileMap.csproj.GenerateResource.cache
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\MapEditor.exe.licenses
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\bin\Debug\MapEditor.exe.config
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\bin\Debug\MapEditor.exe
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\bin\Debug\MapEditor.pdb
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\TileMap.csproj.CoreCompileInputs.cache
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\MapEditor.exe
+C:\Users\Hung\Desktop\Tile (1)\Tile\MapEditor\obj\Debug\MapEditor.pdb
+E:\Git\game\Tile\MapEditor\bin\Debug\MapEditor.exe.config
+E:\Git\game\Tile\MapEditor\bin\Debug\MapEditor.exe
+E:\Git\game\Tile\MapEditor\bin\Debug\MapEditor.pdb
+E:\Git\game\Tile\MapEditor\obj\Debug\TileMap.csprojAssemblyReference.cache
+E:\Git\game\Tile\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+E:\Git\game\Tile\MapEditor\obj\Debug\SplitTools.FrmMapEditor.resources
+E:\Git\game\Tile\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+E:\Git\game\Tile\MapEditor\obj\Debug\TileMap.csproj.GenerateResource.cache
+E:\Git\game\Tile\MapEditor\obj\Debug\MapEditor.exe.licenses
+E:\Git\game\Tile\MapEditor\obj\Debug\TileMap.csproj.CoreCompileInputs.cache
+E:\Git\game\Tile\MapEditor\obj\Debug\MapEditor.exe
+E:\Git\game\Tile\MapEditor\obj\Debug\MapEditor.pdb

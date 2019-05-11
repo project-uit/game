@@ -1,0 +1,45 @@
+﻿  Debug.cpp
+e:\git\game\ninjagaiden\game\debug.cpp(11): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'wchar_t [4096]' to 'LPCSTR'
+  e:\git\game\ninjagaiden\game\debug.cpp(11): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+  Game.cpp
+e:\git\game\ninjagaiden\game\game.h(4): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  GameAction.cpp
+e:\git\game\ninjagaiden\game\game.h(4): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  GameDebugDraw.cpp
+e:\git\game\ninjagaiden\game\gamedebugdraw.h(2): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Graphic.cpp
+e:\git\game\ninjagaiden\game\graphic.cpp(53): error C2440: '=': cannot convert from 'LPCWSTR' to 'LPCSTR'
+  e:\git\game\ninjagaiden\game\graphic.cpp(53): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+e:\git\game\ninjagaiden\game\graphic.cpp(59): error C2664: 'HWND CreateWindowExA(DWORD,LPCSTR,LPCSTR,DWORD,int,int,int,int,HWND,HMENU,HINSTANCE,LPVOID)': cannot convert argument 2 from 'LPCWSTR' to 'LPCSTR'
+  e:\git\game\ninjagaiden\game\graphic.cpp(70): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+  Grid.cpp
+e:\git\game\ninjagaiden\game\object.h(2): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Item.cpp
+e:\git\game\ninjagaiden\game\object.h(2): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Map.cpp
+e:\git\game\ninjagaiden\game\map.h(2): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Object.cpp
+e:\git\game\ninjagaiden\game\object.h(2): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  player.cpp
+e:\git\game\ninjagaiden\game\object.h(2): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Scence.cpp
+e:\git\game\ninjagaiden\game\scence.h(3): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Scence1.cpp
+e:\git\game\ninjagaiden\game\scence.h(3): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  SoldierSword.cpp
+e:\git\game\ninjagaiden\game\object.h(2): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Source.cpp
+e:\git\game\ninjagaiden\game\game.h(4): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Camera.cpp
+e:\git\game\ninjagaiden\game\camera.h(3): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Sprite.cpp
+e:\git\game\ninjagaiden\game\sprite.h(3): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Square.cpp
+e:\git\game\ninjagaiden\game\object.h(2): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Text.cpp
+e:\git\game\ninjagaiden\game\game.h(4): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Texture.cpp
+e:\git\game\ninjagaiden\game\texture.h(3): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  World.cpp
+e:\git\game\ninjagaiden\game\world.h(3): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Generating Code...

@@ -1,0 +1,114 @@
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\bin\Debug\MapEditor.exe.config
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\obj\Debug\MapEditor.csprojResolveAssemblyReference.cache
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\obj\Debug\MapEditor.csproj.GenerateResource.Cache
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\bin\Debug\MapEditor.exe
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\bin\Debug\MapEditor.pdb
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\obj\Debug\MapEditor.exe
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\obj\Debug\MapEditor.pdb
+C:\Users\Hoai Dung\Desktop\Đồ Án NMPT Game\MapEditor\MapEditor\obj\Debug\SplitTools.frmMapEditor.resources
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.exe.config
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.exe
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.pdb
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csprojResolveAssemblyReference.cache
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\SplitTools.frmMapEditor.resources
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csproj.GenerateResource.Cache
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csproj.CoreCompileInputs.cache
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.exe
+\\Mac\Home\Documents\Nhập môn Game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.pdb
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.exe.config
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.exe
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.pdb
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csprojAssemblyReference.cache
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\SplitTools.frmMapEditor.resources
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csproj.GenerateResource.cache
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csproj.CoreCompileInputs.cache
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.exe
+C:\Users\LAP10870-local\Documents\NHAP MON GAME\Nhập môn game\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.pdb
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csprojAssemblyReference.cache
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\obj\Debug\SplitTools.frmMapEditor.resources
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csproj.GenerateResource.cache
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csproj.CoreCompileInputs.cache
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.exe
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.pdb
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.exe.config
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.exe
+C:\Users\LAP10870-local\OneDrive - VNG Corporation\NHAP_MON_GAME\NinjaGaiden\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.pdb
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.exe.config
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.exe
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.pdb
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.exe
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\bin\Debug\MapEditor.pdb
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csprojResolveAssemblyReference.cache
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\obj\Debug\SplitTools.frmMapEditor.resources
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+C:\Users\user\Desktop\OneDrive_2019-04-10\Tile Map Editor\MapEditor\MapEditor\obj\Debug\MapEditor.csproj.GenerateResource.Cache
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\MapEditor.exe
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\MapEditor.exe.config
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\MapEditor.csprojAssemblyReference.cache
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\SplitTools.frmCreateMap.resources
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\SplitTools.FrmMapEditor.resources
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\MapEditor.Properties.Resources.resources
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\MapEditor.csproj.GenerateResource.cache
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\MapEditor.csproj.CoreCompileInputs.cache
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\MapEditor.exe
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\MapEditor.pdb
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\MapEditor.pdb
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Data.v18.1.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Printing.v18.1.Core.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Utils.v18.1.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.XtraEditors.v18.1.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.XtraLayout.v18.1.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.XtraTreeList.v18.1.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Pdf.v18.1.Core.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Sparkline.v18.1.Core.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Data.v18.1.xml
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Printing.v18.1.Core.xml
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Utils.v18.1.xml
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.XtraEditors.v18.1.xml
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.XtraLayout.v18.1.xml
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.XtraTreeList.v18.1.xml
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Pdf.v18.1.Core.xml
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\DevExpress.Sparkline.v18.1.Core.xml
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\de\DevExpress.Data.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\es\DevExpress.Data.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ja\DevExpress.Data.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ru\DevExpress.Data.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\de\DevExpress.Printing.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\es\DevExpress.Printing.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ja\DevExpress.Printing.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ru\DevExpress.Printing.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\de\DevExpress.Utils.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\es\DevExpress.Utils.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ja\DevExpress.Utils.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ru\DevExpress.Utils.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\de\DevExpress.XtraEditors.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\es\DevExpress.XtraEditors.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ja\DevExpress.XtraEditors.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ru\DevExpress.XtraEditors.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\de\DevExpress.XtraLayout.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\es\DevExpress.XtraLayout.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ja\DevExpress.XtraLayout.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ru\DevExpress.XtraLayout.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\de\DevExpress.XtraTreeList.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\es\DevExpress.XtraTreeList.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ja\DevExpress.XtraTreeList.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ru\DevExpress.XtraTreeList.v18.1.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\de\DevExpress.Pdf.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\es\DevExpress.Pdf.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ja\DevExpress.Pdf.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ru\DevExpress.Pdf.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\de\DevExpress.Sparkline.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\es\DevExpress.Sparkline.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ja\DevExpress.Sparkline.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\bin\Debug\ru\DevExpress.Sparkline.v18.1.Core.resources.dll
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\MapEditor.exe.licenses
+C:\Users\dieunguyen\Desktop\Tile\MapEditor\obj\Debug\MapEditor.csproj.CopyComplete
