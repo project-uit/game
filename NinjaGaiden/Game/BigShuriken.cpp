@@ -18,9 +18,9 @@ BigShuriken::~BigShuriken() {
 	delete sprite;
 }
 
-void BigShuriken::SetOrbitMoving(bool moving) {
-	orbitMoving = moving;
-}
+//void BigShuriken::SetOrbitMoving(bool moving) {
+//	orbitMoving = moving;
+//}
 
 void BigShuriken::Orbit(float t) {
 	left = Player::GetInstance()->GetPosition().x + 80.0f;
@@ -31,15 +31,15 @@ void BigShuriken::Orbit(float t) {
 	if (position.x <= right) {
 		SetVx(400.0f);
 	}
-	if (!orbitMoving) {
-		/*if (Player::GetInstance()->GetPosition().y < position.y) {
-			this->veclocity.y -= 110.0f*t;
+	if (Player::GetInstance()->GetPosition().y + 35 < position.y) {
+		if (this->veclocity.y > 0) {
+			this->veclocity.y = -110.0f;
 		}
-		else {
-			
-		}*/
+		this->veclocity.y += -110.0f*t;
+		//SetVy(-110.0f);
+	}
+	else {
 		this->veclocity.y += 110.0f*t;
-		
 	}
 }
 
@@ -76,6 +76,7 @@ void BigShuriken::HandleCollision(vector<Object*> *object) {
 					isActive = false;
 					SetVx(0.0f);
 					SetVy(0.0f);
+					//orbitMoving = true;
 				}
 			}
 			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD) {

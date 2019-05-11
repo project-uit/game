@@ -14,7 +14,7 @@ Player::Player()
 	this->SetDirection(DIRECTION::RIGHT);
 	this->objectWidth = 32;
 	this->objectHeight = 32;
-	this->SetPosition(0, 100); //1121 150
+	this->SetPosition(10, 100); //1121 150
 	this->SetLastPos({ -1.0f, -1.0f, 0 });
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
@@ -384,15 +384,15 @@ void Player::UseWeapon() {
 				}
 			}
 			if (weapon->GetObjectType() == OBJECT_TYPE::BIG_SHURIKEN) {
-				BigShuriken *bigShuriken = dynamic_cast<BigShuriken *>(weapon);
-				bigShuriken->SetOrbitMoving(isOnGround);
+				//BigShuriken *bigShuriken = dynamic_cast<BigShuriken *>(weapon);
+				//->SetOrbitMoving(isOnGround);
 				if (this->direction == LEFT) {
-					bigShuriken->SetPosition(position.x - 8, position.y + 7);
-					bigShuriken->SetVx(-400.0f);
+					weapon->SetPosition(position.x - 8, position.y + 7);
+					weapon->SetVx(-400.0f);
 				}
 				else {
-					bigShuriken->SetPosition(position.x + 15, position.y + 7);
-					bigShuriken->SetVx(400.0f);
+					weapon->SetPosition(position.x + 15, position.y + 7);
+					weapon->SetVx(400.0f);
 				}
 			}
 		}

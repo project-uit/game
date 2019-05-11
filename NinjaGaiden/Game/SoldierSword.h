@@ -12,6 +12,7 @@ private:
 	ENEMY_STATE state;
 	DIRECTION direction;
 	float time;
+	float resetTime;
 	void init();
 public:
 	SoldierSword();

@@ -11,6 +11,7 @@ void SoldierSword::init() {
 	this->position.z = 0.0f;
 	this->isActive = false;
 	time = 0;
+	resetTime = 0;
 	state = FOLLOW;
 	draw2 = new GameDebugDraw();
 	this->sprite = new  map<ENEMY_STATE, Sprite*>();
@@ -37,8 +38,8 @@ SoldierSword::~SoldierSword() {
 }
 void SoldierSword::UpdateActiveArea(float t) {
 	if (state == DEAD && isActive) {
-		if (time >= 0.8f) {
-			time = 0;
+		if (resetTime >= 0.09f) {
+			resetTime = 0;
 			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 				&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
 				&& Player::GetInstance()->GetDirection() == RIGHT) {
@@ -57,7 +58,7 @@ void SoldierSword::UpdateActiveArea(float t) {
 			}
 		}
 		else {
-			time += t;
+			resetTime += t;
 		}
 	}
 	if (state != DEAD) {
