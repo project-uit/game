@@ -83,8 +83,6 @@ void SoldierSword::UpdateActiveArea(float t) {
 			}
 		}
 	}
-	
-	
 }
 
 void SoldierSword::Update(float t, vector<Object*>* objects) {

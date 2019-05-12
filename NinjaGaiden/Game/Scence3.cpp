@@ -13,8 +13,8 @@ void Scence3::LoadResource()
 {
 	Player::GetInstance()->SetLastPos({ -1.0f, -1.0f, 0 });
 	Player::GetInstance()->SetPosition(3.0, 100.0f);
-	name = " STAGE 3-2";
-	scenceType = SCENCE::SCENCE_2;
+	name = " STAGE 3-3";
+	scenceType = SCENCE::SCENCE_3;
 	timer = 150;
 	map->LoadMap(PATH_POS_MAP_3, PATH_TEXTURE_MAP_3, ID_TEXTURE_MAP_3);
 	Camera::GetInstance()->setWorldBoundary(256);

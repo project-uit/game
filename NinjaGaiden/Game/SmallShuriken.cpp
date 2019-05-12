@@ -49,18 +49,20 @@ void SmallShuriken::HandleCollision(vector<Object*> *object) {
 		this->PlusPosition(min_tx * this->deltaX + nx * 0.2f, min_ty*this->deltaY + ny * 0.2f);
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
-			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD) {		
-				SoldierSword *enemy = dynamic_cast<SoldierSword *>(e->object);
-				if (e->nx != 0) {
-					enemy->SetState(ENEMY_STATE::DEAD);
-					this->isActive = false;
+			if (e->object->GetActive()) {
+				if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD) {
+					SoldierSword *enemy = dynamic_cast<SoldierSword *>(e->object);
+					if (e->nx != 0) {
+						enemy->SetState(ENEMY_STATE::DEAD);
+						this->isActive = false;
+					}
 				}
-			}
-			if (e->object->GetObjectType() == OBJECT_TYPE::PANTHER) {
-				Panther *enemy = dynamic_cast<Panther *>(e->object);
-				if (e->nx != 0) {
-					enemy->SetState(ENEMY_STATE::DEAD);
-					this->isActive = false;
+				if (e->object->GetObjectType() == OBJECT_TYPE::PANTHER) {
+					Panther *enemy = dynamic_cast<Panther *>(e->object);
+					if (e->nx != 0) {
+						enemy->SetState(ENEMY_STATE::DEAD);
+						this->isActive = false;
+					}
 				}
 			}
 			Object::PlusPosition(this->deltaX, 0.0f);

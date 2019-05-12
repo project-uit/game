@@ -273,7 +273,7 @@ void Player::HandleCollision(vector<Object*> *object) {
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (!e->object->GetActive()) {
-				Object::PlusPosition(deltaX, 0.0f);
+				Object::PlusPosition(deltaX, deltaY);
 				continue;
 			}
 			if (e->object->GetObjectType() == OBJECT_TYPE::SQUARE) {

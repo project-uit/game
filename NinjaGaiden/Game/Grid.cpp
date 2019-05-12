@@ -124,7 +124,7 @@ void Grid::GetObjectsInCells(Object * object)
 	int column = (int)floor(object->GetPosition().x / CELL_WIDTH);
 
 	//Lấy bound của Cam để xét với từng cell bị overlap
-	RECT camREC  = Camera::GetInstance()->GetRECT();
+	RECT camREC = Camera::GetInstance()->GetRECT();
 	//góc trái trên
 	int x1 = ceil(camREC.left/ CELL_WIDTH), y1 = ceil(camREC.top/CELL_HEIGHT);
 	//góc phải dưới
@@ -139,6 +139,9 @@ void Grid::GetObjectsInCells(Object * object)
 	for (int i = 0; i < randomObject->size(); i++) {
 		if (Game::AABB(camREC, randomObject->at(i)->GetBoundingBox())) {
 			this->objects->push_back(randomObject->at(i));
+		}
+		else {
+			randomObject->at(i)->ResetState();
 		}
 	}
 	//dòng của grid
