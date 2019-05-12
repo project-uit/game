@@ -1,6 +1,7 @@
 #include "SmallShuriken.h"
 #include "Camera.h"
 #include "SoldierSword.h"
+#include "Panther.h"
 
 SmallShuriken::SmallShuriken() {
 	this->SetObjectType(SMALL_SHURIKEN);
@@ -52,6 +53,14 @@ void SmallShuriken::HandleCollision(vector<Object*> *object) {
 				SoldierSword *enemy = dynamic_cast<SoldierSword *>(e->object);
 				if (e->nx != 0) {
 					enemy->SetState(ENEMY_STATE::DEAD);
+					this->isActive = false;
+				}
+			}
+			if (e->object->GetObjectType() == OBJECT_TYPE::PANTHER) {
+				Panther *enemy = dynamic_cast<Panther *>(e->object);
+				if (e->nx != 0) {
+					enemy->SetState(ENEMY_STATE::DEAD);
+					this->isActive = false;
 				}
 			}
 			Object::PlusPosition(this->deltaX, 0.0f);

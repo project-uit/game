@@ -122,7 +122,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="BigShuriken.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleFire.h" />
     <ClInclude Include="Constants.h" />
@@ -133,6 +135,7 @@
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Katana.h" />
@@ -144,6 +147,7 @@
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Scence1.h" />
     <ClInclude Include="Scence2.h" />
+    <ClInclude Include="Scence3.h" />
     <ClInclude Include="SmallShuriken.h" />
     <ClInclude Include="SoldierSword.h" />
     <ClInclude Include="Sound.h" />
@@ -155,6 +159,7 @@
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BigShuriken.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -163,6 +168,7 @@
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Katana.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -171,6 +177,8 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Scence1.cpp" />
+    <ClCompile Include="Scence2.cpp" />
+    <ClCompile Include="Scence3.cpp" />
     <ClCompile Include="SmallShuriken.cpp" />
     <ClCompile Include="SoldierSword.cpp" />
     <ClCompile Include="Sound.cpp" />

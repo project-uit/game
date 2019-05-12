@@ -38,7 +38,7 @@ SoldierSword::~SoldierSword() {
 }
 void SoldierSword::UpdateActiveArea(float t) {
 	if (state == DEAD && isActive) {
-		if (resetTime >= 0.09f) {
+		if (resetTime >= 0.25f) {
 			resetTime = 0;
 			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 				&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)

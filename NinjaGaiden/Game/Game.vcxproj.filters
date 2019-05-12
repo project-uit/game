@@ -162,6 +162,18 @@
     <ClInclude Include="CircleFire.h">
       <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Header Files\HUD\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Scence3.h">
+      <Filter>Header Files\Scence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -241,6 +253,18 @@
     </ClCompile>
     <ClCompile Include="BigShuriken.cpp">
       <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Header Files\HUD\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence2.cpp">
+      <Filter>Source Files\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence3.cpp">
+      <Filter>Source Files\Scence</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include "Square.h"
 #include "SoldierSword.h"
 #include "BigShuriken.h"
+#include <iomanip> 
 
 Player* Player::_instance = NULL;
 
@@ -14,17 +15,20 @@ Player::Player()
 	this->SetDirection(DIRECTION::RIGHT);
 	this->objectWidth = 32;
 	this->objectHeight = 32;
-	this->SetPosition(10, 100); //1121 150
+	this->SetPosition(1121, 100); //1121 150
 	this->SetLastPos({ -1.0f, -1.0f, 0 });
 	this->SetVeclocity(0.0f, 0.0f);
 	this->position.z = 0.0f;
 	this->acceleratorX = 0.0f;
+	this->score = 100;
 	isOnGround = false;
 	isWounded = false;
 	katana = new Katana();
-	weapon = new BigShuriken();
+	weapon = new SmallShuriken();
 	time = 0;
 	count = 0;
+	lifePoint = 3;
+	hp = 16;
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND,
@@ -46,6 +50,9 @@ Player::Player()
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 0.0675f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::WOUNDED,
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_WOUNDED, 1, 0.0f)));
+	this->sprite
+		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::DIE,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_WOUNDED, 1, 0.0f)));
 }
 
@@ -140,6 +147,9 @@ void Player::Reset(float x, float y)
 
 void Player::Update(float t, vector<Object*>* object)
 {
+	if (weapon) {
+		weapon->Update(t, object);
+	}
 	if (this->state == PLAYER_STATE::RUN) {
 		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
 			this->veclocity.x = PLAYER_VELOCITY_X;
@@ -235,8 +245,10 @@ void Player::Update(float t, vector<Object*>* object)
 	}
 
 	HandleCollision(object);
-	if (weapon) {
-		weapon->Update(t, object);
+
+	if (state == PLAYER_STATE::DIE) {
+		SetPosition(0.0f, 130.0f);
+		state = STAND;
 	}
 }
 
@@ -289,7 +301,8 @@ void Player::HandleCollision(vector<Object*> *object) {
 					Object::PlusPosition(this->deltaX, 0.0f);
 				}
 			}
-			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD) {
+			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD
+				|| e->object->GetObjectType() == OBJECT_TYPE::PANTHER) {
 				acceleratorX = 0.0f;
 				//SetVx(0.0f);
 				if (e->nx != 0) {
@@ -320,6 +333,7 @@ void Player::HandleCollision(vector<Object*> *object) {
 					}
 				}
 				isWounded = true;
+				hp--;
 			}
 		}
 	}
@@ -376,28 +390,47 @@ void Player::UseWeapon() {
 			if (weapon->GetObjectType() == OBJECT_TYPE::SMALL_SHURIKEN) {
 				if (this->direction == LEFT) {
 					weapon->SetPosition(position.x, position.y + 10);
-					weapon->SetVx(-180.0f);
+					weapon->SetVx(-200.0f);
 				}
 				else {
 					weapon->SetPosition(position.x + 10, position.y + 10);
-					weapon->SetVx(180.0f);
+					weapon->SetVx(200.0f);
 				}
 			}
 			if (weapon->GetObjectType() == OBJECT_TYPE::BIG_SHURIKEN) {
-				//BigShuriken *bigShuriken = dynamic_cast<BigShuriken *>(weapon);
-				//->SetOrbitMoving(isOnGround);
+				BigShuriken *bigShuriken = dynamic_cast<BigShuriken *>(weapon);
+				bigShuriken->SetOrbitMoving(isOnGround);
 				if (this->direction == LEFT) {
-					weapon->SetPosition(position.x - 8, position.y + 7);
-					weapon->SetVx(-400.0f);
+					bigShuriken->SetPosition(position.x - 8, position.y + 7);
+					bigShuriken->SetVx(-400.0f);
 				}
 				else {
-					weapon->SetPosition(position.x + 15, position.y + 7);
-					weapon->SetVx(400.0f);
+					bigShuriken->SetPosition(position.x + 15, position.y + 7);
+					bigShuriken->SetVx(400.0f);
 				}
 			}
 		}
 	}
 }
+
+int Player::GetLifePoint() {
+	return lifePoint;
+}
+
+int Player::GetItemPoint() {
+	return itemPoint;
+}
+
+int Player::GetHp() {
+	return hp;
+}
+
+string Player::GetScoreString() {
+	std::stringstream Score;
+	Score << std::setw(6) << std::setfill('0') << this->score;
+	return Score.str();
+}
+
 void Player::ResetState() {
 
 }

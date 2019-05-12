@@ -20,7 +20,6 @@ void Map::LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP)
 	this->list = new vector<vector<int>*>();
 
 	for (int i = 0; i < numOfRow; i++) {
-
 		vector<int>* temp = new vector<int>();
 		for (int j = 0; j < numOfColumn; j++) {
 			int tempNumber;
@@ -54,7 +53,7 @@ void Map::drawMap()
 	int top, left, right, bottom;
 	int tileMapWidth = 0;
 	for (int i = 0; i < 208/tileHeight; i++) {
-		for (int j = 0; j < 320/tileWidth; j++) {
+		for (int j = 0; j < 256/tileWidth; j++) {
 			int number = this->list->at(i)->at(j);
 			if (number != 0) {
 				int a = i + camposition.y / tileWidth;

@@ -46,7 +46,7 @@ protected:
 	float deltaX;
 	float deltaY;
 	float deltaTime;
-	
+	int score;
 public:
 	Object();
 	~Object();
@@ -54,7 +54,7 @@ public:
 	CollisionHandler* GetCollsionObjectsBySweptAABB(Object* obj);
 	void CalcPotentialCollisions(vector<Object*> *objects, vector<CollisionHandler*> *coEvents);
 	void FilterCollision(vector<CollisionHandler*> *coEvents, vector<CollisionHandler*> *coEventsResult, float &minTx, float &minTy, float &nx, float &ny);
-
+	int GetScore();
 	RECT GetBoundingBox();
 	RECT GetRECTSprite();
 

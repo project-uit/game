@@ -233,3 +233,7 @@ void Object::SetActive(bool active) {
 bool Object::GetActive() {
 	return isActive;
 }
+
+int Object::GetScore() {
+	return score;
+}

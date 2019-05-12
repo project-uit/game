@@ -18,9 +18,9 @@ BigShuriken::~BigShuriken() {
 	delete sprite;
 }
 
-//void BigShuriken::SetOrbitMoving(bool moving) {
-//	orbitMoving = moving;
-//}
+void BigShuriken::SetOrbitMoving(bool moving) {
+	orbitMoving = moving;
+}
 
 void BigShuriken::Orbit(float t) {
 	left = Player::GetInstance()->GetPosition().x + 80.0f;
@@ -31,15 +31,22 @@ void BigShuriken::Orbit(float t) {
 	if (position.x <= right) {
 		SetVx(400.0f);
 	}
-	if (Player::GetInstance()->GetPosition().y + 35 < position.y) {
-		if (this->veclocity.y > 0) {
-			this->veclocity.y = -110.0f;
+	if (!orbitMoving) {
+		if (Player::GetInstance()->GetPosition().y + 35 < position.y) {
+			if (this->veclocity.y > 0) {
+				this->veclocity.y = 0.0f;
+			}
+			this->veclocity.y += -110.0f*t;
+			if (this->veclocity.y <= -200.0f) {
+				this->veclocity.y = -200.0f;
+			}
 		}
-		this->veclocity.y += -110.0f*t;
-		//SetVy(-110.0f);
-	}
-	else {
-		this->veclocity.y += 110.0f*t;
+		else {
+			this->veclocity.y += 110.0f*t;
+			if (this->veclocity.y >= 200.0f) {
+				this->veclocity.y = 200.0f;
+			}
+		}
 	}
 }
 
@@ -50,7 +57,6 @@ void BigShuriken::Update(float t, vector<Object*> *object) {
 		RECT rect = sprite->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->NextSprite(t);
-		//this->veclocity.x += acceleratorX;
 	}
 	HandleCollision(object);
 }

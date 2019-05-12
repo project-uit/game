@@ -4,16 +4,24 @@
 #include <map>
 class Panther : public Object{
 private:
-	RECT movingArea;
+	int leftMoving;
+	int rightMoving;
+	vector<int> movingLimit;
+	vector<int> activeArea;
 	map<ENEMY_STATE, Sprite*>* sprite;
 	ENEMY_STATE state;
 	DIRECTION direction;
+	bool isOnGround;
+	float time;
 public:
 	Panther();
-	Panther(RECT movingArea, int posX, int posY, DIRECTION direction);
+	Panther(vector<int> movingLimit, vector<int> activeArea, int positionX, int positionY);
 	~Panther();
 	void init();
 	void Update(float t, vector<Object*>* objects);
 	void Render();
 	void HandleCollision(vector<Object*> *object);
+	void ResetState();
+	void UpdateActiveArea(float t);
+	void SetState(ENEMY_STATE state);
 };

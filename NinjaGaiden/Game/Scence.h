@@ -16,12 +16,13 @@ protected:
 	SCENCE scenceType;
 	Map* map;
 	string name;
-	int score;
 	int timer;
+	float time;
 public:
 	Scence();
 	~Scence();
 	virtual void LoadResource() = 0;
 	virtual void Update(float deltaTime);
 	virtual void Render();
+	void RenderText();
 };

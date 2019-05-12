@@ -10,12 +10,15 @@ Scence1::Scence1(): Scence()
 
 Scence1::~Scence1()
 {
-
+	delete map;
 }
 
 void Scence1::LoadResource()
 {
+	Player::GetInstance()->SetPosition(3.0, 100.0f);
+	name = " STAGE 3-1";
 	scenceType = SCENCE::SCENCE_1;
+	timer = 150;
 	map->LoadMap(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
 	Camera::GetInstance()->setWorldBoundary(2048);
 	Grid::GetInstance(246, map->GetWidth(), false);

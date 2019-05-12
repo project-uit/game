@@ -17,21 +17,8 @@ Grid::Grid()
 Grid::Grid(int mapHeight, int mapWidth, bool isArray)
 {
 	draw1 = new GameDebugDraw();
+
 	this->InitGrid(mapHeight, mapWidth, isArray);
-	squares = new  vector<Square*>();
-	cells = new vector<vector<vector<Object*>*>*>();
-	objects = new vector<Object*>();
-	cellLoading = new vector<Cell*>();
-	cells->reserve(numOfRow);
-	for (size_t i = 0; i < numOfRow; i++) {
-		vector<vector<Object*>*> * tempList = new vector<vector<Object*>*>();
-		tempList->reserve(numOfColumn);
-		for (size_t j = 0; j < numOfColumn; j++) {
-			vector<Object*>* obj = new vector<Object*>();
-			tempList->push_back(obj);
-		}
-		cells->push_back(tempList);
-	}
 }
 
 Grid::~Grid()
@@ -53,20 +40,44 @@ void Grid::DeleteGrid()
 			for (int k = 0; k < cells->at(i)->at(j)->size(); k++) {
 				delete cells->at(i)->at(j)->at(k);
 			}
+			cells->at(i)->at(j)->clear();
 			delete cells->at(i)->at(j);
 		}
+		cells->at(i)->clear();
 		delete cells->at(i);
 	}
 	delete cells;
+
 	objects->clear();
 	squares->clear();
 	cellLoading->clear();
+	randomObject->clear();
+
+	delete objects;
+	delete squares;
+	delete cellLoading;
+	delete randomObject;
 }
 
 void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
 {
 	this->numOfRow = (int)ceil((float)mapHeight / CELL_HEIGHT);
 	this->numOfColumn = (int)ceil((float)mapWidth / CELL_WIDTH);
+	squares = new  vector<Square*>();
+	cells = new vector<vector<vector<Object*>*>*>();
+	objects = new vector<Object*>();
+	cellLoading = new vector<Cell*>();
+	randomObject = new vector<Object*>();
+	cells->reserve(numOfRow);
+	for (size_t i = 0; i < numOfRow; i++) {
+		vector<vector<Object*>*> * tempList = new vector<vector<Object*>*>();
+		tempList->reserve(numOfColumn);
+		for (size_t j = 0; j < numOfColumn; j++) {
+			vector<Object*>* obj = new vector<Object*>();
+			tempList->push_back(obj);
+		}
+		cells->push_back(tempList);
+	}
 }
 
 void Grid::Add(Object * obj)
@@ -122,6 +133,12 @@ void Grid::GetObjectsInCells(Object * object)
 	for (int i = 0; i < squares->size(); i++) {
 		if (Game::AABB(camREC, squares->at(i)->GetBoundingBox())) {
 			this->objects->push_back(squares->at(i));
+		}
+	}
+	//Add báo, lính xanh lá
+	for (int i = 0; i < randomObject->size(); i++) {
+		if (Game::AABB(camREC, randomObject->at(i)->GetBoundingBox())) {
+			this->objects->push_back(randomObject->at(i));
 		}
 	}
 	//dòng của grid
@@ -325,9 +342,10 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 					object = new SoldierSword(movingLimit, activeArea, positionX, positionY);
 					Add(object);
 					break;
-				case 2:
-					/*object = new Panther(movingArea, positionX, positionY, direct);
-					Add(object);*/
+				case 4:
+					object = new Panther(movingLimit, activeArea, positionX, positionY);
+					object->SetLastPos(object->GetPosition());
+					randomObject->push_back(object);
 					break;
 				default:
 					break;

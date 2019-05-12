@@ -46,6 +46,8 @@ private:
 	vector<Object*>* objects;
 	//Ground
 	vector<Square*>* squares;
+	//Báo. thằng xanh lá
+	vector<Object*>* randomObject;
 	float deltaTime;
 	void DeleteGrid();
 	//map Height có thể là chiều cao ô cửa sổ hoặc chiều cao của map

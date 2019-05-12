@@ -10,11 +10,13 @@
 #include "Item.h"
 #include "Scence.h"
 #include "Scence1.h"
+#include "HUD.h"
 class World
 {
 private:
 	static World * _instance;
 	Scence* scence;
+	HUD* hud;
 public:
 	World();
 	~World();

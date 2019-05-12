@@ -1,8 +1,4 @@
 #pragma once
-#include "Scence.h"
-#include <d3d9.h>
-#include <d3dx9.h>
-#include "Object.h"
 #include "Texture.h"
 #include "Sprite.h"
 #include "Game.h"
@@ -11,10 +7,11 @@
 #include "Constants.h"
 #include "Map.h"
 #include "Square.h"
-class Scence2 : public Scence {
+#include "Scence.h"
+class Scence3 : public Scence {
 public:
-	Scence2();
-	~Scence2();
+	Scence3();
+	~Scence3();
 	void LoadResource();
 	void Update(float deltaTime);
 	void Render();

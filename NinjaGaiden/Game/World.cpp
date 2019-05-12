@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "Sound.h"
 #include "Text.h"
+#include "Scence2.h"
+#include "Scence3.h"
 World *World::_instance = NULL;
 
 World::World()
@@ -30,8 +32,10 @@ void World::ReplaceScence(SCENCE scenceType) {
 			SetScence(new Scence1());
 			break;
 		case SCENCE::SCENCE_2:
+			SetScence(new Scence2());
 			break;
 		case SCENCE::SCENCE_3:
+			SetScence(new Scence3());
 			break;
 		default:
 			break;
@@ -45,10 +49,18 @@ void World::LoadResource()
 	texture->Add(ID_TEXTURE_MAIN, PATH_TEXTURE_MAIN, D3DCOLOR_XRGB(255, 163, 177));
 	//enemy
 	texture->Add(ID_TEXTURE_MAP_1_ENEMY, PATH_TEXTURE_MAP_1_ENEMY, D3DCOLOR_XRGB(255, 163, 177));
+	//health
+	texture->Add(HEALTH_ID, HEALTH, D3DCOLOR_XRGB(0, 0, 0));
+	//Box
+	texture->Add(BOX_ID, BOX, D3DCOLOR_XRGB(0, 0, 0));
+	//Point
+	texture->Add(POINT_ID, POINT_BOX, D3DCOLOR_XRGB(0, 0, 0));
+	
 	Sound* sound = Sound::GetInstance();
 	Player *main = Player::GetInstance();
 	Text* text = Text::GetInstance();
 	Camera* camera = Camera::GetInstance();
+	hud = new HUD();
 	ReplaceScence(SCENCE::SCENCE_1);
 }
 
@@ -59,8 +71,6 @@ void World::Update(float deltaTime)
 
 void World::Render()
 {
-	/*Text::GetInstance()->DrawString("SCORE - 000000 STAGE - 1 - 1", 0, 0, 200, 30);
-	Text::GetInstance()->DrawString("TIMER - 000 ", 0, 16, 50, 30);
-	Text::GetInstance()->DrawString("P - 01", 0, 32, 50, 30);*/
+	hud->Render();
 	scence->Render();
 }

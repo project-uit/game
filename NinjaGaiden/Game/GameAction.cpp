@@ -152,7 +152,12 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
 {
-	
+	if (KeyCode == DIK_2) {
+		World::GetInstance()->ReplaceScence(SCENCE::SCENCE_2);
+	}
+	if (KeyCode == DIK_3) {
+		World::GetInstance()->ReplaceScence(SCENCE::SCENCE_3);
+	}
 	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
 		if (KeyCode == DIK_RIGHT) {
 			if (Player::GetInstance()->GetState() == PLAYER_STATE::RUN) {

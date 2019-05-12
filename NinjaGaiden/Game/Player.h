@@ -49,6 +49,10 @@ public:
 	void HandleCollision(vector<Object*> *object);
 	void ResetState();
 	void UseWeapon();
+	int GetLifePoint();
+	int GetItemPoint();
+	int GetHp();
+	string GetScoreString();
 	Katana* GetKatana();
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();

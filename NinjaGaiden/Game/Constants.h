@@ -3,6 +3,13 @@
 #define GAME_SCREEN_320_240 0
 #define GAME_SCREEN_640_480 1
 #define GAME_TITLE L"Ninja Gaiden"
+// =========== HUD
+#define HEALTH_ID 50
+#define HEALTH L"sprite\\HUD\\health.PNG"
+#define BOX_ID 51
+#define BOX L"sprite\\HUD\\box.PNG"
+#define POINT_ID 52
+#define POINT_BOX L"sprite\\HUD\\point.PNG"
 // =========== TEXTURE + SPRITE
 #define ID_TEXTURE_MAIN 0
 #define PATH_TEXTURE_MAIN L"sprite\\player.png"
@@ -22,6 +29,16 @@
 #define PATH_POS_MAP_1 L"sprite\\Stage1\\Map1.txt"
 #define PATH_POS_GROUND_MAP_1 L"sprite\\Stage1\\ground.txt"
 #define PATH_POS_ENEMY_MAP_1 L"sprite\\Stage1\\enemy.txt"
+// =====	Map 2
+#define ID_TEXTURE_MAP_2 200
+#define PATH_TEXTURE_MAP_2 L"sprite\\Stage2\\Map2.png"
+#define PATH_POS_MAP_2 L"sprite\\Stage2\\Map2.txt"
+#define PATH_POS_GROUND_MAP_2 L"sprite\\Stage2\\ground.txt"
+// =====	Map 3
+#define ID_TEXTURE_MAP_3 300
+#define PATH_TEXTURE_MAP_3 L"sprite\\Stage3\\Map3.png"
+#define PATH_POS_MAP_3 L"sprite\\Stage3\\Map3.txt"
+#define PATH_POS_GROUND_MAP_3 L"sprite\\Stage3\\ground.txt"
 // ========	Enemy
 #define ID_TEXTURE_MAP_1_ENEMY 101 
 #define PATH_TEXTURE_MAP_1_ENEMY L"sprite\\Enemies_Bosses.png"
@@ -30,7 +47,7 @@
 #define PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk L"sprite\\enemy\\SoldierSword_atk.txt"
 #define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
 //=========== Báo vàng
-#define PATH_TEXTURE_MAP_1_ENEMY_Panther_follow L"sprite\\enemy\\SoldierSword_follow.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_Panther_follow L"sprite\\enemy\\Panther.txt"
 //=========== Trạng thái chết của enemy thường
 #define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
 //=========== other
