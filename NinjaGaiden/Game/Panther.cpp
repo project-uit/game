@@ -31,7 +31,13 @@ Panther::Panther(vector<int> movingLimit, vector<int> activeArea, int positionX,
 }
 
 Panther::~Panther() {
-
+	if (this->sprite != NULL) {
+		for (auto i = this->sprite->begin(); i != this->sprite->end(); i++) {
+			delete i->second;
+			this->sprite->erase(i);
+		}
+		delete this->sprite;
+	}
 }
 
 void Panther::UpdateActiveArea(float t) {
@@ -61,9 +67,6 @@ void Panther::UpdateActiveArea(float t) {
 			}
 		}
 	}
-	//if (!Game::AABB(GetBoundingBox(), Camera::GetInstance()->GetRECTx())) {
-	//	ResetState();
-	//}
 }
 
 void Panther::Update(float t, vector<Object*>* objects) {
@@ -79,9 +82,10 @@ void Panther::Update(float t, vector<Object*>* objects) {
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(this->state)->GetIsComplete()) {
 				sprite->at(this->state)->SetIndex(1);
+				ResetState();
 			}
 			SetVx(0.0f);
-			ResetState();
+
 		}
 
 		HandleCollision(objects);
@@ -98,7 +102,7 @@ void Panther::Update(float t, vector<Object*>* objects) {
 			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
 				state = ENEMY_STATE::DEAD;
 				SetVx(0.0f);
-				Object::PlusPosition(0, -3.0f);
+				Object::PlusPosition(0, -10.0f);
 			}
 		}
 	}

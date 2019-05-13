@@ -60,7 +60,7 @@ void World::LoadResource()
 	Player *main = Player::GetInstance();
 	Text* text = Text::GetInstance();
 	Camera* camera = Camera::GetInstance();
-	hud = new HUD();
+	HUD* hud = HUD::GetInstance();
 	ReplaceScence(SCENCE::SCENCE_1);
 }
 
@@ -71,6 +71,5 @@ void World::Update(float deltaTime)
 
 void World::Render()
 {
-	hud->Render();
 	scence->Render();
 }

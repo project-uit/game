@@ -152,6 +152,9 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
 {
+	if (KeyCode == DIK_1) {
+		World::GetInstance()->ReplaceScence(SCENCE::SCENCE_1);
+	}
 	if (KeyCode == DIK_2) {
 		World::GetInstance()->ReplaceScence(SCENCE::SCENCE_2);
 	}

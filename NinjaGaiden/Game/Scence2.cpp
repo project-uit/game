@@ -1,4 +1,5 @@
 #include "Scence2.h"
+#include "HUD.h"
 Scence2::Scence2() : Scence()
 {
 	this->LoadResource();
@@ -12,7 +13,8 @@ Scence2::~Scence2()
 void Scence2::LoadResource()
 {
 	Player::GetInstance()->SetLastPos({ -1.0f, -1.0f, 0 });
-	Player::GetInstance()->SetPosition(3.0, 100.0f);
+	Player::GetInstance()->SetPosition(10.0, 100.0f);
+	Player::GetInstance()->SetHp(16);
 	name = " STAGE 3-2";
 	scenceType = SCENCE::SCENCE_2;
 	timer = 150;
@@ -30,5 +32,6 @@ void Scence2::Update(float deltaTime)
 
 void Scence2::Render()
 {
+	HUD::GetInstance()->Render();
 	Scence::Render();
 }

@@ -8,7 +8,10 @@
 #include "Map.h"
 #include "Square.h"
 #include "Scence.h"
+#include "Boss.h"
 class Scence3 : public Scence {
+private:
+	Boss* boss;
 public:
 	Scence3();
 	~Scence3();

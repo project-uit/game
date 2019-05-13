@@ -16,8 +16,6 @@ Grid::Grid()
 
 Grid::Grid(int mapHeight, int mapWidth, bool isArray)
 {
-	draw1 = new GameDebugDraw();
-
 	this->InitGrid(mapHeight, mapWidth, isArray);
 }
 
@@ -35,32 +33,45 @@ void Grid::InitObject(std::vector<Object*> * vt) {
 
 void Grid::DeleteGrid()
 {
-	for (int i = 0; i < cells->size(); i++) {
-		for (int j = 0; j < cells->at(i)->size(); j++) {
-			for (int k = 0; k < cells->at(i)->at(j)->size(); k++) {
-				delete cells->at(i)->at(j)->at(k);
+	if (cells) {
+		for (int i = 0; i < cells->size(); i++) {
+			for (int j = 0; j < cells->at(i)->size(); j++) {
+				for (int k = 0; k < cells->at(i)->at(j)->size(); k++) {
+					delete cells->at(i)->at(j)->at(k);
+				}
+				cells->at(i)->at(j)->clear();
+				delete cells->at(i)->at(j);
 			}
-			cells->at(i)->at(j)->clear();
-			delete cells->at(i)->at(j);
+			cells->at(i)->clear();
+			delete cells->at(i);
 		}
-		cells->at(i)->clear();
-		delete cells->at(i);
+		delete cells;
 	}
-	delete cells;
 
-	objects->clear();
-	squares->clear();
-	cellLoading->clear();
-	randomObject->clear();
+	if (objects) {
+		objects->clear();
+		delete objects;
+	}
 
-	delete objects;
-	delete squares;
-	delete cellLoading;
-	delete randomObject;
+	if (squares) {
+		squares->clear();
+		delete squares;
+	}
+	
+	if (cellLoading) {
+		cellLoading->clear();
+		delete cellLoading;
+	}
+
+	if (randomObject) {
+		randomObject->clear();
+		delete randomObject;
+	}
 }
 
 void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
 {
+	draw1 = new GameDebugDraw();
 	this->numOfRow = (int)ceil((float)mapHeight / CELL_HEIGHT);
 	this->numOfColumn = (int)ceil((float)mapWidth / CELL_WIDTH);
 	squares = new  vector<Square*>();

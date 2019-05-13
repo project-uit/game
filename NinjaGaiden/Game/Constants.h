@@ -48,6 +48,9 @@
 #define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
 //=========== Báo vàng
 #define PATH_TEXTURE_MAP_1_ENEMY_Panther_follow L"sprite\\enemy\\Panther.txt"
+//=========== Boss
+#define PATH_TEXTURE_MAP_3_ENEMY_BOSS L"sprite\\boss\\BOSS.txt"
+#define PATH_TEXTURE_MAP_3_BOOM_BOSS L"sprite\\boss\\Boom.txt"
 //=========== Trạng thái chết của enemy thường
 #define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
 //=========== other
@@ -57,7 +60,9 @@ enum OBJECT_TYPE {
 	SOLDIER_SWORD,
 	PANTHER,
 	SMALL_SHURIKEN,
-	BIG_SHURIKEN
+	BIG_SHURIKEN,
+	BOSS, 
+	BOOM_BOSS
 };
 
 enum PLAYER_STATE {
@@ -75,7 +80,9 @@ enum ENEMY_STATE {
 	ATK,
 	FOLLOW,
 	DEAD,
-	DO_NOTHING
+	DO_NOTHING,
+	THROW,
+	HIGH_JUMP,
 };
 
 enum DIRECTION {

@@ -1,6 +1,7 @@
 #include "HUD.h"
 #include "Player.h"
 
+HUD* HUD::_instance = NULL;
 HUD::HUD() {
 	healthPlayer = new Sprite(Texture::GetInstance()->Get(HEALTH_ID), L"sprite\\HUD\\health.txt", 2, 0.0f, 0.5f);
 	healthBoss = new Sprite(Texture::GetInstance()->Get(HEALTH_ID), L"sprite\\HUD\\health.txt", 2, 0.0f, 0.5f);
@@ -20,7 +21,7 @@ void HUD::Update(float t) {
 	//healthBoss->SetIndex(0);
 }
 
-void HUD::Render() {
+void HUD::Render(int hpBoss) {
 	
 	box->DrawSprite(D3DXVECTOR3(67.0f, 3.0f, 0.0f), false);
 	for (int i = 0; i < 16; i++) {
@@ -29,6 +30,12 @@ void HUD::Render() {
 		}
 		else {
 			healthPlayer->SetIndex(1);
+		}
+		if (i < hpBoss) {
+			healthBoss->SetIndex(0);
+		}
+		else {
+			healthBoss->SetIndex(1);
 		}
 		float temp = 155 + i * 5;
 		healthPlayer->DrawSprite(D3DXVECTOR3(temp, 6.0f, 0.0f), false);

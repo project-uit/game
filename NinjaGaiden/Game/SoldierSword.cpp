@@ -34,7 +34,13 @@ SoldierSword::SoldierSword(vector<int> movingLimit, vector<int> activeArea, int 
 }
 
 SoldierSword::~SoldierSword() {
-
+	if (this->sprite != NULL) {
+		for (auto i = this->sprite->begin(); i != this->sprite->end(); i++) {
+			delete i->second;
+			this->sprite->erase(i);
+		}
+		delete this->sprite;
+	}
 }
 void SoldierSword::UpdateActiveArea(float t) {
 	if (state == DEAD && isActive) {

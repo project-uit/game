@@ -52,6 +52,7 @@ public:
 	int GetLifePoint();
 	int GetItemPoint();
 	int GetHp();
+	void SetHp(int hp);
 	string GetScoreString();
 	Katana* GetKatana();
 	static Player* GetInstance() {

@@ -16,7 +16,6 @@ class World
 private:
 	static World * _instance;
 	Scence* scence;
-	HUD* hud;
 public:
 	World();
 	~World();

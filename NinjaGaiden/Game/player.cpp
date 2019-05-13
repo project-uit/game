@@ -41,7 +41,7 @@ Player::Player()
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT, 1, 0.02)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::SIT_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 0.06)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 0.06f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND_ATK,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 0.06f)));
@@ -124,7 +124,6 @@ void Player::SetAcceleratorX(float x) {
 	this->acceleratorX = x;
 }
 
-
 bool Player::GetStateActive()
 {
 	return this->isActive;
@@ -150,105 +149,117 @@ void Player::Update(float t, vector<Object*>* object)
 	if (weapon) {
 		weapon->Update(t, object);
 	}
-	if (this->state == PLAYER_STATE::RUN) {
-		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
-			this->veclocity.x = PLAYER_VELOCITY_X;
-		}
-		if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
-			this->veclocity.x = -PLAYER_VELOCITY_X;
-		}
+	if (state == PLAYER_STATE::DIE && lifePoint > 0) {
+		SetPosition(20.0f, 100.0f);
+		state = JUMP;
+		direction = RIGHT;
+		hp = 16;
+		return;
 	}
+	if (state != PLAYER_STATE::DIE) {
 
-	if (this->state == PLAYER_STATE::JUMP) {
+		if (this->state == PLAYER_STATE::RUN) {
+			if (this->veclocity.x >= PLAYER_VELOCITY_X) {
+				this->veclocity.x = PLAYER_VELOCITY_X;
+			}
+			if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
+				this->veclocity.x = -PLAYER_VELOCITY_X;
+			}
+		}
 
-		if (this->veclocity.x >= PLAYER_VELOCITY_X) {
-			this->veclocity.x = PLAYER_VELOCITY_X/3.5f;
-		}
-		if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
-			this->veclocity.x = -PLAYER_VELOCITY_X/3.5f;
-		}
-	}
+		if (this->state == PLAYER_STATE::JUMP) {
 
-	if (this->state == PLAYER_STATE::STAND) {
-		acceleratorX = 0;
-		veclocity.x = 0;
-	}
+			if (this->veclocity.x >= PLAYER_VELOCITY_X) {
+				this->veclocity.x = PLAYER_VELOCITY_X / 3.5f;
+			}
+			if (this->veclocity.x <= -PLAYER_VELOCITY_X) {
+				this->veclocity.x = -PLAYER_VELOCITY_X / 3.5f;
+			}
+		}
 
-	if (this->state == PLAYER_STATE::STAND_ATK && this->sprite->at(this->state)->GetIndex() == 1) {
-		RECT rect;
-		if (direction == RIGHT) {
-			rect.left = position.x + 26;
+		if (this->state == PLAYER_STATE::STAND) {
+			acceleratorX = 0;
+			veclocity.x = 0;
 		}
-		else {
-			rect.left = position.x - 24;
+
+		if (this->state == PLAYER_STATE::STAND_ATK && this->sprite->at(this->state)->GetIndex() == 1) {
+			RECT rect;
+			if (direction == RIGHT) {
+				rect.left = position.x + 26;
+			}
+			else {
+				rect.left = position.x - 24;
+			}
+			rect.right = rect.left + 13;
+			rect.top = position.y + 8;
+			rect.bottom = rect.top + 6;
+			katana->SetBoundingBox(rect);
 		}
-		rect.right = rect.left + 13;
-		rect.top = position.y + 8;
-		rect.bottom = rect.top + 6;
-		katana->SetBoundingBox(rect);
-	}
-	else if (this->state == PLAYER_STATE::SIT_ATK && this->sprite->at(this->state)->GetIndex() == 1) {
-		RECT rect;
-		if (direction == RIGHT) {
-			rect.left = position.x + 26;
-		}
-		else {
-			rect.left = position.x - 24;
-		}
-		rect.right = rect.left + 13;
-		rect.top = position.y +15;
-		rect.bottom = rect.top + 6;
-		katana->SetBoundingBox(rect);
-	}
-	else {
-		katana->Reset();
-	}
-	if (count == 30) {
-		count = 0;
-		time = 0;
-		isWounded = false;
-	}
-	if (isWounded) {
-		if (time >= 0.02f) {
-			time = 0;	
-			count++;
+		else if (this->state == PLAYER_STATE::SIT_ATK && this->sprite->at(this->state)->GetIndex() == 1) {
+			RECT rect;
+			if (direction == RIGHT) {
+				rect.left = position.x + 26;
+			}
+			else {
+				rect.left = position.x - 24;
+			}
+			rect.right = rect.left + 13;
+			rect.top = position.y + 15;
+			rect.bottom = rect.top + 6;
+			katana->SetBoundingBox(rect);
 		}
 		else {
-			time += t;
+			katana->Reset();
 		}
-	}
+		if (count == 30) {
+			count = 0;
+			time = 0;
+			isWounded = false;
+		}
+		if (isWounded) {
+			if (time >= 0.02f) {
+				time = 0;
+				count++;
+			}
+			else {
+				time += t;
+			}
+		}
 
-	Object::Update(t);
-	SetLastPos(GetPosition());
+		Object::Update(t);
+		SetLastPos(GetPosition());
 
-	RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
+		RECT rect = this->sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 
-	Object::updateBoundingBox(rect);
+		Object::updateBoundingBox(rect);
 
-	this->veclocity.y += GRAVITY;
-	this->veclocity.x += acceleratorX;
+		this->veclocity.y += GRAVITY;
+		this->veclocity.x += acceleratorX;
 
-	if (this->last_state != this->state) {
-		ResetSpriteState(this->last_state);
-	}
-	
-	this->sprite->at(this->state)->NextSprite(t);
-	//if (this->sprite->at(this->state)->GetCount() > 2) {
-	//	this->sprite->at(this->state)->SetIndex(0);
-	//}
-	if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::STAND_ATK) {
-		state = PLAYER_STATE::STAND;
-	}
+		if (this->last_state != this->state) {
+			ResetSpriteState(this->last_state);
+		}
+		this->sprite->at(this->state)->NextSprite(t);
+		//if (this->sprite->at(this->state)->GetCount() > 2) {
+		//	this->sprite->at(this->state)->SetIndex(0);
+		//}
+		if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::STAND_ATK) {
+			state = PLAYER_STATE::STAND;
+		}
 
-	if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::SIT_ATK) {
-		state = PLAYER_STATE::SIT;
-	}
+		if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::SIT_ATK) {
+			state = PLAYER_STATE::SIT;
+		}
 
-	HandleCollision(object);
-
-	if (state == PLAYER_STATE::DIE) {
-		SetPosition(0.0f, 130.0f);
-		state = STAND;
+		HandleCollision(object);
+		if (hp == 0 || !Game::AABB(GetBoundingBox(), Camera::GetInstance()->GetRECTx())) {
+			state = PLAYER_STATE::DIE;
+			lifePoint--;
+			isWounded = false;
+			time = 0;
+			SetVx(0.0f);
+			return;
+		}
 	}
 }
 
@@ -264,7 +275,6 @@ void Player::HandleCollision(vector<Object*> *object) {
 	//DebugOut((wchar_t *)L"OnGround: %d\n", isOnGround);
 	if (coEvents->size() == 0) {
 		Object::PlusPosition(this->deltaX, this->deltaY);
-		//isOnGround = false;
 	}
 	else {
 		float min_tx, min_ty, nx = 0, ny;
@@ -300,9 +310,12 @@ void Player::HandleCollision(vector<Object*> *object) {
 				if (e->nx != 0) {
 					Object::PlusPosition(this->deltaX, 0.0f);
 				}
+				continue;
 			}
+
 			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD
-				|| e->object->GetObjectType() == OBJECT_TYPE::PANTHER) {
+				|| e->object->GetObjectType() == OBJECT_TYPE::PANTHER
+				|| e->object->GetObjectType() == OBJECT_TYPE::BOSS) {
 				acceleratorX = 0.0f;
 				//SetVx(0.0f);
 				if (e->nx != 0) {
@@ -334,6 +347,7 @@ void Player::HandleCollision(vector<Object*> *object) {
 				}
 				isWounded = true;
 				hp--;
+				continue;
 			}
 		}
 	}
@@ -423,6 +437,10 @@ int Player::GetItemPoint() {
 
 int Player::GetHp() {
 	return hp;
+}
+
+void Player::SetHp(int hp) {
+	this->hp = hp;
 }
 
 string Player::GetScoreString() {
