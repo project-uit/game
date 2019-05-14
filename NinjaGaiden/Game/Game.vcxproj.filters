@@ -67,6 +67,18 @@
     <Filter Include="Header Files\HUD\Health">
       <UniqueIdentifier>{596e44a5-fa2b-4df4-ab30-0f2e6c65498a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\Boss">
+      <UniqueIdentifier>{6f98bfa3-caef-4de8-9feb-38e52cd17cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Boss">
+      <UniqueIdentifier>{ba58471a-03df-4e56-9e5a-81721b3e7338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Ladder">
+      <UniqueIdentifier>{1b2c96b2-a009-46d2-a129-ed778321709b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Ladder">
+      <UniqueIdentifier>{84c17ab6-4f65-4565-ae0e-48a3dabe8fef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -162,9 +174,6 @@
     <ClInclude Include="CircleFire.h">
       <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Boss.h">
-      <Filter>Header Files\Object\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Header Files\HUD\Health</Filter>
     </ClInclude>
@@ -173,6 +182,39 @@
     </ClInclude>
     <ClInclude Include="Scence3.h">
       <Filter>Header Files\Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SoliderBazoka.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SoliderGun.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SoliderRun.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Witch.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="WitchSword.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Food.h">
+      <Filter>Header Files\Object\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Boom.h">
+      <Filter>Header Files\Object\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Header Files\Object\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Ladder.h">
+      <Filter>Header Files\Object\Ladder</Filter>
+    </ClInclude>
+    <ClInclude Include="Rock.h">
+      <Filter>Header Files\Object\Ladder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +307,39 @@
     </ClCompile>
     <ClCompile Include="Scence3.cpp">
       <Filter>Source Files\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="SoliderBazoka.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="SoliderGun.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="SoliderRun.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Witch.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="WitchSword.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Food.cpp">
+      <Filter>Source Files\Object\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Boom.cpp">
+      <Filter>Source Files\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Source Files\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Ladder.cpp">
+      <Filter>Source Files\Object\Ladder</Filter>
+    </ClCompile>
+    <ClCompile Include="Rock.cpp">
+      <Filter>Source Files\Object\Ladder</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

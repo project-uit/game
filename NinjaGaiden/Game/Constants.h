@@ -29,11 +29,13 @@
 #define PATH_POS_MAP_1 L"sprite\\Stage1\\Map1.txt"
 #define PATH_POS_GROUND_MAP_1 L"sprite\\Stage1\\ground.txt"
 #define PATH_POS_ENEMY_MAP_1 L"sprite\\Stage1\\enemy.txt"
+#define PATH_POS_FOOD_MAP_1 L"sprite\\Stage1\\food.txt"
 // =====	Map 2
 #define ID_TEXTURE_MAP_2 200
 #define PATH_TEXTURE_MAP_2 L"sprite\\Stage2\\Map2.png"
 #define PATH_POS_MAP_2 L"sprite\\Stage2\\Map2.txt"
 #define PATH_POS_GROUND_MAP_2 L"sprite\\Stage2\\ground.txt"
+#define PATH_POS_ENEMY_MAP_2 L"sprite\\Stage2\\enemy.txt"
 // =====	Map 3
 #define ID_TEXTURE_MAP_3 300
 #define PATH_TEXTURE_MAP_3 L"sprite\\Stage3\\Map3.png"
@@ -53,6 +55,29 @@
 #define PATH_TEXTURE_MAP_3_BOOM_BOSS L"sprite\\boss\\Boom.txt"
 //=========== Trạng thái chết của enemy thường
 #define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
+//=========== Item food 1
+#define PATH_TEXTURE_MAP_1_FOOD_UNTOUCH L"sprite\\food\\food_untouch.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_DEAD	L"sprite\\food\\food_dead.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_BLOOD_BLUE L"sprite\\food\\food_blood_blue.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_BLOOD_RED L"sprite\\food\\food_blood_red.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_DARTS_BLUE L"sprite\\food\\food_darts_blue.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_DARTS_RED L"sprite\\food\\food_darts_red.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_ITEM_BLUE L"sprite\\food\\food_item_blue.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_ITEM_RED L"sprite\\food\\food_item_red.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_FIRE L"sprite\\food\\food_fire.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_TIME L"sprite\\food\\food_time.txt"
+//=========== Phù thủy
+#define PATH_TEXTURE_MAP_1_ENEMY_WITCH_FOLLOW L"sprite\\enemy\\Witch\\follow.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_WITCH_ATK L"sprite\\enemy\\Witch\\atk.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_WITCH_SWORD L"sprite\\enemy\\Witch\\sword.txt"
+//=========== Lính cầm súng
+#define PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_GUN_FOLLOW L"sprite\\enemy\\SoliderGun\\follow.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_GUN_ATK L"sprite\\enemy\\SoliderGun\\atk.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_GUN_BULLET L"sprite\\enemy\\SoliderGun\\bullet.txt"
+//=========== Lính cầm bazoka
+#define PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_BAZOKA_DO_NOT_THING L"sprite\\enemy\\SoliderBazoka\\do_not_thing.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_BAZOKA_ATK L"sprite\\enemy\\SoliderBazoka\\atk.txt"
+#define PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_BAZOKA_BULLET L"sprite\\enemy\\SoliderBazoka\\bullet.txt"
 //=========== other
 enum OBJECT_TYPE {
 	SQUARE,
@@ -62,7 +87,21 @@ enum OBJECT_TYPE {
 	SMALL_SHURIKEN,
 	BIG_SHURIKEN,
 	BOSS, 
-	BOOM_BOSS
+	BOOM_BOSS,
+	WITCH,
+	WITCH_SWORD,
+	SOLIDER_GUN,
+	BULLET,
+	SOLIDER_BAZOKA,
+	SOLIDER_RUN,
+	FOOD,
+	LADDER,
+	ROCK
+};
+
+enum BULLET_TYPE {
+	GUN,
+	BAZOKA
 };
 
 enum PLAYER_STATE {
@@ -83,6 +122,14 @@ enum ENEMY_STATE {
 	DO_NOTHING,
 	THROW,
 	HIGH_JUMP,
+	FLY,
+	INVISIBLE
+};
+
+enum FOOD_STATE {
+	UNTOUCH,
+	TOUCHED,
+	DIGESTED,
 };
 
 enum DIRECTION {

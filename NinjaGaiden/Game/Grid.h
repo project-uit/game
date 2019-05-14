@@ -70,6 +70,7 @@ public:
 	vector<Object*>* GetObjects();
 	void LoadSquares(LPCWSTR filePath);
 	void LoadObjets(LPCWSTR filePath);
+	void LoadFoods(LPCWSTR filePath, SCENCE scene);
 	static Grid* GetInstance();
 	static Grid* GetInstance(int mapHeight, int mapWidth, bool isArray = true);
 };

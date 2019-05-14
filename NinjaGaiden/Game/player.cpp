@@ -316,38 +316,9 @@ void Player::HandleCollision(vector<Object*> *object) {
 			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD
 				|| e->object->GetObjectType() == OBJECT_TYPE::PANTHER
 				|| e->object->GetObjectType() == OBJECT_TYPE::BOSS) {
-				acceleratorX = 0.0f;
-				//SetVx(0.0f);
-				if (e->nx != 0) {
-					if (isWounded) {
-						Object::PlusPosition(deltaX, 0.0f);
-						continue;
-					}
-					else {
-						state = PLAYER_STATE::WOUNDED;
-						SetVy(-230.0f);
-						SetVx(e->nx * 100.0f);
-					}
+				if (Wounded(e, e->object->GetObjectDirection())) {
+					continue;
 				}
-				if (e->ny != 0) {
-					if (isWounded) {
-						Object::PlusPosition(0.0f, deltaY);
-						continue;
-					}
-					else {
-						state = PLAYER_STATE::WOUNDED;
-						SetVy(-230.0f);
-						if (direction == LEFT) {
-							SetVx(100.0f);
-						}
-						else {
-							SetVx(-100.0f);
-						}
-					}
-				}
-				isWounded = true;
-				hp--;
-				continue;
 			}
 		}
 	}
@@ -453,6 +424,46 @@ void Player::ResetState() {
 
 }
 
+bool Player::Wounded(CollisionHandler* e, DIRECTION direction) {
+	acceleratorX = 0.0f;
+	Object* obj = e->object;
+	if (e->nx != 0) {
+		if (isWounded) {
+			Object::PlusPosition(deltaX, 0.0f);
+			return true;
+		}
+		else {
+			state = PLAYER_STATE::WOUNDED;
+			SetVy(-230.0f);
+			if (direction == LEFT) {
+				SetVx(-100.0f);
+			}
+			else {
+				SetVx(100.0f);
+			}
+		}
+	}
+	if (e->ny != 0) {
+		if (isWounded) {
+			Object::PlusPosition(0.0f, deltaY);
+			return true;
+		}
+		else {
+			state = PLAYER_STATE::WOUNDED;
+			SetVy(-230.0f);
+			if (direction == LEFT) {
+				SetVx(-100.0f);
+			}
+			else {
+				SetVx(100.0f);
+			}
+		}
+	}
+	isOnGround = false;
+	isWounded = true;
+	hp--;
+	return false;
+}
 
 
 

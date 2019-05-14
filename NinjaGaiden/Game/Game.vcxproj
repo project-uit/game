@@ -124,11 +124,14 @@
   <ItemGroup>
     <ClInclude Include="Bat.h" />
     <ClInclude Include="BigShuriken.h" />
+    <ClInclude Include="Boom.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleFire.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Food.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAction.h" />
     <ClInclude Include="GameDebugDraw.h" />
@@ -139,29 +142,40 @@
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Katana.h" />
+    <ClInclude Include="Ladder.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MatrixFire.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Panther.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Rock.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Scence1.h" />
     <ClInclude Include="Scence2.h" />
     <ClInclude Include="Scence3.h" />
     <ClInclude Include="SmallShuriken.h" />
     <ClInclude Include="SoldierSword.h" />
+    <ClInclude Include="SoliderBazoka.h" />
+    <ClInclude Include="SoliderGun.h" />
+    <ClInclude Include="SoliderRun.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Weapon.h" />
+    <ClInclude Include="Witch.h" />
+    <ClInclude Include="WitchSword.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BigShuriken.cpp" />
+    <ClCompile Include="Boom.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Food.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAction.cpp" />
     <ClCompile Include="GameDebugDraw.cpp" />
@@ -171,16 +185,21 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Katana.cpp" />
+    <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Panther.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Scence1.cpp" />
     <ClCompile Include="Scence2.cpp" />
     <ClCompile Include="Scence3.cpp" />
     <ClCompile Include="SmallShuriken.cpp" />
     <ClCompile Include="SoldierSword.cpp" />
+    <ClCompile Include="SoliderBazoka.cpp" />
+    <ClCompile Include="SoliderGun.cpp" />
+    <ClCompile Include="SoliderRun.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -188,6 +207,8 @@
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Witch.cpp" />
+    <ClCompile Include="WitchSword.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

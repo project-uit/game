@@ -22,7 +22,7 @@ void Scence2::LoadResource()
 	Camera::GetInstance()->setWorldBoundary(3072);
 	Grid::GetInstance()->ReSetGrid(246, map->GetWidth(), false);
 	Grid::GetInstance()->LoadSquares(PATH_POS_GROUND_MAP_2);
-	//Grid::GetInstance()->LoadObjets(PATH_POS_ENEMY_MAP_1);
+	Grid::GetInstance()->LoadObjets(PATH_POS_ENEMY_MAP_2);
 }
 
 void Scence2::Update(float deltaTime)

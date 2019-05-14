@@ -1,11 +1,17 @@
-﻿#include "Grid.h"
+﻿#include <algorithm>
+#include "Grid.h"
 #include "Camera.h"
 #include "Debug.h"
 #include "GameDebugDraw.h"
-#include "SoldierSword.h"
 #include "Player.h"
+#include "Food.h"
+#include "SoldierSword.h"
+#include "SoliderGun.h"
+#include "SoliderBazoka.h"
+#include "Witch.h"
 #include "Panther.h"
-#include <algorithm>
+
+
 Grid* Grid::_instance = NULL;
 GameDebugDraw* draw1;
 
@@ -100,6 +106,7 @@ void Grid::Add(Object * obj)
 }
 
 void Grid::Add(int row, int column, Object * obj) {
+	obj->SetLastPos(obj->GetPosition());
 	cells->at(row)->at(column)->push_back(obj);
 }
 
@@ -348,7 +355,8 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 			int row = 0; // dòng muốn add vào grid (chỉ dùng cho các object đặc biệt)
 			int column = 0; // cột muốn add vào grid (chỉ dùng cho các object đặc biệt)
 			if (tempVector->size() > 12) {
-
+				row = tempVector->at(13);
+				column = tempVector->at(12);
 			}
 			Object* object;
 			switch (TypeObject) {
@@ -356,14 +364,73 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 					object = new SoldierSword(movingLimit, activeArea, positionX, positionY);
 					Add(object);
 					break;
+				case 2:
+					object = new Witch(positionX, positionY, movingLimit, activeArea);
+					Add(object);
+					break;
+				case 3:
+					object = new SoliderGun(positionX, positionY, movingLimit, activeArea);
+					Add(row, column, object);
+					break;
 				case 4:
 					object = new Panther(movingLimit, activeArea, positionX, positionY);
 					object->SetLastPos(object->GetPosition());
 					randomObject->push_back(object);
 					break;
+				case 5:
+					object = new SoliderBazoka(positionX, positionY, movingLimit, activeArea);
+					Add(object);
+					break;
 				default:
 					break;
 			}
+		}
+		tempVector->clear();
+		delete tempVector;
+	}
+	f.close();
+}
+
+void Grid::LoadFoods(LPCWSTR filePath, SCENCE scene) {
+	fstream f;
+	try
+	{
+		f.open(filePath);
+	}
+	catch (fstream::failure e)
+	{
+		trace(L"Error when init grid %s", filePath);
+		return;
+	}
+	string line;
+	while (!f.eof()) {
+		getline(f, line);
+
+		string splitString;
+
+		istringstream iss(line);
+
+		vector<int> * tempVector = new vector<int>();
+
+		while (getline(iss, splitString, '\t'))
+		{
+			tempVector->push_back(stoi(splitString));
+		}
+		if (tempVector->size() > 1) {
+			int id = tempVector->at(0);
+			int TypeObject = tempVector->at(1);
+			int positionX = tempVector->at(2);
+			int positionY = tempVector->at(3);
+			vector<int> movingLimit, activeArea;
+
+			int row = 0;
+			int column = 0;
+			if (tempVector->size() > 12) {
+
+			}
+			Object* object;
+			object = new Food(scene, TypeObject, positionX, positionY);
+			Add(object);
 		}
 		tempVector->clear();
 		delete tempVector;

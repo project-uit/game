@@ -16,7 +16,7 @@ Scence1::~Scence1()
 void Scence1::LoadResource()
 {
 	Player::GetInstance()->SetLastPos({ -1.0f, -1.0f, 0 });
-	Player::GetInstance()->SetPosition(10.0, 100.0f);
+	Player::GetInstance()->SetPosition(1200.0, 100.0f);
 	name = " STAGE 3-1";
 	scenceType = SCENCE::SCENCE_1;
 	timer = 150;
@@ -25,6 +25,7 @@ void Scence1::LoadResource()
 	Grid::GetInstance()->ReSetGrid(246, map->GetWidth(), false);
 	Grid::GetInstance()->LoadSquares(PATH_POS_GROUND_MAP_1);
 	Grid::GetInstance()->LoadObjets(PATH_POS_ENEMY_MAP_1);
+	Grid::GetInstance()->LoadFoods(PATH_POS_FOOD_MAP_1, scenceType);
 }
 
 void Scence1::Update(float deltaTime)

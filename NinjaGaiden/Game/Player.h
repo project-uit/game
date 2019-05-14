@@ -40,6 +40,7 @@ public:
 	void SetOnGround(bool isOnGround);
 	bool GetOnGround();
 	bool GetWounded();
+	bool Wounded(CollisionHandler* e, DIRECTION direction);
 	Sprite* GetCurrentSprite();
 	void Reset(float  x, float y);
 	void SetAcceleratorX(float x);
