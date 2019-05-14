@@ -16,7 +16,7 @@ Scence1::~Scence1()
 void Scence1::LoadResource()
 {
 	Player::GetInstance()->SetLastPos({ -1.0f, -1.0f, 0 });
-	Player::GetInstance()->SetPosition(1200.0, 100.0f);
+	Player::GetInstance()->SetPosition(5.0f, 100.0f);
 	name = " STAGE 3-1";
 	scenceType = SCENCE::SCENCE_1;
 	timer = 150;

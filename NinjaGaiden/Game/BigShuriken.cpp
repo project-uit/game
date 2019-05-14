@@ -31,21 +31,22 @@ void BigShuriken::Orbit(float t) {
 	if (position.x <= right) {
 		SetVx(400.0f);
 	}
-	if (!orbitMoving) {
-		if (Player::GetInstance()->GetPosition().y + 35 < position.y) {
-			if (this->veclocity.y > 0) {
-				this->veclocity.y = 0.0f;
-			}
-			this->veclocity.y += -110.0f*t;
-			if (this->veclocity.y <= -200.0f) {
-				this->veclocity.y = -200.0f;
-			}
+	if (Player::GetInstance()->GetPosition().y + 10 < position.y) {
+		if (this->veclocity.y >= 0) {
+			this->veclocity.y = 0.0f;
 		}
-		else {
-			this->veclocity.y += 110.0f*t;
-			if (this->veclocity.y >= 200.0f) {
-				this->veclocity.y = 200.0f;
-			}
+		this->veclocity.y += -110.0f*t;
+		if (this->veclocity.y <= -200.0f) {
+			this->veclocity.y = -200.0f;
+		}
+	}
+	else {
+		if (this->veclocity.y <= 0) {
+			this->veclocity.y = 0.0f;
+		}
+		this->veclocity.y += 110.0f*t;
+		if (this->veclocity.y >= 200.0f) {
+			this->veclocity.y = 200.0f;
 		}
 	}
 }
@@ -57,8 +58,12 @@ void BigShuriken::Update(float t, vector<Object*> *object) {
 		RECT rect = sprite->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->NextSprite(t);
+		HandleCollision(object);
 	}
-	HandleCollision(object);
+	else {
+		SetPosition(0.0f, 0.0f);
+	}
+	
 }
 
 void BigShuriken::HandleCollision(vector<Object*> *object) {
@@ -82,16 +87,9 @@ void BigShuriken::HandleCollision(vector<Object*> *object) {
 					isActive = false;
 					SetVx(0.0f);
 					SetVy(0.0f);
-					//orbitMoving = true;
 				}
 			}
-			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD) {
-				SoldierSword *enemy = dynamic_cast<SoldierSword *>(e->object);
-				if (e->nx != 0) {
-					enemy->SetState(ENEMY_STATE::DEAD);
-				}
-			}
-			Object::PlusPosition(this->deltaX, 0.0f);
+			Object::PlusPosition(this->deltaX, this->deltaY);
 		}
 	}
 }

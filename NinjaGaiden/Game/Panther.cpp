@@ -42,6 +42,33 @@ Panther::~Panther() {
 
 void Panther::UpdateActiveArea(float t) {
 	if (state != DEAD) {
+		if (Player::GetInstance()->GetPosition().x >= 1125 && Player::GetInstance()->GetPosition().x <= 1410) {
+			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
+				&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
+				&& Player::GetInstance()->GetDirection() == RIGHT
+				&& activeArea.at(0) != 0
+				&& activeArea.at(1) != 0) {
+				isActive = true;
+				direction = LEFT;
+				SetVx(-180.0f);
+				leftMoving = movingLimit.at(0);
+				rightMoving = movingLimit.at(1);
+			}
+			else {
+				if (Player::GetInstance()->GetPosition().x >= activeArea.at(2)
+					&& Player::GetInstance()->GetPosition().x <= activeArea.at(3)
+					&& Player::GetInstance()->GetDirection() == LEFT
+					&& activeArea.at(2) != 0
+					&& activeArea.at(3) != 0) {
+					isActive = true;
+					direction = RIGHT;
+					SetVx(180.0f);
+					leftMoving = movingLimit.at(2);
+					rightMoving = movingLimit.at(3);
+				}
+			}
+			return;
+		}
 		if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 			&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
 			&& Player::GetInstance()->GetDirection() == LEFT
@@ -99,10 +126,11 @@ void Panther::Update(float t, vector<Object*>* objects) {
 				direction = LEFT;
 				SetVx(-180.0f);
 			}
-			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
+			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())
+				|| Game::AABB(Player::GetInstance()->GetWeapon()->GetBoundingBox(), GetBoundingBox())) {
 				state = ENEMY_STATE::DEAD;
 				SetVx(0.0f);
-				Object::PlusPosition(0, -10.0f);
+				Object::PlusPosition(0, -20.0f);
 			}
 		}
 	}

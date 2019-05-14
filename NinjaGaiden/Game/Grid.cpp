@@ -153,9 +153,10 @@ void Grid::GetObjectsInCells(Object * object)
 			this->objects->push_back(squares->at(i));
 		}
 	}
+	RECT camRECTx = Camera::GetInstance()->GetRECTx();
 	//Add báo, lính xanh lá
 	for (int i = 0; i < randomObject->size(); i++) {
-		if (Game::AABB(camREC, randomObject->at(i)->GetBoundingBox())) {
+		if (Game::AABB(camRECTx, randomObject->at(i)->GetBoundingBox())) {
 			this->objects->push_back(randomObject->at(i));
 		}
 		else {

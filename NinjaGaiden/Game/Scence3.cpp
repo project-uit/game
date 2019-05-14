@@ -14,7 +14,7 @@ Scence3::~Scence3()
 void Scence3::LoadResource()
 {
 	Player::GetInstance()->SetLastPos({ -1.0f, -1.0f, 0 });
-	Player::GetInstance()->SetPosition(35.0f, 100.0f);
+	Player::GetInstance()->SetPosition(125.0f, 130.0f);
 	Player::GetInstance()->SetHp(16);
 	name = " STAGE 3-3";
 	scenceType = SCENCE::SCENCE_3;

@@ -54,8 +54,10 @@ public:
 	int GetItemPoint();
 	int GetHp();
 	void SetHp(int hp);
+	float GetAcceleratorX();
 	string GetScoreString();
 	Katana* GetKatana();
+	Weapon* GetWeapon();
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();
 		return _instance;

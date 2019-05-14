@@ -29,8 +29,12 @@ void SmallShuriken::Update(float t, vector<Object*> *object) {
 		RECT rect = sprite->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->NextSprite(t);
+		HandleCollision(object);
 	}
-	HandleCollision(object);
+	else {
+		SetPosition(0.0f, 0.0f);
+	}
+	
 }
 
 void SmallShuriken::HandleCollision(vector<Object*> *object) {

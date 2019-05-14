@@ -4,6 +4,7 @@
 #include "SoldierSword.h"
 #include "BigShuriken.h"
 #include <iomanip> 
+#include "Boss.h"
 
 Player* Player::_instance = NULL;
 
@@ -24,7 +25,7 @@ Player::Player()
 	isOnGround = false;
 	isWounded = false;
 	katana = new Katana();
-	weapon = new SmallShuriken();
+	weapon = new BigShuriken();
 	time = 0;
 	count = 0;
 	lifePoint = 3;
@@ -44,7 +45,7 @@ Player::Player()
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_SIT_ATK, 3, 0.06f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::STAND_ATK,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 0.06f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_STAND_ATK, 3, 0.07f)));
 	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::JUMP,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_JUMP, 4, 0.0675f)));
@@ -89,6 +90,10 @@ PLAYER_STATE Player::GetState()
 
 Katana* Player::GetKatana() {
 	return katana;
+}
+
+Weapon* Player::GetWeapon() {
+	return weapon;
 }
 
 void Player::SetState(PLAYER_STATE value)
@@ -147,6 +152,9 @@ void Player::Reset(float x, float y)
 void Player::Update(float t, vector<Object*>* object)
 {
 	if (weapon) {
+		//if (Game::AABB(weapon->GetBoundingBox(), GetBoundingBox())) {
+		//	weapon->SetActive(false);
+		//}
 		weapon->Update(t, object);
 	}
 	if (state == PLAYER_STATE::DIE && lifePoint > 0) {
@@ -258,6 +266,7 @@ void Player::Update(float t, vector<Object*>* object)
 			isWounded = false;
 			time = 0;
 			SetVx(0.0f);
+			count = 0;
 			return;
 		}
 	}
@@ -279,7 +288,7 @@ void Player::HandleCollision(vector<Object*> *object) {
 	else {
 		float min_tx, min_ty, nx = 0, ny;
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		this->PlusPosition(min_tx * this->deltaX + nx * 0.3f, min_ty*this->deltaY + ny*0.3f);
+		this->PlusPosition(min_tx * this->deltaX + nx * 0.2f, min_ty*this->deltaY + ny*0.2f);
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (!e->object->GetActive()) {
@@ -312,13 +321,15 @@ void Player::HandleCollision(vector<Object*> *object) {
 				}
 				continue;
 			}
-
 			if (e->object->GetObjectType() == OBJECT_TYPE::SOLDIER_SWORD
 				|| e->object->GetObjectType() == OBJECT_TYPE::PANTHER
 				|| e->object->GetObjectType() == OBJECT_TYPE::BOSS) {
 				if (Wounded(e, e->object->GetObjectDirection())) {
 					continue;
 				}
+			}
+			if (e->object->GetObjectType() == OBJECT_TYPE::FOOD) {
+				Object::PlusPosition(this->deltaX, this->deltaY);
 			}
 		}
 	}
@@ -412,6 +423,10 @@ int Player::GetHp() {
 
 void Player::SetHp(int hp) {
 	this->hp = hp;
+}
+
+float Player::GetAcceleratorX() {
+	return acceleratorX;
 }
 
 string Player::GetScoreString() {

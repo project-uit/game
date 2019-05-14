@@ -41,8 +41,6 @@ protected:
 	D3DXVECTOR2 positionColide;
 	OBJECT_TYPE objectType;
 	bool isActive;
-	//Object* nextObj;
-	//Object* preObj;
 	float deltaX;
 	float deltaY;
 	float deltaTime;

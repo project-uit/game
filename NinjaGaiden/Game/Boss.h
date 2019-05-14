@@ -15,6 +15,9 @@ private:
 	float time;
 	int count;
 	float timeHurt;
+	float deltaXAxis;
+	int left;
+	int right;
 public:
 	Boss();
 	~Boss();

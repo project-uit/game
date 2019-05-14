@@ -32,11 +32,8 @@ int GameAction::GameRun()
 			DispatchMessage(&msg);
 		}
 		delta += GameTime::GetInstance()->GetCouter();
-		//DWORD now = GetTickCount();	
-		//DWORD deltaTime = now - frameStart;
 		if (delta >= tickPerFrame)
 		{
-			//frameStart = now;
 			Game::GetInstance()->ProcessKeyboard();
 			this->Update(delta);
 			this->Render();
@@ -136,8 +133,15 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 			}
 			if (KeyCode == DIK_Z) {
 				Player::GetInstance()->SetState(PLAYER_STATE::STAND_ATK);
+				if (Player::GetInstance()->GetAcceleratorX() != 0) {
+					if (Player::GetInstance()->GetDirection() == DIRECTION::RIGHT) {
+						Player::GetInstance()->SetVx(80.0f);
+					}
+					else {
+						Player::GetInstance()->SetVx(-80.0f);
+					}
+				}
 				Player::GetInstance()->SetAcceleratorX(0.0f);
-				Player::GetInstance()->SetVx(0.0f);
 			}
 		}
 

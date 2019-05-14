@@ -139,7 +139,8 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 				}
 			}
 
-			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
+			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())
+				|| Game::AABB(Player::GetInstance()->GetWeapon()->GetBoundingBox(), GetBoundingBox())) {
 				state = ENEMY_STATE::DEAD;
 				SetVx(0.0f);
 				Object::PlusPosition(0, -3.0f);

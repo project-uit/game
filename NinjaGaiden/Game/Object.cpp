@@ -44,8 +44,7 @@ void Object::SweptAABB(Object * obj, float dx, float dy, float &collisionTime, f
 	float bb = dy > 0 ? movingBottom + dy : movingBottom - dy;
 	//Check AABB
 	if (br < staticLeft || bl >  staticRight
-		|| bb < staticTop || bt > staticBottom)
-		
+		|| bb < staticTop || bt > staticBottom)		
 		return;
 
 	if (dx == 0 && dy == 0) {
@@ -132,8 +131,7 @@ void Object::CalcPotentialCollisions(vector<Object*>* objects, vector<CollisionH
 {
 	for (UINT i = 0; i < objects->size(); i++) {
 		CollisionHandler* coEvent = this->GetCollsionObjectsBySweptAABB(objects->at(i));
-		//float remainingTime = 1.0f - coEvent->collisionTime;
-		if (coEvent->collisionTime < 1.0f)
+		if (coEvent->collisionTime >= 0 && coEvent->collisionTime < 1.0f)
 			coEvents->push_back(coEvent);
 		else
 			delete coEvent;
