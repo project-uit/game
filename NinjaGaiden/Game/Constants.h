@@ -20,6 +20,7 @@
 #define PATH_POS_STAND_ATK L"sprite\\main\\MAIN_STAND_ATK.txt"
 #define PATH_POS_JUMP L"sprite\\main\\MAIN_JUMP.txt"
 #define PATH_POS_WOUNDED L"sprite\\main\\MAIN_WOUNDED.txt"
+#define PATH_POS_WEAPON L"sprite\\main\\MAIN_USE_WEAPON.txt"
 // ======== Vũ khí player
 #define PATH_POS_SmallShuriken L"sprite\\main\\SmallShuriken.txt"
 #define PATH_POS_BigShuriken L"sprite\\main\\BigShuriken.txt"
@@ -50,6 +51,8 @@
 #define PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE L"sprite\\enemy\\enemy_die.txt"
 //=========== Báo vàng
 #define PATH_TEXTURE_MAP_1_ENEMY_Panther_follow L"sprite\\enemy\\Panther.txt"
+//=========== Đại bàng
+#define PATH_TEXTURE_MAP_1_ENEMY_Eagle_follow L"sprite\\enemy\\Eagle.txt"
 //=========== Boss
 #define PATH_TEXTURE_MAP_3_ENEMY_BOSS L"sprite\\boss\\BOSS.txt"
 #define PATH_TEXTURE_MAP_3_BOOM_BOSS L"sprite\\boss\\Boom.txt"
@@ -96,7 +99,8 @@ enum OBJECT_TYPE {
 	SOLIDER_RUN,
 	FOOD,
 	LADDER,
-	ROCK
+	ROCK,
+	EAGLE
 };
 
 enum BULLET_TYPE {
@@ -112,7 +116,8 @@ enum PLAYER_STATE {
 	SIT,
 	DIE,
 	SIT_ATK,
-	WOUNDED
+	WOUNDED,
+	USE_WEAPON
 };
 
 enum ENEMY_STATE {

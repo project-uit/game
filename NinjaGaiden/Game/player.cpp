@@ -53,6 +53,9 @@ Player::Player()
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::WOUNDED,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_WOUNDED, 1, 0.0f)));
 	this->sprite
+		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::USE_WEAPON,
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_WEAPON, 3, 0.07f)));
+	this->sprite
 		->insert(pair<PLAYER_STATE, Sprite*>(PLAYER_STATE::DIE,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_WOUNDED, 1, 0.0f)));
 }
@@ -251,7 +254,8 @@ void Player::Update(float t, vector<Object*>* object)
 		//if (this->sprite->at(this->state)->GetCount() > 2) {
 		//	this->sprite->at(this->state)->SetIndex(0);
 		//}
-		if (this->sprite->at(this->state)->GetIsComplete() && state == PLAYER_STATE::STAND_ATK) {
+		if (this->sprite->at(this->state)->GetIsComplete() 
+			&& (state == PLAYER_STATE::STAND_ATK || state == PLAYER_STATE::USE_WEAPON)) {
 			state = PLAYER_STATE::STAND;
 		}
 
@@ -366,6 +370,9 @@ void Player::Render()
 			else if (state == PLAYER_STATE::JUMP) {
 				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -4, 0);
 			}
+			else if (state == PLAYER_STATE::USE_WEAPON) {
+				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -10, 0);
+			}
 			else {
 				this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
 			}
@@ -397,11 +404,11 @@ void Player::UseWeapon() {
 				BigShuriken *bigShuriken = dynamic_cast<BigShuriken *>(weapon);
 				bigShuriken->SetOrbitMoving(isOnGround);
 				if (this->direction == LEFT) {
-					bigShuriken->SetPosition(position.x - 8, position.y + 7);
+					bigShuriken->SetPosition(position.x - 8, position.y + 1);
 					bigShuriken->SetVx(-400.0f);
 				}
 				else {
-					bigShuriken->SetPosition(position.x + 15, position.y + 7);
+					bigShuriken->SetPosition(position.x + 15, position.y + 1);
 					bigShuriken->SetVx(400.0f);
 				}
 			}

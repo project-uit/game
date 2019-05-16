@@ -58,6 +58,7 @@ public:
 	string GetScoreString();
 	Katana* GetKatana();
 	Weapon* GetWeapon();
+	void SwitchWeapon();
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();
 		return _instance;

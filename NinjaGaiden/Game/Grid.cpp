@@ -10,6 +10,7 @@
 #include "SoliderBazoka.h"
 #include "Witch.h"
 #include "Panther.h"
+#include "Eagle.h"
 
 
 Grid* Grid::_instance = NULL;
@@ -381,6 +382,11 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 				case 5:
 					object = new SoliderBazoka(positionX, positionY, movingLimit, activeArea);
 					Add(object);
+					break;
+				case 10:
+					object = new Eagle(activeArea, positionX, positionY);
+					object->SetLastPos(object->GetPosition());
+					randomObject->push_back(object);
 					break;
 				default:
 					break;

@@ -35,7 +35,7 @@ void BigShuriken::Orbit(float t) {
 		if (this->veclocity.y >= 0) {
 			this->veclocity.y = 0.0f;
 		}
-		this->veclocity.y += -110.0f*t;
+		this->veclocity.y += -130.0f*t;
 		if (this->veclocity.y <= -200.0f) {
 			this->veclocity.y = -200.0f;
 		}
@@ -44,7 +44,7 @@ void BigShuriken::Orbit(float t) {
 		if (this->veclocity.y <= 0) {
 			this->veclocity.y = 0.0f;
 		}
-		this->veclocity.y += 110.0f*t;
+		this->veclocity.y += 130.0f*t;
 		if (this->veclocity.y >= 200.0f) {
 			this->veclocity.y = 200.0f;
 		}
@@ -63,7 +63,6 @@ void BigShuriken::Update(float t, vector<Object*> *object) {
 	else {
 		SetPosition(0.0f, 0.0f);
 	}
-	
 }
 
 void BigShuriken::HandleCollision(vector<Object*> *object) {
@@ -88,6 +87,7 @@ void BigShuriken::HandleCollision(vector<Object*> *object) {
 					SetVx(0.0f);
 					SetVy(0.0f);
 				}
+				continue;
 			}
 			Object::PlusPosition(this->deltaX, this->deltaY);
 		}

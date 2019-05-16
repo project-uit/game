@@ -197,13 +197,15 @@ void Panther::Render() {
 }
 
 void Panther::ResetState() {
-	this->isActive = false;
-	if (this->state == DEAD) {
-		this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+	if (isActive) {
+		this->isActive = false;
+		if (this->state == DEAD) {
+			this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+		}
+		objectWidth = objectHeight = 1;
+		state = ENEMY_STATE::FOLLOW;
+		SetPosition(lastPos.x, lastPos.y);
 	}
-	objectWidth = objectHeight = 1;
-	state = ENEMY_STATE::FOLLOW;
-	SetPosition(lastPos.x, lastPos.y);
 }
 
 void Panther::SetState(ENEMY_STATE state) {
