@@ -10,12 +10,13 @@ void Eagle::init() {
 	this->position.z = 0.0f;
 	this->isActive = false;
 	objectHeight = objectWidth = 1;
-	acceleratorX = 0;
-	acceleratorY = 0;
+	left = 0;
+	right = 0;
 	SetVeclocity(0.0f, 0.0f);
 	firstFly = true;
 	state = FOLLOW;
-	finishFly = 1;
+	finishFly = 0;
+	destination = 0;
 	this->sprite = new  map<ENEMY_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::FOLLOW,
@@ -55,7 +56,6 @@ void Eagle::UpdatteActiveArea(float t) {
 			&& activeArea.at(1) != 0) {
 			isActive = true;
 			direction = LEFT;
-			finishFly = 1;
 			SetVx(-200.0f);
 			firstFly = true;
 		}
@@ -67,7 +67,6 @@ void Eagle::UpdatteActiveArea(float t) {
 				&& activeArea.at(3) != 0) {
 				isActive = true;
 				direction = RIGHT;
-				finishFly = 2;
 				firstFly = true;
 			}
 		}
@@ -81,19 +80,13 @@ void Eagle::UpdatteActiveArea(float t) {
 		bottom = Player::GetInstance()->GetPosition().y + 15;
 	}
 	if (isActive) {
-		float left = Player::GetInstance()->GetPosition().x - 80.0f;
-		float right = Player::GetInstance()->GetPosition().x + 80.0f;
 		//Khoảng cách giữa player và đại bàng
-		float dx = 0;
-		RECT rect = Player::GetInstance()->GetBoundingBox();
-		if (position.x > Player::GetInstance()->GetPosition().x) {
-			dx = GetBoundingBox().left - rect.right;
-		}
-		else {
-			dx = rect.left - GetBoundingBox().right;
-		}
+		
 		if (firstFly) {
-			if (position.y < bottom) {
+			left = Player::GetInstance()->GetPosition().x - 90.0f;
+			right = Player::GetInstance()->GetPosition().x + 90.0f;
+			RECT rect = Player::GetInstance()->GetBoundingBox();
+			if (position.y < rect.bottom && position.x > left) {
 				veclocity.y += (number[0]*veclocity.x + number[2]) / number[1];
 				if (veclocity.y >= 82) {
 					SetVy(82.0f);
@@ -107,49 +100,92 @@ void Eagle::UpdatteActiveArea(float t) {
 			}
 			else {
 				firstFly = false;
+				SetVy(0.0f);
 			}
 		}
-		if (!firstFly) {
-			if (direction == LEFT) {
-				if (position.x < Player::GetInstance()->GetPosition().x) {
-					direction = RIGHT;
-				}
-				if (dx >= MAX_DISTANCE_PLAYER && finishFly == 2) {
-					//Hoàn thành bay qua phải, cb bay qua trái
-					finishFly = 1;
-					SetVy(82.0f);
-					SetVx(-200.0f);
-				}
-				if (position.y < top && finishFly == 2) {
-
-				}
-			}
-
-			if (direction == RIGHT) {
-				if (position.x > Player::GetInstance()->GetPosition().x) {
-					direction = LEFT;
-				}
-				if (finishFly == 1 && dx >= MAX_DISTANCE_PLAYER) {
-					//Hoàn thành bay qua trái, = 2 là cb bay qua phải
-					finishFly = 2;
-					SetVy(0.0f);
-					SetVx(0.0f);
-				}
-				if (finishFly == 2) {
-					if (time >= 0.2f) {
-
-					}
-					else {
-						time += t;
-					}
-				}
-			}
-		}
+		
 	}
 }
 
 void Eagle::FollowPlayer(float t) {
-	
+	if (!firstFly) {
+		float dx = 0;
+		if (direction == LEFT) {
+			if (position.x < Player::GetInstance()->GetPosition().x) {
+				direction = RIGHT;
+				SetVx(-180.0f);
+			}
+		}
+		if (direction == RIGHT) {
+			if (position.x > Player::GetInstance()->GetPosition().x) {
+				direction = LEFT;
+				SetVx(180.0f);
+			}
+		}
+		if (veclocity.x < 0) {
+			if (position.x < left) {
+				finishFly = 2;
+			}
+		}
+		else {
+			if (position.x > right) {
+				finishFly = 1;
+			}
+		}
+		RECT rect = Player::GetInstance()->GetBoundingBox();
+
+		if (position.x > Player::GetInstance()->GetPosition().x) {
+			dx = GetBoundingBox().left - rect.right;
+		}
+		else {
+			dx = rect.left - GetBoundingBox().right;
+		}
+
+		if (finishFly > 0) {
+			if (time >= 0.03f) {
+				left = Player::GetInstance()->GetPosition().x - 90.0f;
+				right = Player::GetInstance()->GetPosition().x + 90.0f;
+				time = 0;
+				finishFly = 0;
+				SetVy(0.0f);
+				if (direction == LEFT) {
+					SetVx(-200.0f);
+				}
+				if (direction == RIGHT) {
+					SetVx(200.0f);
+				}
+			}
+			else {
+				time += t;
+				SetVy(30);
+				switch (finishFly) {
+				case 1:
+					
+					break;
+				case 2:
+					
+					break;
+				default:
+					SetVx(0.0f);
+					break;
+				}
+			}
+		}
+		else {
+			if (dx <= 30 && position.y > Player::GetInstance()->GetPosition().y - 45) {
+				SetVy(-60);
+			}
+			else {
+				if (position.y < bottom) {
+					SetVy(120);
+				}
+				else {
+					SetVy(0.0f);
+					//position.y += 0.05f;
+				}
+			}
+		}
+	}
 }
 
 void Eagle::Update(float t, vector<Object*>* object) {
@@ -158,6 +194,7 @@ void Eagle::Update(float t, vector<Object*>* object) {
 		Object::Update(t);
 		RECT rect = sprite->at(state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
+		FollowPlayer(t);
 		sprite->at(state)->NextSprite(t);
 		HandleCollision(object);
 		FollowPlayer(t);

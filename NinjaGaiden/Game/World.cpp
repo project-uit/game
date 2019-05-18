@@ -56,7 +56,7 @@ void World::LoadResource()
 	//Point
 	texture->Add(POINT_ID, POINT_BOX, D3DCOLOR_XRGB(0, 0, 0));
 	
-	Sound* sound = Sound::GetInstance();
+	//Sound* sound = Sound::GetInstance();
 	Player *main = Player::GetInstance();
 	Text* text = Text::GetInstance();
 	Camera* camera = Camera::GetInstance();

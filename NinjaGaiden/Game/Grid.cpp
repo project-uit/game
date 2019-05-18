@@ -11,8 +11,7 @@
 #include "Witch.h"
 #include "Panther.h"
 #include "Eagle.h"
-
-
+#include <math.h> 
 Grid* Grid::_instance = NULL;
 GameDebugDraw* draw1;
 
@@ -43,10 +42,9 @@ void Grid::DeleteGrid()
 	if (cells) {
 		for (int i = 0; i < cells->size(); i++) {
 			for (int j = 0; j < cells->at(i)->size(); j++) {
-				for (int k = 0; k < cells->at(i)->at(j)->size(); k++) {
+		/*		for (int k = 0; k < cells->at(i)->at(j); k++) {
 					delete cells->at(i)->at(j)->at(k);
-				}
-				cells->at(i)->at(j)->clear();
+				}*/
 				delete cells->at(i)->at(j);
 			}
 			cells->at(i)->clear();
@@ -64,11 +62,6 @@ void Grid::DeleteGrid()
 		squares->clear();
 		delete squares;
 	}
-	
-	if (cellLoading) {
-		cellLoading->clear();
-		delete cellLoading;
-	}
 
 	if (randomObject) {
 		randomObject->clear();
@@ -82,17 +75,16 @@ void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
 	this->numOfRow = (int)ceil((float)mapHeight / CELL_HEIGHT);
 	this->numOfColumn = (int)ceil((float)mapWidth / CELL_WIDTH);
 	squares = new  vector<Square*>();
-	cells = new vector<vector<vector<Object*>*>*>();
+	cells = new vector<vector<Cell*>*>();
 	objects = new vector<Object*>();
-	cellLoading = new vector<Cell*>();
 	randomObject = new vector<Object*>();
 	cells->reserve(numOfRow);
 	for (size_t i = 0; i < numOfRow; i++) {
-		vector<vector<Object*>*> * tempList = new vector<vector<Object*>*>();
+		vector<Cell*> * tempList = new vector<Cell*>();
 		tempList->reserve(numOfColumn);
 		for (size_t j = 0; j < numOfColumn; j++) {
-			vector<Object*>* obj = new vector<Object*>();
-			tempList->push_back(obj);
+			Cell* cell = new Cell(i, j);
+			tempList->push_back(cell);
 		}
 		cells->push_back(tempList);
 	}
@@ -103,12 +95,12 @@ void Grid::Add(Object * obj)
 	obj->SetLastPos(obj->GetPosition());
 	int column = floor(obj->GetPosition().x / CELL_WIDTH);
 	int row = floor(obj->GetPosition().y / CELL_HEIGHT);
-	cells->at(row)->at(column)->push_back(obj);
+	cells->at(row)->at(column)->objects->push_back(obj);
 }
 
 void Grid::Add(int row, int column, Object * obj) {
 	obj->SetLastPos(obj->GetPosition());
-	cells->at(row)->at(column)->push_back(obj);
+	cells->at(row)->at(column)->objects->push_back(obj);
 }
 
 void Grid::ReSetGrid(int height, int width, bool isArray)
@@ -118,13 +110,7 @@ void Grid::ReSetGrid(int height, int width, bool isArray)
 }
 
 void Grid::LoadObjectInCell(int row, int column) {
-	if (row >= numOfRow || column >= numOfColumn) {
-		return;
-	}
-	vector<Object*> *listObj = cells->at(row)->at(column);
-	for (int k = 0; k < listObj->size(); k++) {
-		this->objects->push_back(listObj->at(k));
-	}
+
 }
 
 void Grid::GetObjectsInCells(Object * object)
@@ -138,9 +124,8 @@ void Grid::GetObjectsInCells(Object * object)
 	//add object player
 	objects->push_back(object);
 
-	//Cách lấy index của grid từ vị trí object
-	int row = (int)floor(object->GetPosition().y / CELL_HEIGHT);
-	int column = (int)floor(object->GetPosition().x / CELL_WIDTH);
+	//int row = (int)floor(object->GetPosition().y / CELL_HEIGHT);
+	//int column = (int)floor(object->GetPosition().x / CELL_WIDTH);
 
 	//Lấy bound của Cam để xét với từng cell bị overlap
 	RECT camREC = Camera::GetInstance()->GetRECT();
@@ -161,34 +146,24 @@ void Grid::GetObjectsInCells(Object * object)
 			this->objects->push_back(randomObject->at(i));
 		}
 		else {
-			randomObject->at(i)->ResetState();
+			if (randomObject->at(i)->GetActive()) {
+				randomObject->at(i)->ResetState();
+			}
 		}
 	}
 	//dòng của grid
 	for (int i = y1; i < y2; i++) {
 		//cột của grid
 		for (int j = x1; j < x2; j++) {
-			Cell* cell = new Cell(i, j);
-			//Kiểm tra hàng-cột hiện tại đã loaded object chưa?
-			bool flag = Cell::FindCell(cellLoading, cell);
-			vector<Object*> *listObj = cells->at(i)->at(j);
+			vector<Object*> *listObj = cells->at(i)->at(j)->objects;
 			for (int k = 0; k < listObj->size(); k++) {
-				//Reset lại object mới
-				if (flag == false) {
-					listObj->at(k)->ResetState();
-				}
 				if (Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
 					this->objects->push_back(listObj->at(k));
-				}				
+				}
+				else {
+					listObj->at(k)->ResetState();
+				}
 			}
-		}
-	}
-	cellLoading->clear();
-	//Lưu lại các index của cell đã load trong grid
-	for (int i = y1; i < y2; i++) {
-		for (int j = x1; j < x2; j++) {
-			Cell* cell = new Cell(i, j);
-			cellLoading->push_back(cell);
 		}
 	}
 }
@@ -198,10 +173,11 @@ void Grid::UpdateGrid(Object * object)
 	int oldRow = floor(object->GetLastPos().y / CELL_HEIGHT);
 	int oldColumn = floor(object->GetLastPos().x / CELL_WIDTH);
 
-	int newRow = ceil(object->GetPosition().y / CELL_HEIGHT);
-	int newColumn = ceil(object->GetPosition().x / CELL_WIDTH);
-	if (oldRow == newRow && oldColumn == newColumn)
+	int newRow = ceil((object->GetPosition().y / CELL_HEIGHT));
+	int newColumn = ceil((object->GetPosition().x / CELL_WIDTH));
+	if (oldRow == newRow && oldColumn == newColumn) {
 		return;
+	}
 	objects->clear();
 	GetObjectsInCells(object);
 }
@@ -210,7 +186,6 @@ void Grid::UpdateObject(float t) {
 	for (int i = 0; i < objects->size(); i++) {
 		objects->at(i)->Update(t, objects);
 	}
-
 }
 
 void Grid::RenderObject() {

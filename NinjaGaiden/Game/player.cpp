@@ -292,7 +292,7 @@ void Player::HandleCollision(vector<Object*> *object) {
 	else {
 		float min_tx, min_ty, nx = 0, ny;
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		this->PlusPosition(min_tx * this->deltaX + nx * 0.2f, min_ty*this->deltaY + ny*0.2f);
+		this->PlusPosition(min_tx * this->deltaX + nx * 0.0f, min_ty*this->deltaY + ny*0.2f);
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (!e->object->GetActive()) {

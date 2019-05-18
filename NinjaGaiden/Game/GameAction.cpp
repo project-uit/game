@@ -110,7 +110,12 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
 				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
 				Player::GetInstance()->SetOnGround(false);
-			
+			}
+			if (KeyCode == DIK_C) {
+				Player::GetInstance()->SetState(PLAYER_STATE::USE_WEAPON);
+				Player::GetInstance()->UseWeapon();
+				Player::GetInstance()->SetAcceleratorX(0.0f);
+				Player::GetInstance()->SetVx(0.0f);
 			}
 		}
 
@@ -143,12 +148,19 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 				}
 				Player::GetInstance()->SetAcceleratorX(0.0f);
 			}
+			if (KeyCode == DIK_C) {
+				Player::GetInstance()->SetState(PLAYER_STATE::USE_WEAPON);
+				Player::GetInstance()->UseWeapon();
+				Player::GetInstance()->SetAcceleratorX(0.0f);
+				Player::GetInstance()->SetVx(0.0f);
+			}
 		}
 
-		if (Player::GetInstance()->GetState() == PLAYER_STATE::STAND 
-			|| Player::GetInstance()->GetState() == PLAYER_STATE::JUMP) {
-			if (KeyCode == DIK_C) {
-				Player::GetInstance()->UseWeapon();
+		if (Player::GetInstance()->GetState() == PLAYER_STATE::USE_WEAPON) {
+			if (KeyCode == DIK_X) {
+				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
+				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
+				Player::GetInstance()->SetOnGround(false);
 			}
 		}
 	}

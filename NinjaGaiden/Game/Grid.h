@@ -16,21 +16,17 @@ struct  Cell
 {
 	int row;
 	int column;
+	vector<Object*>* objects;
 	Cell(int row, int column) { 
 		this->row = row;
 		this->column = column;
+		this->objects = new vector<Object*>();
 	}
-	static bool FindCell(vector<Cell*>* cells, Cell* cell) {
-		bool flag = false;
-		for (int i = 0; i < cells->size(); i++) {
-			int col_1 = cells->at(i)->column;
-			int row_1 = cells->at(i)->row;
-			if (col_1 == cell->column && row_1 == cell->row) {
-				flag = true;
-				break;
-			}
+	~Cell() {
+		for (int i = 0; i < objects->size(); i++) {
+			delete objects->at(i);
 		}
-		return flag;
+		objects->clear();
 	}
 };
 
@@ -40,15 +36,13 @@ private:
 	static Grid* _instance;
 	int numOfRow;
 	int numOfColumn;
-	vector<vector<vector<Object*>*>*>* cells;
-	vector<Cell*>* cellLoading;
+	vector<vector<Cell*>*>* cells;
 	//Objects trong các cell mà Camera overlap
 	vector<Object*>* objects;
 	//Ground
 	vector<Square*>* squares;
 	//Báo. thằng xanh lá
 	vector<Object*>* randomObject;
-	float deltaTime;
 	void DeleteGrid();
 	//map Height có thể là chiều cao ô cửa sổ hoặc chiều cao của map
 	void InitGrid(int mapHeight, int mapWidth, bool isArray);

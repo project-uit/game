@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Katana.h"
 #include "SmallShuriken.h"
+#include "Food.h"
 class Player : public Object
 {
 private:
@@ -15,6 +16,7 @@ private:
 	PLAYER_STATE last_state;
 	DIRECTION direction;
 	map<PLAYER_STATE,Sprite*>* sprite;
+	Food* food;
 	bool isOnGround;
 	bool isOnLadder;
 	bool isWounded;

@@ -7,7 +7,6 @@ HUD::HUD() {
 	healthBoss = new Sprite(Texture::GetInstance()->Get(HEALTH_ID), L"sprite\\HUD\\health.txt", 2, 0.0f, 0.5f);
 	box = new Sprite(Texture::GetInstance()->Get(BOX_ID), L"sprite\\HUD\\box.txt", 1, 0.0f, 0.4f);
 	lifePoint = new Sprite(Texture::GetInstance()->Get(POINT_ID), L"sprite\\HUD\\point.txt", 2, 0.0f, 0.475f);
-	//item = new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), L"", 2, 0.0f);
 }
 
 HUD::~HUD() {
