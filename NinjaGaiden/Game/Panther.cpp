@@ -14,13 +14,14 @@ void Panther::init() {
 	SetVy(0.0f);
 	SetVx(0.0f);
 	state = FOLLOW;
+	score = 200;
 	this->sprite = new  map<ENEMY_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::FOLLOW,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_Panther_follow, 2, 0.08f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.06f)));
 }
 
 Panther::Panther(vector<int> movingLimit, vector<int> activeArea, int positionX, int positionY) {
@@ -42,6 +43,20 @@ Panther::~Panther() {
 
 void Panther::UpdateActiveArea(float t) {
 	if (state != DEAD) {
+		/*if (Player::GetInstance()->GetPosition().x >= 813 && Player::GetInstance()->GetPosition().x <= 850) {
+			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
+				&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
+				&& Player::GetInstance()->GetDirection() == RIGHT
+				&& activeArea.at(0) != 0
+				&& activeArea.at(1) != 0) {
+				isActive = true;
+				direction = LEFT;
+				SetVx(-180.0f);
+				leftMoving = movingLimit.at(0);
+				rightMoving = movingLimit.at(1);
+			}
+			return;
+		}*/
 		if (Player::GetInstance()->GetPosition().x >= 1125 && Player::GetInstance()->GetPosition().x <= 1410) {
 			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 				&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
@@ -100,7 +115,7 @@ void Panther::Update(float t, vector<Object*>* objects) {
 	UpdateActiveArea(t);
 	if (isActive) {
 		Object::Update(t);
-		this->veclocity.y += GRAVITY;
+		this->veclocity.y += GRAVITY*t;
 		RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 
@@ -108,11 +123,10 @@ void Panther::Update(float t, vector<Object*>* objects) {
 
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(this->state)->GetIsComplete()) {
-				sprite->at(this->state)->SetIndex(1);
+				sprite->at(this->state)->SetIndex(2);
 				ResetState();
 			}
 			SetVx(0.0f);
-
 		}
 
 		HandleCollision(objects);
@@ -126,14 +140,15 @@ void Panther::Update(float t, vector<Object*>* objects) {
 				direction = LEFT;
 				SetVx(-180.0f);
 			}
-			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())
-				|| Game::AABB(Player::GetInstance()->GetWeapon()->GetBoundingBox(), GetBoundingBox())) {
-				state = ENEMY_STATE::DEAD;
-				SetVx(0.0f);
-				Object::PlusPosition(0, -20.0f);
-			}
+			Player::GetInstance()->KillEnemy(this);
 		}
 	}
+}
+
+void Panther::Dead() {
+	state = ENEMY_STATE::DEAD;
+	SetVeclocity(0.0f, 0.0f);
+	Object::PlusPosition(0, -21.5f);
 }
 
 void Panther::HandleCollision(vector<Object*>* object) {
@@ -164,8 +179,10 @@ void Panther::HandleCollision(vector<Object*>* object) {
 					this->PlusPosition(min_tx * this->deltaX + nx * 0.2f, -12.0f);
 				}
 			}
-			else if (e->object->GetObjectType() == OBJECT_TYPE::PANTHER) {
-				Object::PlusPosition(this->deltaX,deltaY);
+			else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+				if (!Player::GetInstance()->GetWounded()) {
+					Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
+				}
 			}
 			else {
 				Object::PlusPosition(this->deltaX, 0.0f);
@@ -201,10 +218,12 @@ void Panther::ResetState() {
 		this->isActive = false;
 		if (this->state == DEAD) {
 			this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+			sprite->at(this->state)->SetScale(1.0f);
 		}
 		objectWidth = objectHeight = 1;
 		state = ENEMY_STATE::FOLLOW;
 		SetPosition(lastPos.x, lastPos.y);
+		SetVeclocity(0.0f, 0.0f);
 	}
 }
 

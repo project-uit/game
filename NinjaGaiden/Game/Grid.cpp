@@ -42,9 +42,6 @@ void Grid::DeleteGrid()
 	if (cells) {
 		for (int i = 0; i < cells->size(); i++) {
 			for (int j = 0; j < cells->at(i)->size(); j++) {
-		/*		for (int k = 0; k < cells->at(i)->at(j); k++) {
-					delete cells->at(i)->at(j)->at(k);
-				}*/
 				delete cells->at(i)->at(j);
 			}
 			cells->at(i)->clear();
@@ -115,12 +112,19 @@ void Grid::LoadObjectInCell(int row, int column) {
 
 void Grid::GetObjectsInCells(Object * object)
 {
-	if (objects->size() > 0)
-		return;
+	/*if (objects->size() > 0)
+		return;*/
 
 	if (object == nullptr)
 		return;
 	
+	//vector<Cell>* tempObjects = new vector<Cell>();
+	//for (int i = 0; i < objects->size(); i++) {
+	//	if (Game::AABB(objects->at(i)->GetBoundingBox(), camREC)) {
+	//		
+	//	}
+	//}
+	objects->clear();
 	//add object player
 	objects->push_back(object);
 
@@ -151,6 +155,36 @@ void Grid::GetObjectsInCells(Object * object)
 			}
 		}
 	}
+
+	int xRs = x2;
+	if (xRs < numOfColumn) {
+		for (int i = y1; i < y2; i++) {
+			if (cells->at(i)->at(xRs)->isLoading) {
+				vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
+				for (int k = 0; k < listObj->size(); k++) {
+					if (Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
+						listObj->at(k)->ResetState();
+					}
+				}
+				cells->at(i)->at(xRs)->isLoading = false;
+			}
+		}
+	}
+	xRs = x1 - 1;
+	if (xRs >= 0) {
+		for (int i = y1; i < y2; i++) {
+			if (cells->at(i)->at(xRs)->isLoading) {
+				vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
+				for (int k = 0; k < listObj->size(); k++) {
+					if (Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
+						listObj->at(k)->ResetState();
+					}
+				}
+				cells->at(i)->at(xRs)->isLoading = false;
+			}
+		}
+	}
+	
 	//dòng của grid
 	for (int i = y1; i < y2; i++) {
 		//cột của grid
@@ -159,6 +193,7 @@ void Grid::GetObjectsInCells(Object * object)
 			for (int k = 0; k < listObj->size(); k++) {
 				if (Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
 					this->objects->push_back(listObj->at(k));
+					cells->at(i)->at(j)->isLoading = true;
 				}
 				else {
 					listObj->at(k)->ResetState();
@@ -178,7 +213,7 @@ void Grid::UpdateGrid(Object * object)
 	if (oldRow == newRow && oldColumn == newColumn) {
 		return;
 	}
-	objects->clear();
+	
 	GetObjectsInCells(object);
 }
 

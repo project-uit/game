@@ -17,95 +17,95 @@ Object::~Object()
 
 void Object::SweptAABB(Object * obj, float dx, float dy, float &collisionTime, float & nx, float &ny)
 {
-	float dxEntry, dxExit, txEntry, txExit;
-	float dyEntry, dyExit, tyEntry, tyExit;
+	//float dxEntry, dxExit, txEntry, txExit;
+	//float dyEntry, dyExit, tyEntry, tyExit;
 
-	float entryTime;
-	float exitTime;
-	
-	RECT movingRect = this->GetBoundingBox();
-	float movingTop = (float)movingRect.top;
-	float movingBottom = (float)movingRect.bottom;
-	float movingLeft = (float)movingRect.left;
-	float movingRight = (float)movingRect.right;
+	//float entryTime;
+	//float exitTime;
+	//
+	//RECT movingRect = this->GetBoundingBox();
+	//float movingTop = (float)movingRect.top;
+	//float movingBottom = (float)movingRect.bottom;
+	//float movingLeft = (float)movingRect.left;
+	//float movingRight = (float)movingRect.right;
 
-	RECT staticRect = obj->GetBoundingBox();
-	float staticTop =(float) staticRect.top;
-	float staticBottom = (float)staticRect.bottom;
-	float staticLeft = (float)staticRect.left;
-	float staticRight = (float)staticRect.right;
+	//RECT staticRect = obj->GetBoundingBox();
+	//float staticTop =(float) staticRect.top;
+	//float staticBottom = (float)staticRect.bottom;
+	//float staticLeft = (float)staticRect.left;
+	//float staticRight = (float)staticRect.right;
 
-	collisionTime = -1.0f;
-	nx = ny = 0;
-	//Vẽ broadphase
-	float bl = dx > 0 ? movingLeft : movingLeft + dx;
-	float bt = dy > 0 ? movingTop : movingTop + dy;
-	float br = dx > 0 ? movingRight + dx : movingRight - dx;
-	float bb = dy > 0 ? movingBottom + dy : movingBottom - dy;
-	//Check AABB
-	if (br < staticLeft || bl >  staticRight
-		|| bb < staticTop || bt > staticBottom)		
-		return;
+	//collisionTime = -1.0f;
+	//nx = ny = 0;
+	////Vẽ broadphase
+	//float bl = dx > 0 ? movingLeft : movingLeft + dx;
+	//float bt = dy > 0 ? movingTop : movingTop + dy;
+	//float br = dx > 0 ? movingRight + dx : movingRight - dx;
+	//float bb = dy > 0 ? movingBottom + dy : movingBottom - dy;
+	////Check AABB
+	//if (br < staticLeft || bl >  staticRight
+	//	|| bb < staticTop || bt > staticBottom)		
+	//	return;
 
-	if (dx == 0 && dy == 0) {
-		return;
-	}
+	//if (dx == 0 && dy == 0) {
+	//	return;
+	//}
 
-	// đi qua phải
-	if (dx > 0) {
-		dxEntry = staticLeft - movingRight;
-		dxExit = staticRight - movingLeft;
-	}
-	else if (dx < 0) {
-		dxEntry = staticRight - movingLeft;
-		dxExit = staticLeft - movingRight;
-	}
+	//// đi qua phải
+	//if (dx > 0) {
+	//	dxEntry = staticLeft - movingRight;
+	//	dxExit = staticRight - movingLeft;
+	//}
+	//else if (dx < 0) {
+	//	dxEntry = staticRight - movingLeft;
+	//	dxExit = staticLeft - movingRight;
+	//}
 
-	// đi xuống
-	if (dy > 0) {
-		dyEntry = staticTop - movingBottom;
-		dyExit = staticBottom - movingTop;
-	}
-	else if (dy < 0) {
-		dyEntry = staticBottom - movingTop;
-		dyExit = staticTop - movingBottom;
-	}
+	//// đi xuống
+	//if (dy > 0) {
+	//	dyEntry = staticTop - movingBottom;
+	//	dyExit = staticBottom - movingTop;
+	//}
+	//else if (dy < 0) {
+	//	dyEntry = staticBottom - movingTop;
+	//	dyExit = staticTop - movingBottom;
+	//}
 
-	if (dx == 0) {
-		txEntry = -99999999999;
-		txExit = 99999999999;
-	}
-	else {
-		txEntry = dxEntry / dx;
-		txExit = dxExit / dx;
-	}
+	//if (dx == 0) {
+	//	txEntry = -99999999999;
+	//	txExit = 99999999999;
+	//}
+	//else {
+	//	txEntry = dxEntry / dx;
+	//	txExit = dxExit / dx;
+	//}
 
-	if (dy == 0) {
-		tyEntry = -99999999999;
-		tyExit = 99999999999;
-	}
-	else {
-		tyEntry = dyEntry / dy;
-		tyExit = dyExit / dy;
-	}
+	//if (dy == 0) {
+	//	tyEntry = -99999999999;
+	//	tyExit = 99999999999;
+	//}
+	//else {
+	//	tyEntry = dyEntry / dy;
+	//	tyExit = dyExit / dy;
+	//}
 
-	if ((txEntry < 0.0f && tyEntry < 0.0f) || txEntry > 1.0f || tyEntry > 1.0f) return;
+	//if ((txEntry < 0.0f && tyEntry < 0.0f) || txEntry > 1.0f || tyEntry > 1.0f) return;
 
-	entryTime = max(txEntry, tyEntry);
-	exitTime = min(txExit, tyExit);
+	//entryTime = max(txEntry, tyEntry);
+	//exitTime = min(txExit, tyExit);
 
-	if (entryTime > exitTime) return;
-	collisionTime = entryTime;
-	
-	if (txEntry > tyEntry) {
-		ny = 0.0f;
-		dx > 0 ? nx = -1.0f : nx = 1.0f;
-	}
-	else {
-		nx = 0.0f;
-		dy > 0 ? ny = -1.0f : ny = 1.0f;
-		
-	}
+	//if (entryTime > exitTime) return;
+	//collisionTime = entryTime;
+	//
+	//if (txEntry > tyEntry) {
+	//	ny = 0.0f;
+	//	dx > 0 ? nx = -1.0f : nx = 1.0f;
+	//}
+	//else {
+	//	nx = 0.0f;
+	//	dy > 0 ? ny = -1.0f : ny = 1.0f;
+	//	
+	//}
 }
 
 CollisionHandler* Object::GetCollsionObjectsBySweptAABB(Object * obj)
@@ -204,6 +204,10 @@ void Object::Update(float deltaTime, std::vector<Object*>* objects)
 }
 
 void Object::ResetState() {
+
+}
+
+void Object::Dead() {
 
 }
 

@@ -2,7 +2,6 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
-GameDebugDraw* draw2;
 SoldierSword::SoldierSword() {
 }
 void SoldierSword::init() {
@@ -13,7 +12,7 @@ void SoldierSword::init() {
 	time = 0;
 	resetTime = 0;
 	state = FOLLOW;
-	draw2 = new GameDebugDraw();
+	score = 100;
 	this->sprite = new  map<ENEMY_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::FOLLOW,
@@ -23,7 +22,7 @@ void SoldierSword::init() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_atk, 2, 0.15f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.06f)));
 }
 
 SoldierSword::SoldierSword(vector<int> movingLimit, vector<int> activeArea, int positionX, int positionY) {
@@ -42,6 +41,7 @@ SoldierSword::~SoldierSword() {
 		delete this->sprite;
 	}
 }
+
 void SoldierSword::UpdateActiveArea(float t) {
 	if (state == DEAD && isActive) {
 		if (resetTime >= 0.25f) {
@@ -62,18 +62,24 @@ void SoldierSword::UpdateActiveArea(float t) {
 					state = FOLLOW;
 				}
 			}
+			if (direction == RIGHT) {
+				SetVeclocity(40.0f, 0.0f);
+			}
+			if (direction == LEFT) {
+				SetVeclocity(-40.0f, 0.0f);
+			}
 		}
 		else {
 			resetTime += t;
 		}
 	}
-	if (state != DEAD) {
+	if (state != DEAD && !isActive) {
 		if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 			&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
 			&& Player::GetInstance()->GetDirection() == RIGHT) {
 			isActive = true;
 			direction = LEFT;
-			this->SetVeclocity(-40.0f, 0.0f);
+			SetVx(-40.0f);
 			leftMoving = movingLimit.at(0);
 			rightMoving = movingLimit.at(1);
 		}
@@ -83,7 +89,7 @@ void SoldierSword::UpdateActiveArea(float t) {
 				&& Player::GetInstance()->GetDirection() == LEFT) {
 				isActive = true;
 				direction = RIGHT;
-				this->SetVeclocity(40.0f, 0.0f);
+				SetVx(40.0f);
 				leftMoving = movingLimit.at(2);
 				rightMoving = movingLimit.at(3);
 			}
@@ -96,14 +102,15 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 	UpdateActiveArea(t);
 	if (this->isActive) {
 		Object::Update(t);
-		this->veclocity.y += GRAVITY;
+		this->veclocity.y += GRAVITY*t;
 		RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->at(this->state)->NextSprite(t);
 
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(this->state)->GetIsComplete()) {
-				sprite->at(this->state)->SetIndex(1);
+				sprite->at(this->state)->SetIndex(2);
+				sprite->at(this->state)->SetScale(1.0f);
 			}
 			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
 			this->sprite->at(ENEMY_STATE::ATK)->Reset();
@@ -112,11 +119,11 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 		HandleCollision(objects);
 		if (state != ENEMY_STATE::DEAD) {
 			float width = GetBoundingBox().right - GetBoundingBox().left;
-			if (position.x + width <= leftMoving) {
+			if (position.x + width < leftMoving) {
 				SetVx(40.0f);
 				direction = RIGHT;
 			}
-			if (position.x + width >= rightMoving) {
+			if (position.x + width > rightMoving) {
 				SetVx(-40.0f);
 				direction = LEFT;
 			}
@@ -138,16 +145,39 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 					SetVx(40.0f);
 				}
 			}
-
-			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())
-				|| Game::AABB(Player::GetInstance()->GetWeapon()->GetBoundingBox(), GetBoundingBox())) {
+			Player::GetInstance()->KillEnemy(this);
+			/*if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
 				state = ENEMY_STATE::DEAD;
 				SetVx(0.0f);
 				Object::PlusPosition(0, -3.0f);
 			}
+			if (Player::GetInstance()->GetWeapon()->GetObjectType() != CIRCLE_FIRE) {
+				if (Game::AABB(Player::GetInstance()->GetWeapon()->GetBoundingBox(), GetBoundingBox())) {
+					state = ENEMY_STATE::DEAD;
+					SetVx(0.0f);
+					Object::PlusPosition(0, -3.0f);
+				}
+			}
+			else {
+				Weapon* weapon = Player::GetInstance()->GetWeapon();
+				for (int i = 0; i < 3; i++) {
+					if (Game::AABB(weapon[i].GetBoundingBox(), GetBoundingBox())) {
+						state = ENEMY_STATE::DEAD;
+						SetVx(0.0f);
+						Object::PlusPosition(0, -3.0f);
+						break;
+					}
+				}
+			}*/
 		}
 	}
 
+}
+
+void SoldierSword::Dead() {
+	state = ENEMY_STATE::DEAD;
+	SetVeclocity(0.0f, 0.0f);
+	Object::PlusPosition(0, -3.0f);
 }
 
 void SoldierSword::HandleCollision(vector<Object*> *object) {
@@ -167,9 +197,18 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (e->object->GetObjectType() == OBJECT_TYPE::SQUARE) {
-				//Square *item = dynamic_cast<Square *>(e->object);
 				if (e->ny < 0) {
 					this->SetVy(0.0f);
+				}
+			}
+			else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+				if (!Player::GetInstance()->GetWounded()) {
+					if (Player::GetInstance()->GetState() == JUMP_ATK) {
+						state = ENEMY_STATE::DEAD;
+					}
+					else {
+						Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
+					}
 				}
 			}
 			else {
@@ -190,19 +229,40 @@ void SoldierSword::ResetState() {
 	this->isActive = false;
 	if (this->state == DEAD) {
 		this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+		sprite->at(this->state)->SetScale(1.0f);
 	}
+	objectHeight = objectWidth = 1;
 	state = ENEMY_STATE::FOLLOW;
 	SetPosition(lastPos.x, lastPos.y);
+	if (direction == RIGHT) {
+		SetVeclocity(40.0f, 0.0f);
+	}
+	if (direction == LEFT) {
+		SetVeclocity(-40.0f, 0.0f);
+	}
+	resetTime = time = 0;
 }
 
 void SoldierSword::Render() {
 	if (this->isActive) {
 		switch (this->direction) {
 		case RIGHT:
-			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
 			break;
 		case LEFT:
-			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
 			break;
 		default:
 			break;

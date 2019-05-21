@@ -50,7 +50,7 @@ public:
 	void DrawSprite(D3DXVECTOR3 position, bool flagRight);
 	//Vẽ sprite bên trái bị lệch
 	void DrawSprite(D3DXVECTOR3 position, bool flagRight, int x, int y);
-	void DrawSprite(D3DXVECTOR3 position, bool flagRight, float angle);
+	void DrawSprite(D3DXVECTOR3 position, bool flagRight, float scaleX, float scaleY);
 	//Đọc tọa độ ảnh
 	RECT ReadCurrentSpritePosition();
 	//Đọc độ lệch bounding box
@@ -60,6 +60,7 @@ public:
 	DWORD GetTime() { return time; }
 	void Reset();
 	void SetScale(float scale);
+	float GetScale();
 	int GetCount();
 	int GetWidth();
 	int GetHeight();

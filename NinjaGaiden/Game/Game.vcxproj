@@ -131,6 +131,7 @@
     <ClInclude Include="CircleFire.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Eagle.h" />
     <ClInclude Include="Food.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAction.h" />
@@ -144,7 +145,6 @@
     <ClInclude Include="Katana.h" />
     <ClInclude Include="Ladder.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="MatrixFire.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Panther.h" />
     <ClInclude Include="Player.h" />
@@ -174,7 +174,9 @@
     <ClCompile Include="Boom.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CircleFire.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Eagle.cpp" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAction.cpp" />

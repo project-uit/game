@@ -187,44 +187,6 @@ bool Game::AABB(RECT r1, RECT r2) {
 	return true;
 }
 
-bool Game::AABB_LineLine(Line A, Line B) {
-	Point b = Point(A.Bx, A.By) - Point(A.Ax, A.Ay);
-	Point d = Point(B.Bx, B.By) - Point(B.Ax, B.Ay);
-	float DotDPerp = b.x * d.y - b.y * d.x;
-
-	// if DotdPerp == 0, it means the lines are parallel
-	if (DotDPerp == 0) return false;
-
-	Point c = Point(B.Ax, B.Ay) - Point(A.Ax, A.Ay);
-	float t = (c.x * d.y - c.y * d.x) / DotDPerp;
-	if (t < 0 || t > 1) return false;
-
-	float u = (c.x * b.y - c.y * b.x) / DotDPerp;
-	if (u < 0 || u > 1) return false;
-
-	return true;
-}
-
-bool Game::AABB_BoxLine(RECT rect, Line L) {
-	float Xmin, Xmax, Ymin, Ymax;
-	Xmin = rect.left;
-	Xmax = rect.right;
-	Ymin = rect.top;
-	Ymax = rect.bottom;
-
-	if (L.Ax < Xmin && L.Bx < Xmin) return false;
-	if (L.Ay < Ymin && L.By < Ymin) return false;
-	if (L.Ax > Xmax && L.Bx > Xmax) return false;
-	if (L.Ay > Ymax && L.By > Ymax) return false;
-
-	if (AABB_LineLine(L, Line(Xmin, Ymin, Xmax, Ymin))) return true;
-	if (AABB_LineLine(L, Line(Xmin, Ymin, Xmin, Ymax))) return true;
-	if (AABB_LineLine(L, Line(Xmax, Ymin, Xmax, Ymax))) return true;
-	if (AABB_LineLine(L, Line(Xmin, Ymax, Xmax, Ymax))) return true;
-
-	return false;
-}
-
 void Game::SweptAABB(
 	float ml, float mt, float mr, float mb,
 	float dx, float dy,

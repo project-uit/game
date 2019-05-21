@@ -92,7 +92,7 @@ void Food::SetIsOnGround(bool flag) {
 
 void Food::Update(float t, vector<Object*>* objects) {
 	if (this->state == TOUCHED && !isOnGround) {
-		this->veclocity.y += GRAVITY;
+		this->veclocity.y += GRAVITY*t;
 		Object::PlusPosition(this->deltaX, this->deltaY);
 	}
 

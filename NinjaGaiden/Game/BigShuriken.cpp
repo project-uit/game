@@ -31,7 +31,7 @@ void BigShuriken::Orbit(float t) {
 	if (position.x <= right) {
 		SetVx(400.0f);
 	}
-	if (Player::GetInstance()->GetPosition().y + 10 < position.y) {
+	if (Player::GetInstance()->GetPosition().y + 4  < position.y) {
 		if (this->veclocity.y >= 0) {
 			this->veclocity.y = 0.0f;
 		}
@@ -58,7 +58,8 @@ void BigShuriken::Update(float t, vector<Object*> *object) {
 		RECT rect = sprite->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->NextSprite(t);
-		HandleCollision(object);
+		//HandleCollision(object);
+		Object::PlusPosition(this->deltaX, this->deltaY);
 	}
 	else {
 		SetPosition(0.0f, 0.0f);
@@ -82,7 +83,7 @@ void BigShuriken::HandleCollision(vector<Object*> *object) {
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
-				if (e->nx != 0) {
+				if (e->nx != 0 || e->ny != 0) {
 					isActive = false;
 					SetVx(0.0f);
 					SetVy(0.0f);

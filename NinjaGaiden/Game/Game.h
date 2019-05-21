@@ -9,43 +9,6 @@
 
 #define DIRECTINPUT_VERSION 0x0800
 #define KEYBOARD_BUFFER_SIZE 1024
-struct Point
-{
-	Point() { x = y = 0; }
-	Point(float px, float py) { x = px;  y = py; }
-
-	Point operator+(const Point &A)
-	{
-		return Point(x + A.x, y + A.y);
-	}
-
-	Point operator-(const Point &A)
-	{
-		return Point(x - A.x, y - A.y);
-	}
-
-	Point operator*(float f) const
-	{
-		return Point(x * f, y * f);
-	}
-
-	float x;
-	float y;
-};
-
-struct Line
-{
-	Line(float x1, float y1, float x2, float y2)
-	{
-		Ax = x1;	Ay = y1;
-		Bx = x2;	By = y2;
-	}
-
-	float Ax;
-	float Ay;
-	float Bx;
-	float By;
-};
 
 class Game
 {
@@ -94,8 +57,6 @@ public:
 	};
 	HWND GetHWnd() { return this->hWnd; }
 	static bool AABB(RECT r1, RECT r2);
-	static bool AABB_LineLine(Line A, Line B);
-	static bool AABB_BoxLine(RECT rect, Line L);
 	static void SweptAABB(
 		float ml, float mt, float mr, float mb,
 		float dx, float dy,

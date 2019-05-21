@@ -30,7 +30,7 @@ WitchSword::~WitchSword() {
 void WitchSword::Update(float t, vector<Object*>* objects) {
 	if (state != INVISIBLE) {
 		Object::Update(t);
-		veclocity.y += GRAVITY;
+		veclocity.y += GRAVITY * t;
 
 		PlusPosition(deltaX, deltaY);
 		RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
@@ -70,9 +70,7 @@ void WitchSword::HandleCollision(vector<Object*> *object) {
 				if (this->state == FLY) {
 					if (!Player::GetInstance()->GetWounded()) {
 						state = INVISIBLE;
-						if (Player::GetInstance()->Wounded(e, direction)) {
-							continue;
-						}
+						Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
 					}
 				}
 			}

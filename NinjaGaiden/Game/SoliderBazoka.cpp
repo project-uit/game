@@ -149,7 +149,7 @@ void SoliderBazoka::Render() {
 	if (state != INVISIBLE) {
 		switch (this->direction) {
 		case RIGHT:
-			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true, 15,0);
 			break;
 		case LEFT:
 			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);

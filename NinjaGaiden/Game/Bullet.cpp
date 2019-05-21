@@ -69,9 +69,7 @@ void Bullet::HandleCollision(vector<Object*> *object) {
 			if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
 				if (state == FLY) {
 					if (!Player::GetInstance()->GetWounded()) {
-						if (Player::GetInstance()->Wounded(e, direction)) {
-							continue;
-						}
+						Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
 					}
 				}
 			}

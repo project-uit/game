@@ -90,7 +90,6 @@ void Sprite::SetSpritePositions(LPCWSTR filePath)
 			tempVector->push_back(stoi(splitString));
 		}
 		this->spritePositions->push_back(tempVector);
-		//DebugOut((wchar_t *)L"Thông số %d\n", stoi(splitString));
 	}
 
 	trace(L"Done Init Sprite %s", filePath);
@@ -99,17 +98,7 @@ void Sprite::SetSpritePositions(LPCWSTR filePath)
 
 void Sprite::NextSprite()
 {
-	//DWORD now = GetTickCount();
-	//DWORD t = this->GetTime();
-	//if (now - lastFrameTime >= 86)
-	//{
-	//	lastFrameTime = now;
-	//	this->index = (this->index + this->count) % this->count + 1;
-	//	if (this->index == count) {
-	//		isComplete = true;
-	//		this->index = 0;
-	//	}
-	//}
+	
 }
 
 void Sprite::NextSprite(float t) {
@@ -152,7 +141,7 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight)
 	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }
 
-void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, float angle)
+void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, float scaleX, float scaleY)
 {
 	if (this->texture == NULL)
 		return;
@@ -166,9 +155,8 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, float angle)
 		tempTurnRight = -1.0f;
 	}
 	directionX = tempTurnRight * this->scale;
-	D3DXVECTOR3 scaling(tempTurnRight * this->scale, this->scale, 1.0f);
+	D3DXVECTOR3 scaling(tempTurnRight * this->scale*scaleX, this->scale*scaleY, 1.0f);
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(this->width / 2, this->height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
-	D3DXMatrixRotationZ(&mat, angle);
 	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
 	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }
@@ -197,7 +185,6 @@ void Sprite::DrawSprite(D3DXVECTOR3 position, bool flagRight, int x, int y)
 	D3DXVECTOR3 scaling(tempTurnRight * this->scale, this->scale, 1.0f);
 	// out, scaling centre, scaling rotation, scaling, rotation centre, rotation, translation
 	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(this->width / 2, this->height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &position);
-	//D3DXMatrixRotationX(&mat, 3.14f);
 	Game::GetInstance()->GetSpriteHandler()->SetTransform(&mat);
 	Game::GetInstance()->GetSpriteHandler()->Draw(this->texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }
@@ -293,4 +280,8 @@ int Sprite::GetWidth() {
 
 int Sprite::GetHeight() {
 	return this->height;
+}
+
+float Sprite::GetScale() {
+	return this->scale;
 }

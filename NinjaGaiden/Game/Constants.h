@@ -19,11 +19,13 @@
 #define PATH_POS_SIT_ATK L"sprite\\main\\MAIN_SIT_ATK.txt"
 #define PATH_POS_STAND_ATK L"sprite\\main\\MAIN_STAND_ATK.txt"
 #define PATH_POS_JUMP L"sprite\\main\\MAIN_JUMP.txt"
+#define PATH_POS_JUMP_ATK L"sprite\\main\\MAIN_JUMP_ATK.txt"
 #define PATH_POS_WOUNDED L"sprite\\main\\MAIN_WOUNDED.txt"
 #define PATH_POS_WEAPON L"sprite\\main\\MAIN_USE_WEAPON.txt"
 // ======== Vũ khí player
 #define PATH_POS_SmallShuriken L"sprite\\main\\SmallShuriken.txt"
 #define PATH_POS_BigShuriken L"sprite\\main\\BigShuriken.txt"
+#define PATH_POS_CircleFire L"sprite\\main\\Circle_Fire.txt"
 // =====	Map 1
 #define ID_TEXTURE_MAP_1 100
 #define PATH_TEXTURE_MAP_1 L"sprite\\Stage1\\Map1.png"
@@ -44,6 +46,8 @@
 #define PATH_POS_GROUND_MAP_3 L"sprite\\Stage3\\ground.txt"
 // ========	Enemy
 #define ID_TEXTURE_MAP_1_ENEMY 101 
+#define ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE 105
+#define PATH_TEXTURE_MAP_1_ENEMY_DIE_FIRE L"sprite\\Enemy_die.png"
 #define PATH_TEXTURE_MAP_1_ENEMY L"sprite\\Enemies_Bosses.png"
 //=========== Lính vàng cầm kiếm
 #define PATH_TEXTURE_MAP_1_ENEMY_SoldierSword_follow L"sprite\\enemy\\SoldierSword_follow.txt"
@@ -89,6 +93,7 @@ enum OBJECT_TYPE {
 	PANTHER,
 	SMALL_SHURIKEN,
 	BIG_SHURIKEN,
+	CIRCLE_FIRE,
 	BOSS, 
 	BOOM_BOSS,
 	WITCH,
@@ -113,6 +118,7 @@ enum PLAYER_STATE {
 	RUN,
 	STAND_ATK,
 	JUMP,
+	JUMP_ATK,
 	SIT,
 	DIE,
 	SIT_ATK,

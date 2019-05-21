@@ -16,11 +16,13 @@ struct  Cell
 {
 	int row;
 	int column;
+	bool isLoading;
 	vector<Object*>* objects;
 	Cell(int row, int column) { 
 		this->row = row;
 		this->column = column;
 		this->objects = new vector<Object*>();
+		this->isLoading = false;
 	}
 	~Cell() {
 		for (int i = 0; i < objects->size(); i++) {

@@ -1,6 +1,6 @@
 #include "Boom.h"
 #include "Camera.h"
-
+#include "Player.h"
 Boom::Boom() {
 	objectType = BOOM_BOSS;
 	isActive = false;
@@ -49,8 +49,10 @@ void Boom::HandleCollision(vector<Object*>* object) {
 		this->PlusPosition(min_tx * this->deltaX + nx * 0.2f, min_ty*this->deltaY + ny * 0.2f);
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
-			if (e->object->GetObjectType() == OBJECT_TYPE::BOSS) {
-				
+			if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+				if (!Player::GetInstance()->GetWounded()) {
+					Player::GetInstance()->Wounded(e->nx, e->ny, this, GetObjectDirection());
+				}
 			}
 			Object::PlusPosition(this->deltaX, deltaY);
 		}

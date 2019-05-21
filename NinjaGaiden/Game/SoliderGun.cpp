@@ -65,7 +65,7 @@ void SoliderGun::Update(float t, vector<Object*>* objects) {
 				PlusPosition(deltaX, 0);
 			}
 			else {
-				veclocity.y += GRAVITY;
+				veclocity.y += GRAVITY * t;
 				PlusPosition(deltaX, deltaY);
 			}
 			

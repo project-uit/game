@@ -16,6 +16,10 @@ Scence::~Scence()
 
 void Scence::Update(float deltaTime)
 {
+	if (Player::GetInstance()->GetState() == PLAYER_STATE::DIE
+		&& Player::GetInstance()->GetLifePoint() == 0) {
+		return;
+	}
 	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
 	Grid::GetInstance()->UpdateGrid(Player::GetInstance());
 	Grid::GetInstance()->UpdateObject(deltaTime);
@@ -28,6 +32,9 @@ void Scence::Update(float deltaTime)
 	}
 	else {
 		time += deltaTime;
+	}
+	if (Player::GetInstance()->GetState() == PLAYER_STATE::DIE) {
+		this->timer = 150;
 	}
 }
 

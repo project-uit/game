@@ -39,9 +39,6 @@ Boss::~Boss() {
 
 void Boss::Update(float t, vector<Object*> * object) {
 	if (isActive) {
-		if (count > 1000) {
-			count = 0;
-		}
 		if (count % 5 == 0 && count > 0 && throwBoom == false ) {
 			throwBoom = true;
 			for (int i = 0; i < 3; i++) {
@@ -68,7 +65,7 @@ void Boss::Update(float t, vector<Object*> * object) {
 		
 		Object::Update(t);
 		SetLastPos(GetPosition());
-		this->veclocity.y += GRAVITY;
+		this->veclocity.y += GRAVITY * t;
 		RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		if (isOnGround) {
@@ -83,7 +80,7 @@ void Boss::Update(float t, vector<Object*> * object) {
 				DebugOut((wchar_t *)L"LEFT  %f\n", position.x);
 				isOnGround = false;
 				time = 0.0f;
-				float tempVy = 546.0f;
+				float tempVy = 510.0f;
 				SetVy(-tempVy);
 				count++;
 				/*float vy = (50 / 2678)*veclocity.x*veclocity.x - 3.78*veclocity.x - 263;
@@ -104,16 +101,16 @@ void Boss::Update(float t, vector<Object*> * object) {
 		else {
 			if (veclocity.y < 0) {
 				if (count % 2 == 0) {
-					SetVx(245.0f);
+					SetVx(220.0f);
 					direction = RIGHT;
 				}
 				else {
-					SetVx(-245.0f);
+					SetVx(-220.0f);
 					direction = LEFT;
 				}
 			}
 			sprite->at(this->state)->SetIndex(1);
-		}
+		}		
 		if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
 			if (timeHurt >= 0.06f) {
 				timeHurt = 0;
@@ -121,6 +118,30 @@ void Boss::Update(float t, vector<Object*> * object) {
 			}
 			else {
 				timeHurt += t;
+			}
+		}
+		if (Player::GetInstance()->GetWeapon()->GetObjectType() != CIRCLE_FIRE) {
+			if (timeHurt >= 0.06f) {
+				timeHurt = 0;
+				hp--;
+			}
+			else {
+				timeHurt += t;
+			}
+		}
+		else {
+			Weapon* weapon = Player::GetInstance()->GetWeapon();
+			for (int i = 0; i < 3; i++) {
+				if (Game::AABB(weapon[i].GetBoundingBox(), GetBoundingBox())) {
+					if (timeHurt >= 0.06f) {
+						timeHurt = 0;
+						hp--;
+					}
+					else {
+						timeHurt += t;
+					}
+					break;
+				}
 			}
 		}
 	}
@@ -161,6 +182,9 @@ void Boss::HandleCollision(vector<Object*> *object) {
 				}
 				if (e->ny != 0) {
 					PlusPosition(deltaX, 0.0f);
+				}
+				if (!Player::GetInstance()->GetWounded()) {
+					Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
 				}
 			}
 		}

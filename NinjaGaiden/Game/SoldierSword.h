@@ -24,4 +24,5 @@ public:
 	void ResetState();
 	void UpdateActiveArea(float t);
 	void SetState(ENEMY_STATE state);
+	void Dead();
 };

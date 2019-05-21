@@ -4,9 +4,9 @@
 #include <vector>
 #include <algorithm>
 #include "Constants.h"
-#define GRAVITY 10.0f
+#define GRAVITY 1400.0f
 #define PLAYER_VELOCITY_X 175.0f
-#define PLAYER_VELOCITY_Y 370.0f
+#define PLAYER_VELOCITY_Y 350.0f
 #define NO_VELOCITY 0.0f
 
 using namespace std;
@@ -60,6 +60,7 @@ public:
 	virtual void Render() = 0;
 	virtual void HandleCollision(vector<Object*> *objects) = 0;
 	virtual void ResetState();
+	virtual void Dead();
 
 	D3DXVECTOR3 GetVeclocity() { return this->veclocity; }
 	void SetVeclocity(float vx, float vy) { this->veclocity.x = vx; this->veclocity.y = vy; }

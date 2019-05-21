@@ -4,7 +4,7 @@
 #include <map>
 #define MAX_DISTANCE_PLAYER 70
 #define AVE_DISTANCE_PLAYER 50
-#define MIN_DISTANCE_PLAYER 7
+#define MIN_DISTANCE_PLAYER 5
 class Eagle : public Object {
 private:
 	map<ENEMY_STATE, Sprite*>* sprite;

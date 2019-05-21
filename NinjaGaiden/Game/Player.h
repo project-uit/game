@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Object.h"
 #include "Sprite.h"
 #include "Texture.h"
@@ -7,6 +7,7 @@
 #include "Katana.h"
 #include "SmallShuriken.h"
 #include "Food.h"
+#include "CircleFire.h"
 class Player : public Object
 {
 private:
@@ -28,6 +29,8 @@ private:
 	int count;
 	int itemPoint;
 	int lifePoint;
+	//Top của mặt đất, nhưng với player là bottom :D
+	float borderBot;
 public:
 	Player();
 	~Player();
@@ -42,7 +45,7 @@ public:
 	void SetOnGround(bool isOnGround);
 	bool GetOnGround();
 	bool GetWounded();
-	bool Wounded(CollisionHandler* e, DIRECTION direction);
+	bool Wounded(float nx, float ny, Object* object, DIRECTION direction);
 	Sprite* GetCurrentSprite();
 	void Reset(float  x, float y);
 	void SetAcceleratorX(float x);
@@ -60,7 +63,8 @@ public:
 	string GetScoreString();
 	Katana* GetKatana();
 	Weapon* GetWeapon();
-	void SwitchWeapon();
+	void SwitchItem(int type);
+	void KillEnemy(Object* object);
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();
 		return _instance;

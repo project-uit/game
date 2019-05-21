@@ -20,7 +20,7 @@ void Eagle::init() {
 	this->sprite = new  map<ENEMY_STATE, Sprite*>();
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::FOLLOW,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_Eagle_follow, 2, 0.07f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_Eagle_follow, 2, 0.045f)));
 	//this->sprite
 	//	->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
 	//		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
@@ -47,7 +47,7 @@ void Eagle::UpdatteActiveArea(float t) {
 	if (!isActive) {
 		int a = 0, b = 1, c = 0;
 		float x1 = Player::GetInstance()->GetPosition().x;
-		float y1 = Player::GetInstance()->GetPosition().y - 5;
+		float y1 = 145;
 		float x2 = position.x, y2 = position.y;
 		if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 			&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
@@ -172,15 +172,16 @@ void Eagle::FollowPlayer(float t) {
 			}
 		}
 		else {
-			if (dx <= 30 && position.y > Player::GetInstance()->GetPosition().y - 45) {
-				SetVy(-60);
+			//&& position.y > Player::GetInstance()->GetPosition().y - 40
+			if (dx <= MIN_DISTANCE_PLAYER) {
+				SetVy(-100);
 			}
 			else {
 				if (position.y < bottom) {
 					SetVy(120);
 				}
 				else {
-					SetVy(0.0f);
+					SetVy(-10.0f);
 					//position.y += 0.05f;
 				}
 			}
@@ -214,13 +215,13 @@ void Eagle::HandleCollision(vector<Object*>* object) {
 	else {
 		float min_tx, min_ty, nx = 0, ny;
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		this->PlusPosition(min_tx * this->deltaX + nx * 0.2f, min_ty*this->deltaY + ny * 0.2f);
+		//this->PlusPosition(min_tx * this->deltaX + nx * 0.2f, min_ty*this->deltaY + ny * 0.2f);
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
-				if (e->nx != 0 || e->ny ) {
-					
-				}
+				/*if (e->nx != 0 || e->ny != 0) {
+					Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
+				}*/
 			}
 			Object::PlusPosition(this->deltaX, this->deltaY);
 		}
