@@ -12,6 +12,8 @@
 #include "Map.h"
 #include "Square.h"
 class Scence1 : public Scence {
+private:
+	float waitingTime;
 public:
 	Scence1();
 	~Scence1();

@@ -1,5 +1,6 @@
 ﻿#include "GameAction.h"
 #include "GameTime.h"
+#include "Sound.h"
 #define MAX_FRAME_RATE 170
 GameAction *GameAction::_instance = NULL;
 
@@ -19,8 +20,6 @@ int GameAction::GameRun()
 {
 	MSG msg;
 	int done = 0;
-
-	DWORD frameStart = GetTickCount();
 	float tickPerFrame = 1.0f / MAX_FRAME_RATE, delta = 0;
 
 	while (!done) {
@@ -74,9 +73,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 {
 	/*DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyDown: %d\n", KeyCode);*/
 	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
-
 		if (Player::GetInstance()->GetState() == PLAYER_STATE::JUMP) {
-			
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
 				Player::GetInstance()->SetAcceleratorX(-20.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
@@ -97,6 +94,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 						}
 					}
 					Player::GetInstance()->SetAcceleratorX(0.0f);
+					Sound::GetInstance()->Play(SOUND_ATK, false, 1);
 				}
 			}
 			else {
@@ -111,6 +109,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 						}
 					}
 					Player::GetInstance()->SetAcceleratorX(0.0f);
+					Sound::GetInstance()->Play(SOUND_ATK, false, 1);
 				}
 			}
 			if (KeyCode == DIK_C) {
@@ -120,27 +119,35 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 				Player::GetInstance()->SetVx(0.0f);
 			}
 		}
-
-		//if (Player::GetInstance()->GetState() == PLAYER_STATE::STAND) {
-		//	
-		//}
-
+		
+		if (Game::GetInstance()->IsKeyDown(DIK_UP)) {
+			if (Player::GetInstance()->GetState() == PLAYER_STATE::CLIMB) {
+				Player::GetInstance()->SetVeclocity(NO_VELOCITY, -50);
+				Player::GetInstance()->SetClimbMoving(true);
+			}
+		}
+		
 		if (Game::GetInstance()->IsKeyDown(DIK_DOWN)) {
-			if (Player::GetInstance()->GetState() == PLAYER_STATE::STAND) {
+			if (Player::GetInstance()->GetState() == PLAYER_STATE::STAND
+				&& Player::GetInstance()->GetOnGround()) {
 				Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
 				Player::GetInstance()->SetState(PLAYER_STATE::SIT);
+			}
+			if (Player::GetInstance()->GetState() == PLAYER_STATE::CLIMB) {
+				Player::GetInstance()->SetVeclocity(NO_VELOCITY, 50);
+				Player::GetInstance()->SetClimbMoving(true);
 			}
 		}
 
 		if (Player::GetInstance()->GetLastState() == PLAYER_STATE::SIT) {
 			if (KeyCode == DIK_Z && Game::GetInstance()->IsKeyDown(DIK_DOWN)) {
 				Player::GetInstance()->SetState(PLAYER_STATE::SIT_ATK);
+				Sound::GetInstance()->Play(SOUND_ATK, false, 1);
 			}
 		}
 
-		if (Player::GetInstance()->GetState() == PLAYER_STATE::STAND ) {
+		if (Player::GetInstance()->GetState() == PLAYER_STATE::STAND) {
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-				Player::GetInstance()->SetVx(-PLAYER_VELOCITY_X);
 				Player::GetInstance()->SetAcceleratorX(-25.0f);
 				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
 				Player::GetInstance()->SetState(PLAYER_STATE::RUN);
@@ -152,11 +159,17 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 			}
 			if (KeyCode == DIK_Z) {
 				Player::GetInstance()->SetState(PLAYER_STATE::STAND_ATK);
+				Sound::GetInstance()->Play(SOUND_ATK, false, 1);
+				Player::GetInstance()->SetVx(0.0f);
+				Player::GetInstance()->SetAcceleratorX(0.0f);
 			}
 			if (KeyCode == DIK_X) {
-				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
-				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
-				Player::GetInstance()->SetOnGround(false);
+				if (Player::GetInstance()->GetOnGround()) {
+					Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
+					Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
+					Player::GetInstance()->SetOnGround(false);
+					Sound::GetInstance()->Play(SOUND_JUMP, false, 1);
+				}
 			}
 			if (KeyCode == DIK_C) {
 				Player::GetInstance()->SetState(PLAYER_STATE::USE_WEAPON);
@@ -171,14 +184,31 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
 				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);				
 				Player::GetInstance()->SetOnGround(false);
+				Sound::GetInstance()->Play(SOUND_JUMP, false, 1);
 			}
 		}
 
 		if (Player::GetInstance()->GetState() == PLAYER_STATE::USE_WEAPON) {
 			if (KeyCode == DIK_X) {
-				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
-				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
-				Player::GetInstance()->SetOnGround(false);
+				if (Player::GetInstance()->GetOnGround()) {
+					Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
+					Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
+					Player::GetInstance()->SetOnGround(false);
+					Sound::GetInstance()->Play(SOUND_JUMP, false, 1);
+				}
+			}
+		}
+
+		if (Player::GetInstance()->GetState() == PLAYER_STATE::CLIMB) {
+			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
+				if (KeyCode == DIK_X) {
+					Player::GetInstance()->JumpClimb(DIK_LEFT);
+				}
+			}
+			if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
+				if (KeyCode == DIK_X) {
+					Player::GetInstance()->JumpClimb(DIK_RIGHT);
+				}
 			}
 		}
 	}
@@ -196,6 +226,22 @@ void KeyboardHandler::OnKeyUp(int KeyCode)
 		World::GetInstance()->ReplaceScence(SCENCE::SCENCE_3);
 	}
 	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
+		if (KeyCode == DIK_UP) {
+			if (Player::GetInstance()->GetState() == PLAYER_STATE::CLIMB) {
+				Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
+				Player::GetInstance()->SetAcceleratorX(0.0f);
+				Player::GetInstance()->SetClimbMoving(false);
+			}
+		}
+
+		if (KeyCode == DIK_DOWN) {
+			if (Player::GetInstance()->GetState() == PLAYER_STATE::CLIMB) {
+				Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);
+				Player::GetInstance()->SetAcceleratorX(0.0f);
+				Player::GetInstance()->SetClimbMoving(false);
+			}
+		}
+
 		if (KeyCode == DIK_RIGHT) {
 			if (Player::GetInstance()->GetState() == PLAYER_STATE::RUN) {
 				Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);

@@ -21,15 +21,45 @@ void Scence3::LoadResource()
 	timer = 150;
 	map->LoadMap(PATH_POS_MAP_3, PATH_TEXTURE_MAP_3, ID_TEXTURE_MAP_3);
 	Camera::GetInstance()->setWorldBoundary(256);
-	Grid::GetInstance()->ReSetGrid(246, map->GetWidth(), false);
+	Grid::GetInstance()->ReSetGrid(246, map->GetWidth());
 	Grid::GetInstance()->LoadSquares(PATH_POS_GROUND_MAP_3);
+	Grid::GetInstance()->LoadRocks(PATH_POS_ROCK_MAP_3);
 	boss = new Boss();
 	Grid::GetInstance()->Add(boss);
+	remainTime = 1.0f;
 }
 
 void Scence3::Update(float deltaTime)
 {
-	Scence::Update(deltaTime);
+	if (boss->GetHp() == 0) {
+		remainTime = 0.05f;
+	}
+
+	if (Player::GetInstance()->GetState() == PLAYER_STATE::DIE
+		&& Player::GetInstance()->GetLifePoint() == 0) {
+		return;
+	}
+	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
+	Grid::GetInstance()->UpdateGrid(Player::GetInstance());
+	Grid::GetInstance()->UpdateObject(deltaTime);
+	HUD::GetInstance()->Update(deltaTime);
+	
+	if (time >= remainTime) {
+		if (boss->GetHp() == 0 && this->timer > 0) {
+			Player::GetInstance()->AddScore(200);
+		}
+		this->timer--;
+		time = 0;
+		if (this->timer <= 0) {
+			this->timer = 0;
+		}
+	}
+	else {
+		time += deltaTime;
+	}
+	if (Player::GetInstance()->GetState() == PLAYER_STATE::DIE) {
+		this->timer = 150;
+	}
 }
 
 void Scence3::Render()

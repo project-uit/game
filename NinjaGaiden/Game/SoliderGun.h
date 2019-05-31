@@ -32,5 +32,6 @@ public:
 	void Render();
 	void HandleCollision(vector<Object*> *object);
 	void ResetState();
+	void Dead();
 	void GotoStateFollow();
 };

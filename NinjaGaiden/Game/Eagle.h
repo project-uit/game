@@ -12,12 +12,12 @@ private:
 	DIRECTION direction;
 	vector<int> activeArea;
 	vector<int> number;
-	bool firstFly;
+	/*bool firstFly;*/
 	int finishFly;
 	int top, bottom;
 	float destination;
 	float time;
-	float left, right; 
+	bool isCollidePlayer;
 	void init();
 public:
 	Eagle();
@@ -30,4 +30,5 @@ public:
 	void ResetState();
 	void FollowPlayer(float t);
 	void ChangeDistance(float vx, float vy);
+	void Dead();
 };

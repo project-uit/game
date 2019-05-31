@@ -11,15 +11,11 @@ BigShuriken::BigShuriken() {
 	SetVx(0.0f);
 	SetVy(0.0f);
 	this->SetPosition(0, 0);
-	sprite = new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_POS_BigShuriken, 1, 0.0f);
+	sprite = new Sprite(Texture::GetInstance()->Get(BIG_SHURIKEN_ID), PATH_POS_BigShuriken, 2, 0.0475f);
 }
 
 BigShuriken::~BigShuriken() {
 	delete sprite;
-}
-
-void BigShuriken::SetOrbitMoving(bool moving) {
-	orbitMoving = moving;
 }
 
 void BigShuriken::Orbit(float t) {
@@ -58,7 +54,6 @@ void BigShuriken::Update(float t, vector<Object*> *object) {
 		RECT rect = sprite->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->NextSprite(t);
-		//HandleCollision(object);
 		Object::PlusPosition(this->deltaX, this->deltaY);
 	}
 	else {

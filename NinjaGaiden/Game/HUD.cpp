@@ -5,7 +5,7 @@ HUD* HUD::_instance = NULL;
 HUD::HUD() {
 	healthPlayer = new Sprite(Texture::GetInstance()->Get(HEALTH_ID), L"sprite\\HUD\\health.txt", 2, 0.0f, 0.5f);
 	healthBoss = new Sprite(Texture::GetInstance()->Get(HEALTH_ID), L"sprite\\HUD\\health.txt", 2, 0.0f, 0.5f);
-	box = new Sprite(Texture::GetInstance()->Get(BOX_ID), L"sprite\\HUD\\box.txt", 1, 0.0f, 0.4f);
+	box = new Sprite(Texture::GetInstance()->Get(BOX_ID), L"sprite\\HUD\\box.txt", 1, 0.0f);
 	lifePoint = new Sprite(Texture::GetInstance()->Get(POINT_ID), L"sprite\\HUD\\point.txt", 2, 0.0f, 0.475f);
 }
 
@@ -17,12 +17,13 @@ HUD::~HUD() {
 }
 
 void HUD::Update(float t) {
-	//healthBoss->SetIndex(0);
+	if(Player::GetInstance()->GetState() == PLAYER_STATE::DIE) {
+		this->skill = NULL;
+	}
 }
 
 void HUD::Render(int hpBoss) {
-	
-	box->DrawSprite(D3DXVECTOR3(67.0f, 3.0f, 0.0f), false);
+	box->DrawSprite(D3DXVECTOR3(67.0f, 3.0f, 0.0f), false, 0.35f, 0.45f);
 	for (int i = 0; i < 16; i++) {
 		if (i < Player::GetInstance()->GetHp()) {
 			healthPlayer->SetIndex(0);
@@ -41,4 +42,11 @@ void HUD::Render(int hpBoss) {
 		healthBoss->DrawSprite(D3DXVECTOR3(temp, 16.0f, 0.0f), false);
 	}
 	lifePoint->DrawSprite(D3DXVECTOR3(57.0f, 16.0f, 0.0f), false);
+
+	if (skill != NULL)
+		skill->DrawSprite(D3DXVECTOR3(92.0f, 14.5f, 0.0f), false);
+}
+
+void HUD::SetSkill(Sprite* skill) {
+	this->skill = skill;
 }

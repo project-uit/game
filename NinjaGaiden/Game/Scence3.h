@@ -12,6 +12,7 @@
 class Scence3 : public Scence {
 private:
 	Boss* boss;
+	float remainTime;
 public:
 	Scence3();
 	~Scence3();

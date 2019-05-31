@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Text.h"
 #include <iomanip> 
+#include "HUD.h"
 Scence::Scence()
 {
 	this->map = new Map();
@@ -17,12 +18,13 @@ Scence::~Scence()
 void Scence::Update(float deltaTime)
 {
 	if (Player::GetInstance()->GetState() == PLAYER_STATE::DIE
-		&& Player::GetInstance()->GetLifePoint() == 0) {
+		&& Player::GetInstance()->GetLifePoint() < 0) {
 		return;
 	}
 	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
 	Grid::GetInstance()->UpdateGrid(Player::GetInstance());
 	Grid::GetInstance()->UpdateObject(deltaTime);
+	HUD::GetInstance()->Update(deltaTime);
 	if (time >= 1.0f) {
 		this->timer--;
 		time = 0;
@@ -44,6 +46,7 @@ void Scence::RenderText() {
 	timer << std::setw(3) << std::setfill('0') << this->timer;
 	//Mạng người chơi
 	int temp = Player::GetInstance()->GetLifePoint();
+	if (temp == -1) temp = 0;
 	std::stringstream lifePoint;
 	lifePoint << std::setw(2) << std::setfill('0') << temp;
 	//Điểm của người chơi
@@ -65,6 +68,6 @@ void Scence::RenderText() {
 void Scence::Render()
 {
 	RenderText();
-	map->drawMap();
+	//map->drawMap();
 	Grid::GetInstance()->RenderObject();
 }

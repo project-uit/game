@@ -3,7 +3,7 @@
 #include "Debug.h"
 Boss::Boss() {
 	objectType = OBJECT_TYPE::BOSS;
-	hp = 16;
+	hp = 1;
 	isOnGround = true;
 	SetVx(0.0f);
 	SetVy(0.0f);
@@ -14,7 +14,7 @@ Boss::Boss() {
 	count = 0;
 	timeHurt = 0;
 	throwBoom = false;
-	deltaXAxis = 0;
+	score = 6100;
 	right = 188.0f;
 	left = 29.0f;
 	state = ENEMY_STATE::HIGH_JUMP;
@@ -22,6 +22,12 @@ Boss::Boss() {
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::HIGH_JUMP,
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_3_ENEMY_BOSS, 2, 0.09f)));
+	explosion = new vector<Sprite*>();
+	explosion->reserve(4);
+	for (int i = 0; i < 4; i++) {
+		Sprite* sprite = new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_3_EXPLOSION_BOSS, 2, 0.06f);
+		explosion->push_back(sprite);
+	}
 	//this->sprite
 	//	->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
 	//		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
@@ -35,31 +41,39 @@ Boss::~Boss() {
 		}
 		delete this->sprite;
 	}
+	for (int i = 0; explosion->size(); i++) {
+		delete explosion->at(i);
+	}
+	explosion->clear();
+	delete explosion;
 }
 
 void Boss::Update(float t, vector<Object*> * object) {
 	if (isActive) {
-		if (count % 5 == 0 && count > 0 && throwBoom == false ) {
+		if (count % 3 == 0 && count > 0 && throwBoom == false && isOnGround) {
 			throwBoom = true;
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < BOOM_NUMBERS; i++) {
 				boom[i].SetActive(true);
 				if (direction == LEFT) {
-					boom[i].SetVx(75.0f);
+					boom[i].SetVx(120.0f);
+					boom[i].SetPosition(position.x, position.y + 6 + i * 16);
 				}
 				else {
-					boom[i].SetVx(-75.0f);
+					boom[i].SetVx(-120.0f);
+					boom[i].SetPosition(position.x + 23, position.y + 6 + i * 16);
 				}
-				boom[i].SetPosition(position.x + 15 - i*10, position.y + 22 + i * 12);
 			}
 		}
 		if (throwBoom) {
-			for (int i = 0; i < 3; i++) {
-				throwBoom = true;
-				boom[i].Update(t, object);
+			bool flag = true;
+			for (int i = 0; i < BOOM_NUMBERS; i++) {
+				boom[i].Update(t, 0.1 + 0.125*i, object);
 				if (boom[i].IsOutCamera()) {
-					throwBoom = false;
+					flag = false;
 					boom[i].SetActive(false);
+					boom[i].ResetState();
 				}
+				throwBoom = flag || boom[i].GetActive();
 			}
 		}
 		
@@ -77,7 +91,6 @@ void Boss::Update(float t, vector<Object*> * object) {
 		if (isOnGround) {
 			sprite->at(this->state)->SetIndex(0);
 			if (time >= 0.2f) {
-				DebugOut((wchar_t *)L"LEFT  %f\n", position.x);
 				isOnGround = false;
 				time = 0.0f;
 				float tempVy = 510.0f;
@@ -120,34 +133,35 @@ void Boss::Update(float t, vector<Object*> * object) {
 				timeHurt += t;
 			}
 		}
-		if (Player::GetInstance()->GetWeapon()->GetObjectType() != CIRCLE_FIRE) {
-			if (timeHurt >= 0.06f) {
-				timeHurt = 0;
-				hp--;
+		if (Player::GetInstance()->GetWeapon()) {
+			if (Player::GetInstance()->GetWeapon()->GetObjectType() != CIRCLE_FIRE) {
+				if (Game::AABB(Player::GetInstance()->GetWeapon()->GetBoundingBox(), GetBoundingBox())) {
+					hp--;
+					Player::GetInstance()->GetWeapon()->SetActive(false);
+				}
 			}
 			else {
-				timeHurt += t;
-			}
-		}
-		else {
-			Weapon* weapon = Player::GetInstance()->GetWeapon();
-			for (int i = 0; i < 3; i++) {
-				if (Game::AABB(weapon[i].GetBoundingBox(), GetBoundingBox())) {
-					if (timeHurt >= 0.06f) {
-						timeHurt = 0;
+				Weapon* weapon = Player::GetInstance()->GetWeapon();
+				for (int i = 0; i < CIRCLE_FIRE_NUMBER; i++) {
+					if (Game::AABB(weapon[i].GetBoundingBox(), GetBoundingBox())) {
 						hp--;
+						weapon[i].SetActive(false);
+						break;
 					}
-					else {
-						timeHurt += t;
-					}
-					break;
 				}
 			}
 		}
+		if (hp == 0) {
+			isActive = false;
+			for (int i = 0; i < BOOM_NUMBERS; i++) {
+				boom[i].SetActive(false);
+			}
+			Player::GetInstance()->AddScore(score);
+		}
 	}
 	else {
-		if (state == ENEMY_STATE::DEAD) {
-			sprite->at(this->state)->NextSprite(t);
+		for (int i = 0; i < 4; i++) {
+			explosion->at(i)->NextSprite(t);
 		}
 	}
 }
@@ -214,10 +228,28 @@ void Boss::Render() {
 		break;
 	}
 	if (throwBoom) {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < BOOM_NUMBERS; i++) {
 			boom[i].Render();
 		}
 	}
+	if (!isActive) {
+		for (int i = 0; i < 4; i++) {
+			switch (i) {
+			case 0:
+				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x - 12, position.y, 0), true);
+				break;
+			case 1:
+				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x + 13 * i, position.y + 5 , 0), true);
+				break;
+			case 2:
+				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x + - 12, position.y + 25, 0), true);
+				break;
+			case 3:
+				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x + 13 * (i - 2), position.y + 30, 0), true);
+				break;
+			}
+		}
+	} 
 }
 
 int Boss::GetHp() {

@@ -9,6 +9,7 @@ private:
 	Sprite*	box;
 	Sprite* item;
 	Sprite* lifePoint;
+	Sprite* skill;
 public:
 	HUD();
 	~HUD();
@@ -20,4 +21,5 @@ public:
 	}
 	void Update(float t);
 	void Render(int hpBoss = 16);
+	void SetSkill(Sprite* skill);
 };

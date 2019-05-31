@@ -57,8 +57,20 @@ void World::LoadResource()
 	texture->Add(BOX_ID, BOX, D3DCOLOR_XRGB(0, 0, 0));
 	//Point
 	texture->Add(POINT_ID, POINT_BOX, D3DCOLOR_XRGB(0, 0, 0));
-	
-	//Sound* sound = Sound::GetInstance();
+	//Big Shuriken
+	texture->Add(BIG_SHURIKEN_ID, PATH_BIG_SHURIKEN, D3DCOLOR_XRGB(0, 128, 128));
+	Sound* sound = Sound::GetInstance();
+	sound->LoadSound(SOUND_PATH_EFFECT_ATK, SOUND_ATK);
+	sound->LoadSound(SOUND_PATH_EFFECT_ATK_SMALL_SHURIKEN, SOUND_ATK_SMALL_SHURIKEN);
+	sound->LoadSound(SOUND_PATH_EFFECT_ATK_BIG_SHURIKEN, SOUND_ATK_BIG_SHURIKEN);
+	sound->LoadSound(SOUND_PATH_EFFECT_ATK_FIRE, SOUND_ATK_FIRE);
+	sound->LoadSound(SOUND_PATH_EFFECT_JUMP, SOUND_JUMP);
+	sound->LoadSound(SOUND_PATH_EFFECT_WOUNDED, SOUND_WOUNDED);
+	sound->LoadSound(SOUND_PATH_EFFECT_DIGEST_FOOD, SOUND_DIGEST_FOOD);
+	sound->LoadSound(SOUND_PATH_EFFECT_ENEMY_DIE, SOUND_ENEMY_DIE);
+	sound->LoadSound(SOUND_PATH_EFFECT_ENEMY_GUN, SOUND_ENEMY_GUN);
+	sound->LoadSound(SOUND_PATH_EFFECT_ENEMY_BAZOKA, SOUND_ENEMY_BAZOKA);
+	sound->LoadSound(SOUND_PATH_EFFECT_BOSS_JUMP, SOUND_BOSS_JUMP);
 	Player *main = Player::GetInstance();
 	Text* text = Text::GetInstance();
 	Camera* camera = Camera::GetInstance();

@@ -216,6 +216,15 @@
     <ClInclude Include="Eagle.h">
       <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Header Files\Object\Square</Filter>
+    </ClInclude>
+    <ClInclude Include="Mp3.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="MP3Player.h">
+      <Filter>Header Files\FrameWork</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -317,9 +326,6 @@
     <ClCompile Include="SoliderGun.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="SoliderRun.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Witch.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
@@ -346,6 +352,18 @@
     </ClCompile>
     <ClCompile Include="CircleFire.cpp">
       <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Source Files\Object\Square</Filter>
+    </ClCompile>
+    <ClCompile Include="Mp3.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="CMP3_MCI.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SoliderRun.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

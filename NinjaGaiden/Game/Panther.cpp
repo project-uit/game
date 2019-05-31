@@ -1,6 +1,8 @@
 #include "Panther.h"
 #include "Player.h"
 #include "Camera.h"
+#include "Sound.h"
+
 Panther::Panther() {
 	
 }
@@ -112,6 +114,23 @@ void Panther::UpdateActiveArea(float t) {
 }
 
 void Panther::Update(float t, vector<Object*>* objects) {
+	if (Player::GetInstance()->isFreezeTime() && isActive) {
+		SetVeclocity(0, 0);
+		Object::Update(t);
+		HandleCollision(objects);
+		Player::GetInstance()->KillEnemy(this);
+		if (state == DEAD) {
+			sprite->at(this->state)->NextSprite(t);
+			if (sprite->at(this->state)->GetIsComplete()) {
+				sprite->at(this->state)->SetIndex(2);
+				sprite->at(this->state)->SetScale(1.0f);
+				isActive = false;
+			}
+			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
+			SetVx(0.0f);
+		}
+		return;
+	}
 	UpdateActiveArea(t);
 	if (isActive) {
 		Object::Update(t);
@@ -146,6 +165,7 @@ void Panther::Update(float t, vector<Object*>* objects) {
 }
 
 void Panther::Dead() {
+	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
 	Object::PlusPosition(0, -21.5f);
@@ -184,15 +204,13 @@ void Panther::HandleCollision(vector<Object*>* object) {
 					Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
 				}
 			}
-			else {
-				Object::PlusPosition(this->deltaX, 0.0f);
-			}
 		}
 	}
 
 	for (UINT i = 0; i < coEvents->size(); i++) {
 		delete coEvents->at(i);
 	}
+	coEventsResult->clear();
 
 	delete coEvents;
 	delete coEventsResult;

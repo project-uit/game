@@ -129,7 +129,11 @@ CollisionHandler* Object::GetCollsionObjectsBySweptAABB(Object * obj)
 
 void Object::CalcPotentialCollisions(vector<Object*>* objects, vector<CollisionHandler*>* coEvents)
 {
-	for (UINT i = 0; i < objects->size(); i++) {
+	UINT k = 0;
+	if (objectType == OBJECT_TYPE::MAIN_CHARACTER) {
+		k++;
+	}
+	for (UINT i = k; i < objects->size(); i++) {
 		CollisionHandler* coEvent = this->GetCollsionObjectsBySweptAABB(objects->at(i));
 		if (coEvent->collisionTime >= 0 && coEvent->collisionTime < 1.0f)
 			coEvents->push_back(coEvent);

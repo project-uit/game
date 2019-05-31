@@ -7,7 +7,7 @@ private:
 	bool isCanClimbLeft;
 	bool isCanClimbRight;
 public:
-	Rock(int left, int top, int right, int bottom);
+	Rock(int left, int top, int right, int bottom, bool isCanClimbLeft, bool isCanClimbRight);
 	~Rock();
 	void Update(float deltaTime, vector<Object*> *object = NULL);
 	void Render();
@@ -15,4 +15,3 @@ public:
 	bool GetIsCanClimbLeft();
 	bool GetIsCanClimbRight();
 };
-

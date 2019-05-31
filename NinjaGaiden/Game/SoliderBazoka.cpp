@@ -3,6 +3,7 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
+#include "Sound.h"
 
 SoliderBazoka::SoliderBazoka() {
 
@@ -36,19 +37,20 @@ void SoliderBazoka::InitSpite() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_BAZOKA_ATK, 2, 0.09f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.04f)));
 }
 
 void SoliderBazoka::Update(float t, vector<Object*>* objects) {
-	if (state != INVISIBLE) {
+	if (isActive) {
 		Object::Update(t);
+		this->veclocity.y += GRAVITY * t;
 		RECT rect = sprite->at(state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->at(state)->NextSprite(t);
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(state)->GetIsComplete()) {
 				sprite->at(state)->Reset();
-				state = ENEMY_STATE::INVISIBLE;
+				isActive = false;
 				bullet->SetState(ENEMY_STATE::INVISIBLE);
 			}
 		}
@@ -56,18 +58,7 @@ void SoliderBazoka::Update(float t, vector<Object*>* objects) {
 			HandleCollision(objects);
 			HandleDirection();
 			HandleAttack(t);
-
-			if (isOnGround) {
-				PlusPosition(deltaX, 0);
-			}
-			else {
-				veclocity.y += GRAVITY;
-				PlusPosition(deltaX, 0);
-			}
-
-			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
-				state = ENEMY_STATE::DEAD;
-			}
+			Player::GetInstance()->KillEnemy(this);
 		}
 
 		bullet->Update(t, objects);
@@ -79,15 +70,30 @@ void SoliderBazoka::HandleCollision(vector<Object*> *objects) {
 	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
 	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
 	coEvents->clear();
-	Object::CalcPotentialCollisions(objects, coEvents);
-	if (coEvents->size() != 0) {
+	if (state != ENEMY_STATE::DEAD) {
+		Object::CalcPotentialCollisions(objects, coEvents);
+	}
+	if (coEvents->size() == 0) {
+		Object::PlusPosition(this->deltaX, this->deltaY);
+	} else {
 		float min_tx, min_ty, nx = 0, ny;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+		this->PlusPosition(min_tx * this->deltaX + nx * 0.2f, min_ty*this->deltaY + ny * 0.2f);
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (e->object->GetObjectType() == OBJECT_TYPE::SQUARE) {
 				if (e->ny < 0) {
-					isOnGround = true;
+					SetVy(0);
+				}
+			}
+			else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+				if (!Player::GetInstance()->GetWounded()) {
+					if (Player::GetInstance()->GetState() == JUMP_ATK) {
+						state = ENEMY_STATE::DEAD;
+					}
+					else {
+						Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
+					}
 				}
 			}
 		}
@@ -128,6 +134,7 @@ void SoliderBazoka::HandleDirection() {
 void SoliderBazoka::HandleAttack(float t) {
 	if (state != ENEMY_STATE::ATK) {
 		if (timerDelayShooting >= SHOOT_TIME_DELAY) {
+			Sound::GetInstance()->Play(SOUND_ENEMY_BAZOKA, false, 1);
 			state = ENEMY_STATE::ATK;
 			bullet->Fly(direction);
 			SetVx(0);
@@ -145,13 +152,24 @@ void SoliderBazoka::HandleAttack(float t) {
 	}
 }
 
+void SoliderBazoka::Dead() {
+	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	state = ENEMY_STATE::DEAD;
+}
+
 void SoliderBazoka::Render() {
-	if (state != INVISIBLE) {
+	if (isActive) {
 		switch (this->direction) {
 		case RIGHT:
-			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true, 15,0);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(state)->SetScale(sprite->at(state)->GetScale() + 0.015f);
+			}
+			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
 			break;
 		case LEFT:
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(state)->SetScale(sprite->at(state)->GetScale() + 0.015f);
+			}
 			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
 			break;
 		default:
@@ -163,8 +181,7 @@ void SoliderBazoka::Render() {
 }
 
 void SoliderBazoka::ResetState() {
-	isActive = false;
-	isOnGround = false;
+	isActive = true;
 	if (state == ENEMY_STATE::DEAD) {
 		sprite->at(ENEMY_STATE::DEAD)->Reset();
 	}

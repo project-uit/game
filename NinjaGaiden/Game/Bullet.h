@@ -21,5 +21,6 @@ public:
 	void HandleCollision(vector<Object*> *object);
 	void ResetState();
 	void Fly(DIRECTION direction);
+	void Dead();
 	void SetState(ENEMY_STATE state);
 };

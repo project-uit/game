@@ -8,6 +8,10 @@
 #include "SmallShuriken.h"
 #include "Food.h"
 #include "CircleFire.h"
+#include "Rock.h"
+#include "Brick.h"
+#include "Ladder.h"
+#define CIRCLE_FIRE_NUMBER 3
 class Player : public Object
 {
 private:
@@ -19,18 +23,24 @@ private:
 	map<PLAYER_STATE,Sprite*>* sprite;
 	Food* food;
 	bool isOnGround;
-	bool isOnLadder;
 	bool isWounded;
+	bool isOnLadder;
+	bool isOnRock;
+	bool isJumpClimb;
+	bool isClimbMoving;
+	DIRECTION directionClimb;
 	int hp;
 	float acceleratorX, acceleratorY;
 	Katana* katana;
 	Weapon* weapon;
+	Ladder* currentLadder;
+	Rock* currentRock;
 	float time;
 	int count;
 	int itemPoint;
 	int lifePoint;
-	//Top của mặt đất, nhưng với player là bottom :D
 	float borderBot;
+	float freezeTime;
 public:
 	Player();
 	~Player();
@@ -41,6 +51,7 @@ public:
 	void ResetAllSprites();
 	bool GetStateActive();
 	PLAYER_STATE GetLastState();
+	void IntersectPlayer(Object* object, DIRECTION direction);
 	void SetLastState(PLAYER_STATE last_state);
 	void SetOnGround(bool isOnGround);
 	bool GetOnGround();
@@ -60,11 +71,21 @@ public:
 	int GetHp();
 	void SetHp(int hp);
 	float GetAcceleratorX();
+	float GetBorderBot();
 	string GetScoreString();
 	Katana* GetKatana();
 	Weapon* GetWeapon();
-	void SwitchItem(int type);
+	Food* GetFood();
+	void AddScore(int score);
 	void KillEnemy(Object* object);
+	bool GetIsJumpClimb();
+	void JumpClimb(int KeyCode);
+	void SetClimbRock(float nx, float ny, Rock* rock);
+	void SetClimbMoving(bool flag);
+	void DigestFood(Food* food, Sprite* sprite);
+	float GetFreezeTime();
+	void MinusFreezeTime();
+	bool isFreezeTime();
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();
 		return _instance;

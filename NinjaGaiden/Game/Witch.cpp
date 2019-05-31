@@ -3,6 +3,8 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
+#include "Sound.h"
+
 GameDebugDraw* draw3;
 Witch::Witch() {
 
@@ -41,10 +43,27 @@ void Witch::InitSpite() {
 	sprite->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::ATK,
 		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_WITCH_ATK, 2, 0.09f)));
 	sprite->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
+		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.04f)));
 }
 void Witch::Update(float t, vector<Object*>* objects) {
-	if (state != INVISIBLE) {
+	if (Player::GetInstance()->isFreezeTime() && isActive) {
+		SetVeclocity(0, 0);
+		Object::Update(t);
+		HandleCollision(objects);
+		Player::GetInstance()->KillEnemy(this);
+		if (state == DEAD) {
+			sprite->at(this->state)->NextSprite(t);
+			if (sprite->at(this->state)->GetIsComplete()) {
+				sprite->at(this->state)->SetIndex(2);
+				sprite->at(this->state)->SetScale(1.0f);
+				isActive = false;
+			}
+			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
+			SetVx(0.0f);
+		}
+		return;
+	}
+	if (isActive) {
 		Object::Update(t);
 		RECT rect = sprite->at(state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
@@ -52,7 +71,7 @@ void Witch::Update(float t, vector<Object*>* objects) {
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(state)->GetIsComplete()) {
 				sprite->at(state)->Reset();
-				state = ENEMY_STATE::INVISIBLE;
+				isActive = false;
 				for (int i = 0; i < NUMBER_OF_SWORD; i++) {
 					sword[i]->SetState(ENEMY_STATE::INVISIBLE);
 				}
@@ -63,17 +82,14 @@ void Witch::Update(float t, vector<Object*>* objects) {
 			HandleDirection();
 			HandleAttack(t);
 
-			if (isOnGround) {
-				PlusPosition(deltaX, 0);
+			if (!isOnGround) {
+				veclocity.y += GRAVITY * t;
 			}
 			else {
-				veclocity.y += GRAVITY * t;
-				PlusPosition(deltaX, deltaY);
+				SetVy(0);
 			}
-
-			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
-				state = ENEMY_STATE::DEAD;
-			}
+			PlusPosition(deltaX, deltaY);
+			Player::GetInstance()->KillEnemy(this);
 		}
 	}
 
@@ -98,25 +114,26 @@ void Witch::HandleCollision(vector<Object*> *objects) {
 					isOnGround = true;
 				}
 			}
+			else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+				if (!Player::GetInstance()->GetWounded()) {
+					if (Player::GetInstance()->GetState() == JUMP_ATK) {
+						state = ENEMY_STATE::DEAD;
+					}
+					else {
+						Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
+					}
+				}
+			}
 		}
 	}
 
 	for (UINT i = 0; i < coEvents->size(); i++) {
 		delete coEvents->at(i);
 	}
-
+	coEventsResult->clear();
+	coEvents->clear();
 	delete coEvents;
 	delete coEventsResult;
-}
-
-void Witch::GotoStateFollow() {
-	state = ENEMY_STATE::FOLLOW;
-	if (direction == DIRECTION::LEFT) {
-		SetVeclocity(-WITCH_VX, 0);
-	}
-	else {
-		SetVeclocity(WITCH_VX, 0);
-	}
 }
 
 void Witch::HandleDirection(){
@@ -214,14 +231,31 @@ void Witch::HandleAttack(float t) {
 	}
 }
 
+void Witch::Dead() {
+	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	state = ENEMY_STATE::DEAD;
+	SetVeclocity(0.0f, 0.0f);
+	Object::PlusPosition(0, -3.0f);
+}
+
+void Witch::GotoStateFollow() {
+	state = ENEMY_STATE::FOLLOW;
+	if (direction == DIRECTION::LEFT) {
+		SetVeclocity(-WITCH_VX, 0);
+	}
+	else {
+		SetVeclocity(WITCH_VX, 0);
+	}
+}
+
 void Witch::Render() {
-	if (state != INVISIBLE) {
+	if (isActive) {
 		switch (direction) {
 		case RIGHT:
 			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
 			break;
 		case LEFT:
-			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -8, 0);
 			break;
 		default:
 			break;
@@ -233,7 +267,7 @@ void Witch::Render() {
 }
 
 void Witch::ResetState() {
-	isActive = false;
+	isActive = true;
 	isOnGround = false;
 	if (state == ENEMY_STATE::DEAD) {
 		sprite->at(ENEMY_STATE::DEAD)->Reset();

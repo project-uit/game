@@ -3,6 +3,8 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
+#include "Sound.h"
+
 SoliderGun::SoliderGun() {
 
 }
@@ -38,7 +40,7 @@ void SoliderGun::InitSpite() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_GUN_ATK, 2, 0.09f)));
 	sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.04f)));
 }
 
 void SoliderGun::Update(float t, vector<Object*>* objects) {
@@ -61,17 +63,14 @@ void SoliderGun::Update(float t, vector<Object*>* objects) {
 			HandleDirection();
 			HandleAttack(t);
 
-			if (isOnGround) {
-				PlusPosition(deltaX, 0);
+			if (!isOnGround) {
+				veclocity.y += GRAVITY * t;
 			}
 			else {
-				veclocity.y += GRAVITY * t;
-				PlusPosition(deltaX, deltaY);
+				SetVy(0);
 			}
-			
-			if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
-				state = ENEMY_STATE::DEAD;
-			}
+			PlusPosition(deltaX, deltaY);
+			Player::GetInstance()->KillEnemy(this);
 		}
 
 		for (int i = 0; i < MAX_NUMBER_OF_BULLET; i++) {
@@ -96,13 +95,24 @@ void SoliderGun::HandleCollision(vector<Object*> *objects) {
 					isOnGround = true;
 				}
 			}
+			else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+				if (!Player::GetInstance()->GetWounded()) {
+					if (Player::GetInstance()->GetState() == JUMP_ATK) {
+						state = ENEMY_STATE::DEAD;
+					}
+					else {
+						Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
+					}
+				}
+			}
 		}
 	}
 
 	for (UINT i = 0; i < coEvents->size(); i++) {
 		delete coEvents->at(i);
 	}
-
+	coEventsResult->clear();
+	coEvents->clear();
 	delete coEvents;
 	delete coEventsResult;
 }
@@ -136,6 +146,7 @@ void SoliderGun::HandleDirection() {
 void SoliderGun::HandleAttack(float t) {
 	if (this->state != ENEMY_STATE::ATK) {
 		if (timerDelayShooting >= SHOOT_TIME_DELAY) {
+			Sound::GetInstance()->Play(SOUND_ENEMY_GUN, false, 1);
 			state = ENEMY_STATE::ATK;
 			SetVx(0);
 			timerDelayShooting = 0;
@@ -163,6 +174,12 @@ void SoliderGun::HandleAttack(float t) {
 	}
 }
 
+void SoliderGun::Dead() {
+	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	state = ENEMY_STATE::DEAD;
+	SetVeclocity(0.0f, 0.0f);
+	Object::PlusPosition(0, -3.0f);
+}
 
 void SoliderGun::GotoStateFollow() {
 	state = ENEMY_STATE::FOLLOW;

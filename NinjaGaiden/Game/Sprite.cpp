@@ -1,5 +1,10 @@
 ﻿#include  "Sprite.h"
 #include "Debug.h"
+
+Sprite::Sprite() {
+
+}
+
 Sprite::Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale)
 {
 

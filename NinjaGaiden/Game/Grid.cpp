@@ -5,36 +5,33 @@
 #include "GameDebugDraw.h"
 #include "Player.h"
 #include "Food.h"
+#include "Ladder.h"
+#include "Rock.h"
+#include "Brick.h"
 #include "SoldierSword.h"
 #include "SoliderGun.h"
+#include "SoliderRun.h"
 #include "SoliderBazoka.h"
 #include "Witch.h"
 #include "Panther.h"
 #include "Eagle.h"
+#include "Bat.h"
 #include <math.h> 
 Grid* Grid::_instance = NULL;
-GameDebugDraw* draw1;
 
 Grid::Grid()
 {
 	
 }
 
-Grid::Grid(int mapHeight, int mapWidth, bool isArray)
+Grid::Grid(int mapHeight, int mapWidth)
 {
-	this->InitGrid(mapHeight, mapWidth, isArray);
+	this->InitGrid(mapHeight, mapWidth);
 }
 
 Grid::~Grid()
 {
 	this->DeleteGrid();
-}
-
-void Grid::InitObject(std::vector<Object*> * vt) {
-	
-	for(int i = 0; i < vt->size(); i++) {
-		Add(vt->at(i));
-	}
 }
 
 void Grid::DeleteGrid()
@@ -60,13 +57,12 @@ void Grid::DeleteGrid()
 		delete squares;
 	}
 
-	if (randomObject) {
-		randomObject->clear();
-		delete randomObject;
+	if (draw1) {
+		delete draw1;
 	}
 }
 
-void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
+void Grid::InitGrid(int mapHeight, int mapWidth)
 {
 	draw1 = new GameDebugDraw();
 	this->numOfRow = (int)ceil((float)mapHeight / CELL_HEIGHT);
@@ -74,7 +70,6 @@ void Grid::InitGrid(int mapHeight, int mapWidth, bool isArray)
 	squares = new  vector<Square*>();
 	cells = new vector<vector<Cell*>*>();
 	objects = new vector<Object*>();
-	randomObject = new vector<Object*>();
 	cells->reserve(numOfRow);
 	for (size_t i = 0; i < numOfRow; i++) {
 		vector<Cell*> * tempList = new vector<Cell*>();
@@ -100,14 +95,10 @@ void Grid::Add(int row, int column, Object * obj) {
 	cells->at(row)->at(column)->objects->push_back(obj);
 }
 
-void Grid::ReSetGrid(int height, int width, bool isArray)
+void Grid::ReSetGrid(int height, int width)
 {
 	this->DeleteGrid();
-	this->InitGrid(height, width, isArray);
-}
-
-void Grid::LoadObjectInCell(int row, int column) {
-
+	this->InitGrid(height, width);
 }
 
 void Grid::GetObjectsInCells(Object * object)
@@ -117,74 +108,58 @@ void Grid::GetObjectsInCells(Object * object)
 
 	if (object == nullptr)
 		return;
-	
-	//vector<Cell>* tempObjects = new vector<Cell>();
-	//for (int i = 0; i < objects->size(); i++) {
-	//	if (Game::AABB(objects->at(i)->GetBoundingBox(), camREC)) {
-	//		
-	//	}
-	//}
-	objects->clear();
-	//add object player
-	objects->push_back(object);
+	if (objects->size() == 0) {
+		//add object player
+		objects->push_back(object);
+	}
 
-	//int row = (int)floor(object->GetPosition().y / CELL_HEIGHT);
-	//int column = (int)floor(object->GetPosition().x / CELL_WIDTH);
+	//Duyệt từ phần tứ thứ 1 vì thứ 0 lúc nào cg là Player
+	//Kiểm tra xem các object cũ có nằm trong camera không? 
+	RECT camRECTx = Camera::GetInstance()->GetRECTx();
+	for (int i = 1; i < objects->size(); i++) {
+		if (!Game::AABB(objects->at(i)->GetBoundingBox(), camRECTx)
+			|| objects->at(i)->GetObjectType() == OBJECT_TYPE::SQUARE) {
+			objects->at(i)->ResetState();
+			objects->erase(objects->begin() + i);
+		}
+	}
 
-	//Lấy bound của Cam để xét với từng cell bị overlap
 	RECT camREC = Camera::GetInstance()->GetRECT();
 	//góc trái trên
-	int x1 = ceil(camREC.left/ CELL_WIDTH), y1 = ceil(camREC.top/CELL_HEIGHT);
+	int x1 = ceil(camREC.left / CELL_WIDTH), y1 = ceil(camREC.top / CELL_HEIGHT);
 	//góc phải dưới
-	int x2 = ceil(camREC.right/ CELL_WIDTH), y2 = ceil(camREC.bottom/ CELL_HEIGHT);
-	//Add square
+	int x2 = ceil(camREC.right / CELL_WIDTH), y2 = ceil(camREC.bottom / CELL_HEIGHT);
+
+	//ResetState 1 cột phía trước
+	int xRs = x2;
+	if (xRs < numOfColumn) {
+		for (int i = y1; i < y2; i++) {
+			vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
+			for (int k = 0; k < listObj->size(); k++) {
+				if (!Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
+					listObj->at(k)->ResetState();
+				}
+			}
+		}
+	}
+
+	//ResetState 1 cột phía sau
+	xRs = x1 - 1;
+	if (xRs >= 0) {
+		for (int i = y1; i < y2; i++) {
+			vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
+			for (int k = 0; k < listObj->size(); k++) {
+				if (!Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
+					listObj->at(k)->ResetState();
+				}
+			}
+		}
+	}
 	for (int i = 0; i < squares->size(); i++) {
 		if (Game::AABB(camREC, squares->at(i)->GetBoundingBox())) {
 			this->objects->push_back(squares->at(i));
 		}
 	}
-	RECT camRECTx = Camera::GetInstance()->GetRECTx();
-	//Add báo, lính xanh lá
-	for (int i = 0; i < randomObject->size(); i++) {
-		if (Game::AABB(camRECTx, randomObject->at(i)->GetBoundingBox())) {
-			this->objects->push_back(randomObject->at(i));
-		}
-		else {
-			if (randomObject->at(i)->GetActive()) {
-				randomObject->at(i)->ResetState();
-			}
-		}
-	}
-
-	int xRs = x2;
-	if (xRs < numOfColumn) {
-		for (int i = y1; i < y2; i++) {
-			if (cells->at(i)->at(xRs)->isLoading) {
-				vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
-				for (int k = 0; k < listObj->size(); k++) {
-					if (Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
-						listObj->at(k)->ResetState();
-					}
-				}
-				cells->at(i)->at(xRs)->isLoading = false;
-			}
-		}
-	}
-	xRs = x1 - 1;
-	if (xRs >= 0) {
-		for (int i = y1; i < y2; i++) {
-			if (cells->at(i)->at(xRs)->isLoading) {
-				vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
-				for (int k = 0; k < listObj->size(); k++) {
-					if (Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
-						listObj->at(k)->ResetState();
-					}
-				}
-				cells->at(i)->at(xRs)->isLoading = false;
-			}
-		}
-	}
-	
 	//dòng của grid
 	for (int i = y1; i < y2; i++) {
 		//cột của grid
@@ -192,8 +167,9 @@ void Grid::GetObjectsInCells(Object * object)
 			vector<Object*> *listObj = cells->at(i)->at(j)->objects;
 			for (int k = 0; k < listObj->size(); k++) {
 				if (Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
-					this->objects->push_back(listObj->at(k));
-					cells->at(i)->at(j)->isLoading = true;
+					if (!FindObject(listObj->at(k))) {
+						this->objects->push_back(listObj->at(k));
+					}
 				}
 				else {
 					listObj->at(k)->ResetState();
@@ -210,6 +186,23 @@ void Grid::UpdateGrid(Object * object)
 
 	int newRow = ceil((object->GetPosition().y / CELL_HEIGHT));
 	int newColumn = ceil((object->GetPosition().x / CELL_WIDTH));
+
+	if (Player::GetInstance()->GetState() == PLAYER_STATE::DIE) {
+		for (size_t i = 0; i < cells->size(); i++)
+		{
+			for (size_t j = 0; j < cells->at(i)->size(); j++)
+			{
+				vector<Object*>* listObjs = cells->at(i)->at(j)->objects;
+				for (size_t k = 0; k < listObjs->size(); k++) {
+					if (listObjs->at(k)->GetObjectType() == OBJECT_TYPE::FOOD) {
+						listObjs->at(k)->ResetState();
+					}
+				}
+			}
+		}
+		return;
+	}
+
 	if (oldRow == newRow && oldColumn == newColumn) {
 		return;
 	}
@@ -217,9 +210,34 @@ void Grid::UpdateGrid(Object * object)
 	GetObjectsInCells(object);
 }
 
+void Grid::UpdatePlayer(float t) {
+	/*for (int i = 0; i < objects->size(); i++) {
+		if (i > 0) {
+			if (objects->at(i)->GetObjectType() == SQUARE || objects->at(i)->GetObjectType() == FOOD) {
+				vector<Object*>* list = FilterObjects(objects->at(i)->GetObjectType());
+				objects->at(i)->Update(t, list);
+				list->clear();
+				delete list;
+			}
+		}
+		else {
+			objects->at(i)->Update(t, objects);
+		}
+	}*/
+}
+
 void Grid::UpdateObject(float t) {
+	
 	for (int i = 0; i < objects->size(); i++) {
-		objects->at(i)->Update(t, objects);
+		if (i > 0) {
+			vector<Object*>* list = FilterObjects(objects->at(i)->GetObjectType());
+			objects->at(i)->Update(t, list);
+			list->clear();
+			delete list;
+		}
+		else {
+			objects->at(i)->Update(t, objects);
+		}
 	}
 }
 
@@ -231,6 +249,15 @@ void Grid::RenderObject() {
 	//DrawGrid();
 	//draw1->DrawRect(Camera::GetInstance()->GetRECT(), Camera::GetInstance());
 	//draw1->DrawRect(Player::GetInstance()->GetKatana()->GetBoundingBox(), Camera::GetInstance());
+}
+
+bool Grid::FindObject(Object* object) {
+	for (int i = 0; i < objects->size(); i++) {
+		if (objects->at(i) == object) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Grid::DrawGrid() {
@@ -249,10 +276,6 @@ void Grid::DrawGrid() {
 			draw1->DrawRect(r, Camera::GetInstance());
 		}
 	}
-}
-
-void Grid::AddSquare(Square* s) {
-	squares->push_back(s);
 }
 
 void Grid::LoadSquares(LPCWSTR filePath) {
@@ -300,7 +323,7 @@ Grid * Grid::GetInstance()
 
 Grid * Grid::GetInstance(int mapHeight, int mapWidth, bool isArray)
 {
-	if (_instance == NULL) _instance = new Grid(mapHeight, mapWidth, isArray);
+	if (_instance == NULL) _instance = new Grid(mapHeight, mapWidth);
 	return _instance;
 }
 
@@ -308,7 +331,23 @@ vector<Object*>* Grid::GetObjects() {
 	return objects;
 }
 
-void Grid::LoadObjets(LPCWSTR filePath) {
+vector<Object*>* Grid::FilterObjects(OBJECT_TYPE type) {
+	vector<Object*>* temp = new vector<Object*>();
+	for (int i = 0; i < objects->size(); i++) {
+		if (objects->at(i)->GetObjectType() != type) {
+			//Chỉ xét vật cản + player
+			if (objects->at(i)->GetObjectType() == OBJECT_TYPE::SQUARE
+				|| objects->at(i)->GetObjectType() == OBJECT_TYPE::ROCK
+				|| objects->at(i)->GetObjectType() == OBJECT_TYPE::LADDER
+				|| objects->at(i)->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+				temp->push_back(objects->at(i));
+			}
+		}
+	}
+	return temp;
+}
+
+void Grid::LoadObjects(LPCWSTR filePath) {
 	fstream f;
 	try
 	{
@@ -386,8 +425,7 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 					break;
 				case 4:
 					object = new Panther(movingLimit, activeArea, positionX, positionY);
-					object->SetLastPos(object->GetPosition());
-					randomObject->push_back(object);
+					Add(object);
 					break;
 				case 5:
 					object = new SoliderBazoka(positionX, positionY, movingLimit, activeArea);
@@ -395,8 +433,15 @@ void Grid::LoadObjets(LPCWSTR filePath) {
 					break;
 				case 10:
 					object = new Eagle(activeArea, positionX, positionY);
-					object->SetLastPos(object->GetPosition());
-					randomObject->push_back(object);
+					Add(object);
+					break;
+				case 11:
+					object = new SoliderRun(positionX, positionY, movingLimit, activeArea);
+					Add(object);
+					break;
+				case 12:
+					object = new Bat(movingLimit, activeArea, positionX, positionY);
+					Add(object);
 					break;
 				default:
 					break;
@@ -435,7 +480,7 @@ void Grid::LoadFoods(LPCWSTR filePath, SCENCE scene) {
 		}
 		if (tempVector->size() > 1) {
 			int id = tempVector->at(0);
-			int TypeObject = tempVector->at(1);
+			int type = tempVector->at(1);
 			int positionX = tempVector->at(2);
 			int positionY = tempVector->at(3);
 			vector<int> movingLimit, activeArea;
@@ -446,8 +491,121 @@ void Grid::LoadFoods(LPCWSTR filePath, SCENCE scene) {
 
 			}
 			Object* object;
-			object = new Food(scene, TypeObject, positionX, positionY);
+			object = new Food(scene, type, positionX, positionY);
 			Add(object);
+		}
+		tempVector->clear();
+		delete tempVector;
+	}
+	f.close();
+}
+
+void Grid::LoadLadders(LPCWSTR filePath) {
+	fstream f;
+	try
+	{
+		f.open(filePath);
+	}
+	catch (fstream::failure e)
+	{
+		trace(L"Error when init grid %s", filePath);
+		return;
+	}
+	string line;
+	while (!f.eof()) {
+		getline(f, line);
+
+		string splitString;
+
+		istringstream iss(line);
+
+		vector<int> * tempVector = new vector<int>();
+
+		while (getline(iss, splitString, '\t'))
+		{
+			tempVector->push_back(stoi(splitString));
+		}
+		if (tempVector->size() >= 5) {
+			int left = tempVector->at(1), top = tempVector->at(2),
+				right = tempVector->at(3), bottom = tempVector->at(4);
+			Ladder* ladder = new Ladder(left, top, right, bottom);
+			Add(ladder);
+		}
+		tempVector->clear();
+		delete tempVector;
+	}
+	f.close();
+}
+
+void Grid::LoadRocks(LPCWSTR filePath) {
+	fstream f;
+	try
+	{
+		f.open(filePath);
+	}
+	catch (fstream::failure e)
+	{
+		trace(L"Error when init grid %s", filePath);
+		return;
+	}
+	string line;
+	while (!f.eof()) {
+		getline(f, line);
+
+		string splitString;
+
+		istringstream iss(line);
+
+		vector<int> * tempVector = new vector<int>();
+
+		while (getline(iss, splitString, '\t'))
+		{
+			tempVector->push_back(stoi(splitString));
+		}
+		if (tempVector->size() >= 7) {
+			int id = tempVector->at(0);
+			bool isCanClimbLeft = tempVector->at(1), isCanClimbRight = tempVector->at(2);
+			int left = tempVector->at(3), top = tempVector->at(4),
+				right = tempVector->at(5), bottom = tempVector->at(6);
+			Rock* rock = new Rock(left, top, right, bottom, isCanClimbLeft, isCanClimbRight);
+			Add(rock);
+		}
+		tempVector->clear();
+		delete tempVector;
+	}
+	f.close();
+}
+
+void Grid::LoadBricks(LPCWSTR filePath) {
+	fstream f;
+	try
+	{
+		f.open(filePath);
+	}
+	catch (fstream::failure e)
+	{
+		trace(L"Error when init grid %s", filePath);
+		return;
+	}
+	string line;
+	while (!f.eof()) {
+		getline(f, line);
+
+		string splitString;
+
+		istringstream iss(line);
+
+		vector<int> * tempVector = new vector<int>();
+
+		while (getline(iss, splitString, '\t'))
+		{
+			tempVector->push_back(stoi(splitString));
+		}
+		if (tempVector->size() > 1) {
+			int left = tempVector->at(0), top = tempVector->at(1),
+				right = tempVector->at(2), bottom = tempVector->at(3);
+			Brick* brick = new Brick(left, top, right, bottom);
+			Add(brick);
 		}
 		tempVector->clear();
 		delete tempVector;

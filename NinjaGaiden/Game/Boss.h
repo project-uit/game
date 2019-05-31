@@ -3,19 +3,20 @@
 #include "Sprite.h"
 #include <map>
 #include "Boom.h"
+#define BOOM_NUMBERS 3
 class Boss : public Object {
 private:
 	ENEMY_STATE state;
 	map<ENEMY_STATE, Sprite*>* sprite;
+	vector<Sprite*>* explosion;
 	DIRECTION direction;
-	Boom boom[3];
+	Boom boom[BOOM_NUMBERS];
 	int hp;
 	bool isOnGround;
 	bool throwBoom;
 	float time;
 	int count;
 	float timeHurt;
-	float deltaXAxis;
 	int left;
 	int right;
 public:

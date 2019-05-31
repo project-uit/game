@@ -20,5 +20,6 @@ public:
 	void HandleCollision(vector<Object*> *object);
 	void ResetState();
 	void Fly(int vX, DIRECTION direction);
+	void Dead();
 	void SetState(ENEMY_STATE state);
 };

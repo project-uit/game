@@ -2,8 +2,11 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
+#include "Sound.h"
+
 SoldierSword::SoldierSword() {
 }
+
 void SoldierSword::init() {
 	this->SetObjectType(SOLDIER_SWORD);
 	objectWidth = objectHeight = 1;
@@ -43,7 +46,7 @@ SoldierSword::~SoldierSword() {
 }
 
 void SoldierSword::UpdateActiveArea(float t) {
-	if (state == DEAD && isActive) {
+	if (state == DEAD && !isActive) {
 		if (resetTime >= 0.25f) {
 			resetTime = 0;
 			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
@@ -98,7 +101,12 @@ void SoldierSword::UpdateActiveArea(float t) {
 }
 
 void SoldierSword::Update(float t, vector<Object*>* objects) {
-	
+	if (Player::GetInstance()->isFreezeTime()) {
+		SetVeclocity(0, 0);
+		Object::Update(t);
+		HandleCollision(objects);
+		return;
+	}
 	UpdateActiveArea(t);
 	if (this->isActive) {
 		Object::Update(t);
@@ -106,18 +114,8 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 		RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->at(this->state)->NextSprite(t);
-
-		if (state == ENEMY_STATE::DEAD) {
-			if (sprite->at(this->state)->GetIsComplete()) {
-				sprite->at(this->state)->SetIndex(2);
-				sprite->at(this->state)->SetScale(1.0f);
-			}
-			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
-			this->sprite->at(ENEMY_STATE::ATK)->Reset();
-			SetVx(0.0f);
-		}
-		HandleCollision(objects);
 		if (state != ENEMY_STATE::DEAD) {
+			HandleCollision(objects);
 			float width = GetBoundingBox().right - GetBoundingBox().left;
 			if (position.x + width < leftMoving) {
 				SetVx(40.0f);
@@ -146,38 +144,26 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 				}
 			}
 			Player::GetInstance()->KillEnemy(this);
-			/*if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
-				state = ENEMY_STATE::DEAD;
-				SetVx(0.0f);
-				Object::PlusPosition(0, -3.0f);
+			Player::GetInstance()->IntersectPlayer(this, direction);
+		}
+		else {
+			if (sprite->at(this->state)->GetIsComplete()) {
+				sprite->at(this->state)->SetIndex(2);
+				sprite->at(this->state)->SetScale(1.0f);
+				isActive = false;
 			}
-			if (Player::GetInstance()->GetWeapon()->GetObjectType() != CIRCLE_FIRE) {
-				if (Game::AABB(Player::GetInstance()->GetWeapon()->GetBoundingBox(), GetBoundingBox())) {
-					state = ENEMY_STATE::DEAD;
-					SetVx(0.0f);
-					Object::PlusPosition(0, -3.0f);
-				}
-			}
-			else {
-				Weapon* weapon = Player::GetInstance()->GetWeapon();
-				for (int i = 0; i < 3; i++) {
-					if (Game::AABB(weapon[i].GetBoundingBox(), GetBoundingBox())) {
-						state = ENEMY_STATE::DEAD;
-						SetVx(0.0f);
-						Object::PlusPosition(0, -3.0f);
-						break;
-					}
-				}
-			}*/
+			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
+			this->sprite->at(ENEMY_STATE::ATK)->Reset();
+			SetVx(0.0f);
 		}
 	}
-
 }
 
 void SoldierSword::Dead() {
+	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
-	Object::PlusPosition(0, -3.0f);
+	Player::GetInstance()->AddScore(this->score);
 }
 
 void SoldierSword::HandleCollision(vector<Object*> *object) {
@@ -200,19 +186,14 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 				if (e->ny < 0) {
 					this->SetVy(0.0f);
 				}
+				continue;
 			}
 			else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
-				if (!Player::GetInstance()->GetWounded()) {
-					if (Player::GetInstance()->GetState() == JUMP_ATK) {
-						state = ENEMY_STATE::DEAD;
-					}
-					else {
-						Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
-					}
+				if (Player::GetInstance()->GetState() == JUMP_ATK) {
+					state = ENEMY_STATE::DEAD;
+					continue;
 				}
-			}
-			else {
-				Object::PlusPosition(this->deltaX, 0.0f);
+				Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
 			}
 		}
 	}
@@ -220,6 +201,8 @@ void SoldierSword::HandleCollision(vector<Object*> *object) {
 	for (UINT i = 0; i < coEvents->size(); i++) {
 		delete coEvents->at(i);
 	}
+
+	coEventsResult->clear();
 
 	delete coEvents;
 	delete coEventsResult;
@@ -234,12 +217,6 @@ void SoldierSword::ResetState() {
 	objectHeight = objectWidth = 1;
 	state = ENEMY_STATE::FOLLOW;
 	SetPosition(lastPos.x, lastPos.y);
-	if (direction == RIGHT) {
-		SetVeclocity(40.0f, 0.0f);
-	}
-	if (direction == LEFT) {
-		SetVeclocity(-40.0f, 0.0f);
-	}
 	resetTime = time = 0;
 }
 

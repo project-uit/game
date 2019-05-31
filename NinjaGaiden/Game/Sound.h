@@ -1,19 +1,51 @@
 #pragma once
-#include "xaudio2.h"
-#include "Mmsystem.h"
+#include "dsound.h"
+#include "windows.h"
+#include <map>
 #include <string>
-#include <vector>
-using namespace std;
-class Sound {
-private:
-	static Sound* _instance;
-	vector<LPCWSTR>* resources;
+#include <iostream>
+#include <mmsystem.h>
+#pragma comment(lib, "dsound.lib")
+#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "winmm.lib")
+
+class Sound
+{
 public:
-	Sound();
+	struct WaveHeaderStruct
+	{
+		char chunkId[4];
+		unsigned long chunkSize;
+		char format[4];
+		char subChunkId[4];
+		unsigned long subChunkSize;
+		unsigned short audioFormat;
+		unsigned short numChannels;
+		unsigned long sampleRate;
+		unsigned long bytesPerSecond;
+		unsigned short blockAlign;
+		unsigned short bitsPerSample;
+		char dataChunkId[4];
+		unsigned long dataSize;
+	};
+	float volume;
+	void static Create(HWND hWnd);
+	void SetVolume(float percentage, std::string name = "");
+	void LoadSound(char* fileName, std::string name);
+	void Play(std::string name, bool infiniteLoop, int times);
+	void Stop(std::string name = "");
+	float GetVolume();
 	~Sound();
-	void Play(int index);
-	void Stop();
 	static Sound* GetInstance();
+	void Mute();
+	void UnMute();
+	void CleanUp();
+private:
+	Sound(HWND hWnd);
+	static Sound * instance;
+	IDirectSound8* pDevice;
+	IDirectSoundBuffer* primaryBuffer;
+	std::map<std::string, IDirectSoundBuffer8*> soundBufferMap;
+	bool isMute;
 };
 
-// https://docs.microsoft.com/en-us/previous-versions//dd743680(v=vs.85)

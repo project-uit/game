@@ -2,7 +2,6 @@
 #include "Weapon.h"
 class BigShuriken : public Weapon {
 private:
-	bool orbitMoving;
 	float left, right;
 public:
 	BigShuriken();
@@ -11,5 +10,4 @@ public:
 	void Render();
 	void HandleCollision(vector<Object*> *object);
 	void Orbit(float t);
-	void SetOrbitMoving(bool orbitMoving);
 };

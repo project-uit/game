@@ -31,6 +31,7 @@ private:
 	float deltaTime;
 	int directionX;
 public:
+	Sprite();
 	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, int width, int height, float scale = 1.0f);
 	Sprite(LPDIRECT3DTEXTURE9 texture, LPCWSTR filePath, int count, float timePerFrame = 0.0f,  float scale = 1.0f);
 	Sprite(LPDIRECT3DTEXTURE9 texture, int index, int count, int width, int height);
