@@ -49,7 +49,7 @@ void SoliderRun::Init() {
 
 void SoliderRun::HandleDirection(float t) {
 	if (state == DEAD && !isActive) {
-		if (resetTime >= 0.2f) {
+		if (resetTime >= 0.15f) {
 			resetTime = 0;
 			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 				&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
@@ -242,6 +242,7 @@ void SoliderRun::Render() {
 void SoliderRun::Dead() {
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
+	resetTime = 0;
 	Object::PlusPosition(0, -3.0f);
 	Player::GetInstance()->AddScore(this->score);
 }

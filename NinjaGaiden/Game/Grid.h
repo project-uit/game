@@ -61,12 +61,8 @@ public:
 	vector<Object*>* GetObjects();
 	vector<Object*>* FilterObjects(OBJECT_TYPE object);
 	bool FindObject(Object* objects);
-	void LoadSquares(LPCWSTR filePath);
+	void LoadGroundAndItem(LPCWSTR filePath, SCENCE scene);
 	void LoadObjects(LPCWSTR filePath);
-	void LoadFoods(LPCWSTR filePath, SCENCE scene);
-	void LoadLadders(LPCWSTR filePath);
-	void LoadRocks(LPCWSTR filePath);
-	void LoadBricks(LPCWSTR filePath);
 	static Grid* GetInstance();
 	static Grid* GetInstance(int mapHeight, int mapWidth, bool isArray = true);
 };

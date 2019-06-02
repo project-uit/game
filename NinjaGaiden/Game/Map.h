@@ -31,7 +31,7 @@ public:
 	
 	~Map();
 	void LoadMap(LPCWSTR filePath, LPCWSTR tileset, int ID_MAP);
-	void drawMap();
+	void drawMap(int alpha = 255);
 
 	void SetWidth(int width) {
 		this->width = width;

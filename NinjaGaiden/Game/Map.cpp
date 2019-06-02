@@ -47,7 +47,7 @@ Map::~Map()
 	delete this->list;
 }
 
-void Map::drawMap()
+void Map::drawMap(int alpha)
 {
 	D3DXVECTOR2 camposition = Camera::GetInstance()->getPosition();
 	int top, left, right, bottom;
@@ -65,7 +65,7 @@ void Map::drawMap()
 				Game::GetInstance()->Draw(
 					j*tileWidth - (int)camposition.x % tileWidth, i*tileHeight - (int)camposition.y % tileHeight,
 					texture,
-					left, top, right, bottom);
+					left, top, right, bottom, alpha);
 			}
 		}
 	}

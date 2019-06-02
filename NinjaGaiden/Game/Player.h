@@ -41,6 +41,8 @@ private:
 	int lifePoint;
 	float borderBot;
 	float freezeTime;
+	int alphaEndPoint;
+	bool endStage;
 public:
 	Player();
 	~Player();
@@ -86,6 +88,10 @@ public:
 	float GetFreezeTime();
 	void MinusFreezeTime();
 	bool isFreezeTime();
+	int GetAlphaEndPoint();
+	void SetAlphaEndPoint(int alpha);
+	void MinusAlphaEndPoint();
+	void Restart(float x, float y);
 	static Player* GetInstance() {
 		if (_instance == NULL) _instance = new Player();
 		return _instance;

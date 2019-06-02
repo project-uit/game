@@ -70,6 +70,8 @@
 #define PATH_POS_GROUND_MAP_1 L"sprite\\Stage1\\ground.txt"
 #define PATH_POS_ENEMY_MAP_1 L"sprite\\Stage1\\enemy.txt"
 #define PATH_POS_FOOD_MAP_1 L"sprite\\Stage1\\food.txt"
+#define PATH_POS_BRICK_MAP_1 L"sprite\\Stage1\\brick.txt"
+#define PATH_POS_DESTINATION_MAP_1 L"sprite\\Stage1\\destination.txt"
 // =====	Map 2
 #define ID_TEXTURE_MAP_2 200
 #define PATH_TEXTURE_MAP_2 L"sprite\\Stage2\\Map2.png"
@@ -80,6 +82,7 @@
 #define PATH_POS_LADDER_MAP_2 L"sprite\\Stage2\\ladder.txt"
 #define PATH_POS_ROCK_MAP_2 L"sprite\\Stage2\\rock.txt"
 #define PATH_POS_BRICK_MAP_2 L"sprite\\Stage2\\brick.txt"
+#define PATH_POS_DESTINATION_MAP_2 L"sprite\\Stage2\\destination.txt"
 // =====	Map 3
 #define ID_TEXTURE_MAP_3 300
 #define PATH_TEXTURE_MAP_3 L"sprite\\Stage3\\Map3.png"
@@ -157,7 +160,8 @@ enum OBJECT_TYPE {
 	ROCK,
 	BRICK,
 	EAGLE,
-	BAT
+	BAT,
+	DESTINATION
 };
 
 enum BULLET_TYPE {

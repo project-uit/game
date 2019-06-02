@@ -72,7 +72,7 @@ void KeyboardHandler::KeyState(BYTE * states)
 void KeyboardHandler::OnKeyDown(int KeyCode)
 {
 	/*DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyDown: %d\n", KeyCode);*/
-	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
+	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE && Player::GetInstance()->GetAlphaEndPoint() == 255) {
 		if (Player::GetInstance()->GetState() == PLAYER_STATE::JUMP) {
 			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
 				Player::GetInstance()->SetAcceleratorX(-20.0f);
@@ -216,16 +216,20 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 
 void KeyboardHandler::OnKeyUp(int KeyCode)
 {
-	if (KeyCode == DIK_1) {
-		World::GetInstance()->ReplaceScence(SCENCE::SCENCE_1);
+	if (Player::GetInstance()->GetAlphaEndPoint() == 255 
+		&& Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
+		if (KeyCode == DIK_1) {
+			World::GetInstance()->ReplaceScence(SCENCE::SCENCE_1);
+		}
+		if (KeyCode == DIK_2) {
+			World::GetInstance()->ReplaceScence(SCENCE::SCENCE_2);
+		}
+		if (KeyCode == DIK_3) {
+			World::GetInstance()->ReplaceScence(SCENCE::SCENCE_3);
+		}
 	}
-	if (KeyCode == DIK_2) {
-		World::GetInstance()->ReplaceScence(SCENCE::SCENCE_2);
-	}
-	if (KeyCode == DIK_3) {
-		World::GetInstance()->ReplaceScence(SCENCE::SCENCE_3);
-	}
-	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE) {
+	
+	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE &&  Player::GetInstance()->GetAlphaEndPoint() == 255) {
 		if (KeyCode == DIK_UP) {
 			if (Player::GetInstance()->GetState() == PLAYER_STATE::CLIMB) {
 				Player::GetInstance()->SetVeclocity(NO_VELOCITY, NO_VELOCITY);

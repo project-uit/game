@@ -73,6 +73,42 @@ void Game::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top,
 	spriteHandler->Draw(texture, &r,NULL, NULL, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 }
 
+void Game::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, D3DCOLOR color)
+{
+	D3DXVECTOR3 p(x, y, 0);
+	RECT r;
+	r.left = left;
+	r.top = top;
+	r.right = right;
+	r.bottom = bottom;
+	int width = right - left;
+	int height = bottom - top;
+	D3DXMATRIX mat;
+	D3DXVECTOR3 scaling(1.0f, 1.0f, 1.0f);
+	D3DXVECTOR3 spriteCentre = D3DXVECTOR3((float)width, (float)height, 0);
+	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(width / 2, height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &p);
+	spriteHandler->SetTransform(&mat);
+	spriteHandler->Draw(texture, &r, NULL, NULL, color);
+}
+
+void Game::Draw(float x, float y, int left, int top, int right, int bottom, D3DCOLOR color)
+{
+	D3DXVECTOR3 p(x, y, 0);
+	RECT r;
+	r.left = left;
+	r.top = top;
+	r.right = right;
+	r.bottom = bottom;
+	int width = right - left;
+	int height = bottom - top;
+	D3DXMATRIX mat;
+	D3DXVECTOR3 scaling(1.0f, 1.0f, 1.0f);
+	D3DXVECTOR3 spriteCentre = D3DXVECTOR3((float)width, (float)height, 0);
+	D3DXMatrixTransformation(&mat, &D3DXVECTOR3(width / 2, height / 2, 0), NULL, &scaling, &spriteCentre, NULL, &p);
+	spriteHandler->SetTransform(&mat);
+	spriteHandler->Draw(NULL, &r, NULL, NULL, color);
+}
+
 // Các xử lý sự kiện bàn phím
 void Game::InitKeyboard(InputDevice* keyHandler)
 {

@@ -22,6 +22,7 @@ World::~World()
 void World::SetScence(Scence* s) {
 	if (this->scence) {
 		delete this->scence;
+		this->scence = nullptr;
 	}
 	this->scence = s;
 }
@@ -80,10 +81,24 @@ void World::LoadResource()
 
 void World::Update(float deltaTime)
 {
+	if (Player::GetInstance()->GetAlphaEndPoint() == 0) {
+		switch (scence->GetScenceType()) {
+		case SCENCE::SCENCE_1:
+			SetScence(new Scence2());
+			break;
+		case SCENCE::SCENCE_2:
+			SetScence(new Scence3());
+			break;
+		default:
+			break;
+		}
+		return;
+	}
 	scence->Update(deltaTime);
 }
 
 void World::Render()
 {
 	scence->Render();
+	Game::GetInstance()->Draw(0, 0, 0, 0, 256, 208, D3DCOLOR_ARGB(50, 60, 70, 80));
 }

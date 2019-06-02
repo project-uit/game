@@ -165,7 +165,6 @@ void Eagle::Update(float t, vector<Object*>* object) {
 			if (sprite->at(this->state)->GetIsComplete()) {
 				sprite->at(this->state)->SetIndex(2);
 				sprite->at(this->state)->SetScale(1.0f);
-				isActive = false;
 			}
 			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
 			SetVx(0.0f);

@@ -4,6 +4,7 @@
 #include "SoldierSword.h"
 #include "GameDebugDraw.h"
 #include "HUD.h"
+#include "World.h"
 
 Scence1::Scence1(): Scence()
 {
@@ -17,18 +18,15 @@ Scence1::~Scence1()
 
 void Scence1::LoadResource()
 {
-	Player::GetInstance()->SetLastPos({ -1.0f, -1.0f, 0 });
-	Player::GetInstance()->SetPosition(1141, 100.0f);
+	Player::GetInstance()->Restart(1859, 100.0f);
 	name = " STAGE 3-1";
 	scenceType = SCENCE::SCENCE_1;
 	timer = 150;
 	map->LoadMap(PATH_POS_MAP_1, PATH_TEXTURE_MAP_1, ID_TEXTURE_MAP_1);
 	Camera::GetInstance()->setWorldBoundary(2048);
 	Grid::GetInstance()->ReSetGrid(246, map->GetWidth());
-	Grid::GetInstance()->LoadSquares(PATH_POS_GROUND_MAP_1);
+	Grid::GetInstance()->LoadGroundAndItem(PATH_POS_GROUND_MAP_1, scenceType);
 	Grid::GetInstance()->LoadObjects(PATH_POS_ENEMY_MAP_1);
-	Grid::GetInstance()->LoadFoods(PATH_POS_FOOD_MAP_1, scenceType);
-	waitingTime = 0;
 	/*Mp3 mp3;
 	mp3.PlaySoundTrack(SOUND_TRACK_PATH_MAP_1);*/
 	//Sound::GetInstance()->LoadSound(SOUND_TRACK_PATH_MAP_1, SOUND_TRACK_MAP1);
@@ -43,7 +41,12 @@ void Scence1::Update(float deltaTime)
 	}
 	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
 	Grid::GetInstance()->UpdateGrid(Player::GetInstance());
-	Grid::GetInstance()->UpdateObject(deltaTime);
+	if (Player::GetInstance()->GetAlphaEndPoint() < 255) {
+		Grid::GetInstance()->UpdatePlayer(deltaTime);
+	}
+	else {
+		Grid::GetInstance()->UpdateObject(deltaTime);
+	}
 	HUD::GetInstance()->Update(deltaTime);
 	if (time >= 1.0f) {
 		this->timer--;

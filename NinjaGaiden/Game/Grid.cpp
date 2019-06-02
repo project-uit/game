@@ -16,6 +16,7 @@
 #include "Panther.h"
 #include "Eagle.h"
 #include "Bat.h"
+#include "Destination.h"
 #include <math.h> 
 Grid* Grid::_instance = NULL;
 
@@ -211,19 +212,7 @@ void Grid::UpdateGrid(Object * object)
 }
 
 void Grid::UpdatePlayer(float t) {
-	/*for (int i = 0; i < objects->size(); i++) {
-		if (i > 0) {
-			if (objects->at(i)->GetObjectType() == SQUARE || objects->at(i)->GetObjectType() == FOOD) {
-				vector<Object*>* list = FilterObjects(objects->at(i)->GetObjectType());
-				objects->at(i)->Update(t, list);
-				list->clear();
-				delete list;
-			}
-		}
-		else {
-			objects->at(i)->Update(t, objects);
-		}
-	}*/
+	objects->at(0)->Update(t, objects);
 }
 
 void Grid::UpdateObject(float t) {
@@ -278,7 +267,7 @@ void Grid::DrawGrid() {
 	}
 }
 
-void Grid::LoadSquares(LPCWSTR filePath) {
+void Grid::LoadGroundAndItem(LPCWSTR filePath, SCENCE scence) {
 	fstream f;
 	try
 	{
@@ -304,10 +293,57 @@ void Grid::LoadSquares(LPCWSTR filePath) {
 			tempVector->push_back(stoi(splitString));
 		}
 		if (tempVector->size() > 1) {
-			int left = tempVector->at(0), top = tempVector->at(1),
-				right = tempVector->at(2), bottom = tempVector->at(3);
-			Square* square = new Square(left, top, right, bottom);
-			squares->push_back(square);
+			int id = tempVector->at(0);
+			int type = tempVector->at(1);
+			int left = 0, top = 0,
+				right = 0, bottom = 0;
+			if (tempVector->size() > 5) {
+				left = tempVector->at(2);
+				top = tempVector->at(3),
+				right = tempVector->at(4);
+				bottom = tempVector->at(5);
+			}
+			Object* object;
+			switch (type) {
+				case 1:
+				{
+					object = new Square(left, top, right, bottom);
+					Square* square = dynamic_cast<Square*>(object);
+					squares->push_back(square);
+				}	
+				break;
+				case 2:
+					object = new Brick(left, top, right, bottom);
+					Add(object);
+					break;
+				case 3:
+					object = new Destination(left, top, right, bottom);
+					Add(object);
+					break;
+				case 4:
+				{
+					int typeFood = tempVector->at(2);
+					int positionX = tempVector->at(3);
+					int positionY = tempVector->at(4);
+					object = new Food(scence, typeFood, positionX, positionY);
+					Add(object);
+				}
+				break;
+				case 5:
+					object = new Ladder(left, top, right, bottom);
+					Add(object);
+				break;
+				case 6:
+				{
+					bool isCanClimbLeft = tempVector->at(6), isCanClimbRight = tempVector->at(7);
+					object = new Rock(left, top, right, bottom, isCanClimbLeft, isCanClimbRight);
+					Add(object);
+				}
+				break;
+				default:
+					break;
+			}
+
 		}
 		tempVector->clear();
 		delete tempVector;
@@ -446,166 +482,6 @@ void Grid::LoadObjects(LPCWSTR filePath) {
 				default:
 					break;
 			}
-		}
-		tempVector->clear();
-		delete tempVector;
-	}
-	f.close();
-}
-
-void Grid::LoadFoods(LPCWSTR filePath, SCENCE scene) {
-	fstream f;
-	try
-	{
-		f.open(filePath);
-	}
-	catch (fstream::failure e)
-	{
-		trace(L"Error when init grid %s", filePath);
-		return;
-	}
-	string line;
-	while (!f.eof()) {
-		getline(f, line);
-
-		string splitString;
-
-		istringstream iss(line);
-
-		vector<int> * tempVector = new vector<int>();
-
-		while (getline(iss, splitString, '\t'))
-		{
-			tempVector->push_back(stoi(splitString));
-		}
-		if (tempVector->size() > 1) {
-			int id = tempVector->at(0);
-			int type = tempVector->at(1);
-			int positionX = tempVector->at(2);
-			int positionY = tempVector->at(3);
-			vector<int> movingLimit, activeArea;
-
-			int row = 0;
-			int column = 0;
-			if (tempVector->size() > 12) {
-
-			}
-			Object* object;
-			object = new Food(scene, type, positionX, positionY);
-			Add(object);
-		}
-		tempVector->clear();
-		delete tempVector;
-	}
-	f.close();
-}
-
-void Grid::LoadLadders(LPCWSTR filePath) {
-	fstream f;
-	try
-	{
-		f.open(filePath);
-	}
-	catch (fstream::failure e)
-	{
-		trace(L"Error when init grid %s", filePath);
-		return;
-	}
-	string line;
-	while (!f.eof()) {
-		getline(f, line);
-
-		string splitString;
-
-		istringstream iss(line);
-
-		vector<int> * tempVector = new vector<int>();
-
-		while (getline(iss, splitString, '\t'))
-		{
-			tempVector->push_back(stoi(splitString));
-		}
-		if (tempVector->size() >= 5) {
-			int left = tempVector->at(1), top = tempVector->at(2),
-				right = tempVector->at(3), bottom = tempVector->at(4);
-			Ladder* ladder = new Ladder(left, top, right, bottom);
-			Add(ladder);
-		}
-		tempVector->clear();
-		delete tempVector;
-	}
-	f.close();
-}
-
-void Grid::LoadRocks(LPCWSTR filePath) {
-	fstream f;
-	try
-	{
-		f.open(filePath);
-	}
-	catch (fstream::failure e)
-	{
-		trace(L"Error when init grid %s", filePath);
-		return;
-	}
-	string line;
-	while (!f.eof()) {
-		getline(f, line);
-
-		string splitString;
-
-		istringstream iss(line);
-
-		vector<int> * tempVector = new vector<int>();
-
-		while (getline(iss, splitString, '\t'))
-		{
-			tempVector->push_back(stoi(splitString));
-		}
-		if (tempVector->size() >= 7) {
-			int id = tempVector->at(0);
-			bool isCanClimbLeft = tempVector->at(1), isCanClimbRight = tempVector->at(2);
-			int left = tempVector->at(3), top = tempVector->at(4),
-				right = tempVector->at(5), bottom = tempVector->at(6);
-			Rock* rock = new Rock(left, top, right, bottom, isCanClimbLeft, isCanClimbRight);
-			Add(rock);
-		}
-		tempVector->clear();
-		delete tempVector;
-	}
-	f.close();
-}
-
-void Grid::LoadBricks(LPCWSTR filePath) {
-	fstream f;
-	try
-	{
-		f.open(filePath);
-	}
-	catch (fstream::failure e)
-	{
-		trace(L"Error when init grid %s", filePath);
-		return;
-	}
-	string line;
-	while (!f.eof()) {
-		getline(f, line);
-
-		string splitString;
-
-		istringstream iss(line);
-
-		vector<int> * tempVector = new vector<int>();
-
-		while (getline(iss, splitString, '\t'))
-		{
-			tempVector->push_back(stoi(splitString));
-		}
-		if (tempVector->size() > 1) {
-			int left = tempVector->at(0), top = tempVector->at(1),
-				right = tempVector->at(2), bottom = tempVector->at(3);
-			Brick* brick = new Brick(left, top, right, bottom);
-			Add(brick);
 		}
 		tempVector->clear();
 		delete tempVector;

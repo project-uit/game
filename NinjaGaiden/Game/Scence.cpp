@@ -23,7 +23,12 @@ void Scence::Update(float deltaTime)
 	}
 	Camera::GetInstance()->Update(Player::GetInstance()->GetPosition());
 	Grid::GetInstance()->UpdateGrid(Player::GetInstance());
-	Grid::GetInstance()->UpdateObject(deltaTime);
+	if (Player::GetInstance()->GetAlphaEndPoint() < 255) {
+		Grid::GetInstance()->UpdatePlayer(deltaTime);
+	}
+	else {
+		Grid::GetInstance()->UpdateObject(deltaTime);
+	}
 	HUD::GetInstance()->Update(deltaTime);
 	if (time >= 1.0f) {
 		this->timer--;
@@ -68,6 +73,10 @@ void Scence::RenderText() {
 void Scence::Render()
 {
 	RenderText();
-	//map->drawMap();
+	map->drawMap(Player::GetInstance()->GetAlphaEndPoint());
 	Grid::GetInstance()->RenderObject();
+}
+
+SCENCE Scence::GetScenceType() {
+	return scenceType;
 }

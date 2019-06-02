@@ -25,4 +25,5 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Render();
 	void RenderText();
+	SCENCE GetScenceType();
 };

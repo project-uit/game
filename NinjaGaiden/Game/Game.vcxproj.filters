@@ -225,6 +225,9 @@
     <ClInclude Include="MP3Player.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="Destination.h">
+      <Filter>Header Files\Object\Square</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="SoliderRun.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Destination.cpp">
+      <Filter>Source Files\Object\Square</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

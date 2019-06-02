@@ -31,6 +31,7 @@ Player::Player()
 	isOnGround = false;
 	isWounded = false;
 	katana = new Katana();
+	alphaEndPoint = false;
 	//weapon = new CircleFire[3];
 	time = 0;
 	count = 0;
@@ -38,6 +39,7 @@ Player::Player()
 	lifePoint = 3;
 	itemPoint = 0;
 	freezeTime = 0;
+	alphaEndPoint = 255;
 	hp = 16;
 	this->sprite = new  map<PLAYER_STATE, Sprite*>();
 	this->sprite
@@ -194,6 +196,20 @@ void Player::Reset(float x, float y)
 
 void Player::Update(float t, vector<Object*>* object)
 {
+	if (endStage) {
+		SetVeclocity(0.0f, 0.0f);
+		if (time >= 0.2f) {
+			time = 0;
+			MinusAlphaEndPoint();
+			if (alphaEndPoint == 0) {
+				endStage = false;
+			}
+		}
+		else {
+			time += t;
+		}
+		return;
+	}
 	if (weapon) {
 		if (weapon->GetObjectType() == CIRCLE_FIRE) {
 			for (int i = 0; i < CIRCLE_FIRE_NUMBER; i++) {
@@ -444,6 +460,13 @@ void Player::HandleCollision(vector<Object*> *object) {
 					Object::PlusPosition(this->deltaX, 0.0f);
 				}
 				continue;
+			}
+
+			if (e->object->GetObjectType() == OBJECT_TYPE::DESTINATION) {
+				if (e->nx < 0) {
+					endStage = true;
+					time = 0;
+				}
 			}
 
 			if (e->object->GetObjectType() == OBJECT_TYPE::LADDER) {
@@ -753,7 +776,7 @@ bool Player::Wounded(float nx, float ny, Object* object, DIRECTION direction) {
 	}
 	isOnGround = false;
 	isWounded = true;
-	//hp--;
+	hp--;
 	Sound::GetInstance()->Play(SOUND_WOUNDED, false, 1);
 	return false;
 }
@@ -949,4 +972,27 @@ void Player::MinusFreezeTime() {
 bool Player::isFreezeTime() {
 	if (freezeTime) return true;
 	return false;
+}
+
+int Player::GetAlphaEndPoint() {
+	return alphaEndPoint;
+}
+
+void Player::SetAlphaEndPoint(int alpha) {
+	this->alphaEndPoint = alpha;
+}
+
+void Player::MinusAlphaEndPoint() {
+	alphaEndPoint -= 25;
+	if (alphaEndPoint < 0) alphaEndPoint = 0;
+}
+
+void Player::Restart(float x, float y) {
+	SetLastPos({ -1.0f, -1.0f, 0 });
+	SetPosition(x, y);
+	hp = 16;
+	alphaEndPoint = 255;
+	endStage = false;
+	SetVx(0.0f);
+	state = STAND;
 }

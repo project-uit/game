@@ -35,7 +35,8 @@ public:
 	void Init(HWND hWnd);
 	void Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, 
 		int left, int top, int right, int bottom, int alpha = 255);
-
+	void Draw(float x, float y, int left, int top, int right, int bottom, D3DCOLOR color);
+	void Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, D3DCOLOR color);
 	void Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, 
 		int left, int top, int right, int bottom, 
 		D3DXVECTOR3 position, D3DXVECTOR3 scaling, int alpha = 255);

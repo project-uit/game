@@ -3,7 +3,7 @@
 #include "Debug.h"
 Boss::Boss() {
 	objectType = OBJECT_TYPE::BOSS;
-	hp = 1;
+	hp = 16;
 	isOnGround = true;
 	SetVx(0.0f);
 	SetVy(0.0f);
