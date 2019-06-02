@@ -73,7 +73,9 @@ void Scence::RenderText() {
 void Scence::Render()
 {
 	RenderText();
-	map->drawMap(Player::GetInstance()->GetAlphaEndPoint());
+	if (map) {
+		map->drawMap(Player::GetInstance()->GetAlphaEndPoint());
+	}
 	Grid::GetInstance()->RenderObject();
 }
 

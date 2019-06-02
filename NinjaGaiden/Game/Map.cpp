@@ -44,6 +44,7 @@ Map::~Map()
 	for (int i = 0; i < this->list->size(); i++) {
 		delete this->list->at(i);
 	}
+	this->list->clear();
 	delete this->list;
 }
 

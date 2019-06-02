@@ -85,9 +85,11 @@ void World::Update(float deltaTime)
 		switch (scence->GetScenceType()) {
 		case SCENCE::SCENCE_1:
 			SetScence(new Scence2());
+			Camera::GetInstance()->setPosition({ 0,0 });
 			break;
 		case SCENCE::SCENCE_2:
 			SetScence(new Scence3());
+			Camera::GetInstance()->setPosition({ 0,0 });
 			break;
 		default:
 			break;
@@ -100,5 +102,4 @@ void World::Update(float deltaTime)
 void World::Render()
 {
 	scence->Render();
-	Game::GetInstance()->Draw(0, 0, 0, 0, 256, 208, D3DCOLOR_ARGB(50, 60, 70, 80));
 }

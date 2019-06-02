@@ -14,7 +14,7 @@ class Camera
 public:
 	Camera();
 
-	void Update(D3DXVECTOR3 simonPosition);
+	void Update(D3DXVECTOR3 playerPosition);
 	D3DXVECTOR3 transformObjectPosition(D3DXVECTOR3 objectPosition);
 
 	D3DXVECTOR2 getPosition() { return cameraPosition; }

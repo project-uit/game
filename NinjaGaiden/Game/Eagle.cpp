@@ -25,7 +25,7 @@ void Eagle::init() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_Eagle_follow, 2, 0.075f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.06f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.03f)));
 }
 
 Eagle::Eagle(vector<int> activeArea, int positionX, int positionY) {
@@ -261,10 +261,22 @@ void Eagle::Render() {
 	if (isActive) {
 		switch (this->direction) {
 		case RIGHT:
-			this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
 			break;
 		case LEFT:
-			this->sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
 			break;
 		default:
 			break;
