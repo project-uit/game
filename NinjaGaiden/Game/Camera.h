@@ -28,5 +28,5 @@ public:
 		return _instance;
 	}
 
-	void setWorldBoundary(float a) { this->worldBoundary = a; }
+	void setWorldBoundary(float mapWidth) { this->worldBoundary = mapWidth; }
 };

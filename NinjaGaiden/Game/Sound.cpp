@@ -106,6 +106,7 @@ void Sound::LoadSound(char* fileName, std::string name)
 	if ((waveHeaderStruct.format[0] != 'W') || (waveHeaderStruct.format[1] != 'A') ||
 		(waveHeaderStruct.format[2] != 'V') || (waveHeaderStruct.format[3] != 'E'))
 	{
+
 		//GAMELOG(" file format does not support: %s", fileName);
 	}
 
@@ -178,8 +179,6 @@ void Sound::LoadSound(char* fileName, std::string name)
 	(*pSecondaryBuffer)->SetVolume(tempVolume);
 
 	soundBufferMap[name] = secondaryBuffer;
-
-
 }
 
 void Sound::Play(std::string name, bool infiniteLoop, int times)

@@ -6,7 +6,7 @@
 #include "Constants.h"
 #define GRAVITY 1400.0f
 #define PLAYER_VELOCITY_X 175.0f
-#define PLAYER_VELOCITY_Y 350.0f
+#define PLAYER_VELOCITY_Y 375.0f
 #define NO_VELOCITY 0.0f
 
 using namespace std;

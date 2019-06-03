@@ -5,6 +5,7 @@
 #include "GameDebugDraw.h"
 #include "HUD.h"
 #include "World.h"
+#include "Mp3.h"
 
 Scence1::Scence1(): Scence()
 {
@@ -18,7 +19,7 @@ Scence1::~Scence1()
 
 void Scence1::LoadResource()
 {
-	Player::GetInstance()->Restart(1859, 100.0f);
+	Player::GetInstance()->Restart(1843, 100.0f);
 	name = " STAGE 3-1";
 	scenceType = SCENCE::SCENCE_1;
 	timer = 150;
@@ -54,6 +55,7 @@ void Scence1::Update(float deltaTime)
 		Player::GetInstance()->MinusFreezeTime();
 		if (this->timer <= 0) {
 			this->timer = 0;
+			Player::GetInstance()->SetState(PLAYER_STATE::DIE);
 		}
 	}
 	else {

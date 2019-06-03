@@ -45,14 +45,41 @@ Eagle::~Eagle() {
 }
 
 void Eagle::UpdatteActiveArea(float t) {
-	
-	if (!isActive) {
+	if (state == DEAD && !isActive) {
+		if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
+			&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
+			&& Player::GetInstance()->GetDirection() == RIGHT) {
+			this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+			SetPosition(lastPos.x, lastPos.y);
+			state = FOLLOW;
+			isActive = true;
+			direction = LEFT;
+		}
+		else {
+			if (Player::GetInstance()->GetPosition().x >= activeArea.at(2)
+				&& Player::GetInstance()->GetPosition().x <= activeArea.at(3)
+				&& Player::GetInstance()->GetDirection() == LEFT) {
+				this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+				SetPosition(lastPos.x, lastPos.y);
+				state = FOLLOW;
+				isActive = true;
+				direction = RIGHT;
+			}
+		}
+		if (direction == RIGHT) {
+			SetVx(200.0f);
+			SetVy(0.0f);
+		}
+		if (direction == LEFT) {
+			SetVx(-200.0f);
+			SetVy(0.0f);
+		}
+	}
+	if (!isActive && state != DEAD) {
 		
 		if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 			&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
-			&& Player::GetInstance()->GetDirection() == RIGHT
-			&& activeArea.at(0) != 0
-			&& activeArea.at(1) != 0) {
+			&& Player::GetInstance()->GetDirection() == RIGHT) {
 			isActive = true;
 			direction = LEFT;
 			SetVx(-200.0f);
@@ -60,9 +87,7 @@ void Eagle::UpdatteActiveArea(float t) {
 		else {
 			if (Player::GetInstance()->GetPosition().x >= activeArea.at(2)
 				&& Player::GetInstance()->GetPosition().x <= activeArea.at(3)
-				&& Player::GetInstance()->GetDirection() == LEFT
-				&& activeArea.at(2) != 0
-				&& activeArea.at(3) != 0) {
+				&& Player::GetInstance()->GetDirection() == LEFT) {
 				isActive = true;
 				direction = RIGHT;
 				SetVx(200.0f);
@@ -133,7 +158,7 @@ void Eagle::FollowPlayer(float t) {
 			else {
 				time += t;
 				if (position.y > Player::GetInstance()->GetPosition().y + 10) {
-					SetVy(65);
+					SetVy(50);
 				}
 			}
 		}
@@ -149,25 +174,28 @@ void Eagle::FollowPlayer(float t) {
 		if (temp < 45 && temp > 0) {
 			temp += 45;
 		}
-		temp = temp < 0 ? temp*0.87 : temp;
+		temp = temp < 0 ? temp : temp;
 		veclocity.y += temp;
 	}
 }
 
 void Eagle::Update(float t, vector<Object*>* object) {
-	if (Player::GetInstance()->isFreezeTime() && isActive) {
-		SetVeclocity(0, 0);
-		Object::Update(t);
-		HandleCollision(object);
-		Player::GetInstance()->KillEnemy(this);
-		if (state == DEAD) {
-			sprite->at(this->state)->NextSprite(t);
-			if (sprite->at(this->state)->GetIsComplete()) {
-				sprite->at(this->state)->SetIndex(2);
-				sprite->at(this->state)->SetScale(1.0f);
+	if (Player::GetInstance()->isFreezeTime()) {
+		if (isActive) {
+			SetVeclocity(0, 0);
+			Object::Update(t);
+			HandleCollision(object);
+			Player::GetInstance()->KillEnemy(this);
+			if (state == DEAD) {
+				sprite->at(this->state)->NextSprite(t);
+				if (sprite->at(this->state)->GetIsComplete()) {
+					sprite->at(this->state)->SetIndex(2);
+					sprite->at(this->state)->SetScale(1.0f);
+					isActive = false;
+				}
+				this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
+				SetVx(0.0f);
 			}
-			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
-			SetVx(0.0f);
 		}
 		return;
 	}
@@ -188,6 +216,7 @@ void Eagle::Update(float t, vector<Object*>* object) {
 				sprite->at(this->state)->SetScale(1.0f);
 				state = DEAD;
 				SetPosition(lastPos.x, lastPos.y);
+				isActive = false;
 			}
 		}
 		

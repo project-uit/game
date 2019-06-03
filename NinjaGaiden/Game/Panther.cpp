@@ -23,7 +23,7 @@ void Panther::init() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_Panther_follow, 2, 0.08f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.06f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.03f)));
 }
 
 Panther::Panther(vector<int> movingLimit, vector<int> activeArea, int positionX, int positionY) {
@@ -168,7 +168,8 @@ void Panther::Dead() {
 	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
-	Object::PlusPosition(0, -21.5f);
+	objectHeight = objectWidth = 1;
+	Object::PlusPosition(0, -17.5f);
 }
 
 void Panther::HandleCollision(vector<Object*>* object) {
@@ -220,10 +221,22 @@ void Panther::Render() {
 	if (this->isActive) {
 		switch (this->direction) {
 		case RIGHT:
-			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
 			break;
 		case LEFT:
-			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
 			break;
 		default:
 			break;

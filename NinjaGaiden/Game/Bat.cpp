@@ -96,20 +96,21 @@ void Bat::UpdateActiveArea(float t) {
 }
 
 void Bat::Update(float t, vector<Object*>* objects) {
-	if (Player::GetInstance()->isFreezeTime() && isActive) {
-		SetVeclocity(0, 0);
-		Object::Update(t);
-		HandleCollision(objects);
-		Player::GetInstance()->KillEnemy(this);
-		if (state == DEAD) {
-			sprite->at(this->state)->NextSprite(t);
-			if (sprite->at(this->state)->GetIsComplete()) {
-				sprite->at(this->state)->SetIndex(2);
-				sprite->at(this->state)->SetScale(1.0f);
-				isActive = false;
+	if (Player::GetInstance()->isFreezeTime()) {
+		if (isActive) {
+			SetVeclocity(0, 0);
+			Object::Update(t);
+			HandleCollision(objects);
+			Player::GetInstance()->KillEnemy(this);
+			if (state == DEAD) {
+				sprite->at(this->state)->NextSprite(t);
+				if (sprite->at(this->state)->GetIsComplete()) {
+					sprite->at(this->state)->SetIndex(2);
+					sprite->at(this->state)->SetScale(1.0f);
+				}
+				this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
+				SetVx(0.0f);
 			}
-			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
-			SetVx(0.0f);
 		}
 		return;
 	}
@@ -186,6 +187,7 @@ void Bat::ResetState() {
 	this->isActive = false;
 	if (this->state == DEAD) {
 		this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+		this->sprite->at(ENEMY_STATE::DEAD)->SetScale(1.0f);
 	}
 	state = ENEMY_STATE::FOLLOW;
 	SetPosition(lastPos.x, lastPos.y);
@@ -195,10 +197,22 @@ void Bat::Render() {
 	if (this->isActive) {
 		switch (this->direction) {
 		case RIGHT:
-			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true, -9, -5);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
 			break;
 		case LEFT:
-			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -2, -5);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
 			break;
 		default:
 			break;

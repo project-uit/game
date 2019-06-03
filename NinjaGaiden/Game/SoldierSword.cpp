@@ -51,7 +51,7 @@ void SoldierSword::UpdateActiveArea(float t) {
 			resetTime = 0;
 			if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 				&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
-				&& Player::GetInstance()->GetDirection() == RIGHT) {
+				/*&& Player::GetInstance()->GetDirection() == RIGHT*/) {
 				this->sprite->at(ENEMY_STATE::DEAD)->Reset();
 				SetPosition(lastPos.x, lastPos.y);
 				state = FOLLOW;
@@ -59,7 +59,7 @@ void SoldierSword::UpdateActiveArea(float t) {
 			else {
 				if (Player::GetInstance()->GetPosition().x >= activeArea.at(2)
 					&& Player::GetInstance()->GetPosition().x <= activeArea.at(3)
-					&& Player::GetInstance()->GetDirection() == LEFT) {
+					/*&& Player::GetInstance()->GetDirection() == LEFT*/) {
 					this->sprite->at(ENEMY_STATE::DEAD)->Reset();
 					SetPosition(lastPos.x, lastPos.y);
 					state = FOLLOW;

@@ -371,6 +371,10 @@ vector<Object*>* Grid::FilterObjects(OBJECT_TYPE type) {
 	vector<Object*>* temp = new vector<Object*>();
 	for (int i = 0; i < objects->size(); i++) {
 		if (objects->at(i)->GetObjectType() != type) {
+			if (type == OBJECT_TYPE::EAGLE) {
+				temp->push_back(objects->at(0));
+				break;
+			}
 			//Chỉ xét vật cản + player
 			if (objects->at(i)->GetObjectType() == OBJECT_TYPE::SQUARE
 				|| objects->at(i)->GetObjectType() == OBJECT_TYPE::ROCK

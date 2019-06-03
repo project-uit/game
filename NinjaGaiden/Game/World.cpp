@@ -61,6 +61,7 @@ void World::LoadResource()
 	//Big Shuriken
 	texture->Add(BIG_SHURIKEN_ID, PATH_BIG_SHURIKEN, D3DCOLOR_XRGB(0, 128, 128));
 	Sound* sound = Sound::GetInstance();
+	sound->LoadSound(SOUND_TRACK_PATH_MAP_1, SOUND_TRACK_MAP1);
 	sound->LoadSound(SOUND_PATH_EFFECT_ATK, SOUND_ATK);
 	sound->LoadSound(SOUND_PATH_EFFECT_ATK_SMALL_SHURIKEN, SOUND_ATK_SMALL_SHURIKEN);
 	sound->LoadSound(SOUND_PATH_EFFECT_ATK_BIG_SHURIKEN, SOUND_ATK_BIG_SHURIKEN);
@@ -86,6 +87,7 @@ void World::Update(float deltaTime)
 		case SCENCE::SCENCE_1:
 			SetScence(new Scence2());
 			Camera::GetInstance()->setPosition({ 0,0 });
+			
 			break;
 		case SCENCE::SCENCE_2:
 			SetScence(new Scence3());
@@ -94,6 +96,10 @@ void World::Update(float deltaTime)
 		default:
 			break;
 		}
+		return;
+	}
+	if (Player::GetInstance()->GetState() == PLAYER_STATE::DIE && scence->GetScenceType() == SCENCE::SCENCE_3) {
+		ReplaceScence(SCENCE::SCENCE_2);
 		return;
 	}
 	scence->Update(deltaTime);

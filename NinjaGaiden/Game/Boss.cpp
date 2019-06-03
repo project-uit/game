@@ -124,7 +124,8 @@ void Boss::Update(float t, vector<Object*> * object) {
 			}
 			sprite->at(this->state)->SetIndex(1);
 		}		
-		if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())) {
+		if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())
+			|| (Game::AABB(Player::GetInstance()->GetBoundingBox(), GetBoundingBox()) && Player::GetInstance()->GetState() == JUMP_ATK)) {
 			if (timeHurt >= 0.06f) {
 				timeHurt = 0;
 				hp--;

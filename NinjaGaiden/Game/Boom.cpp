@@ -16,7 +16,7 @@ Boom::Boom() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_3_BOOM_BOSS, 1, 0.0f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.06f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.03f)));
 }
 
 Boom::~Boom() {
@@ -56,7 +56,6 @@ void Boom::Update(float t, vector<Object*>* object) {
 			sprite->at(this->state)->Reset();
 			state = FOLLOW;
 			time = 0;
-			//position = { -10,-10,0 };
 		}
 	}
 }
@@ -64,6 +63,7 @@ void Boom::Update(float t, vector<Object*>* object) {
 void Boom::Dead() {
 	state = DEAD;
 	SetVeclocity(0.0f, 0.0f);
+	sprite->at(this->state)->SetScale(1.0f);
 	Player::GetInstance()->AddScore(score);
 }
 
@@ -110,6 +110,7 @@ void Boom::Render() {
 			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
 		}
 		else {
+			sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
 			if (GetObjectDirection() == LEFT) {
 				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -5, -5);
 			}

@@ -49,6 +49,9 @@ void Scence3::Update(float deltaTime)
 		time = 0;
 		if (this->timer <= 0) {
 			this->timer = 0;
+			if (boss->GetHp() > 0) {
+				Player::GetInstance()->SetState(PLAYER_STATE::DIE);
+			}
 		}
 	}
 	else {

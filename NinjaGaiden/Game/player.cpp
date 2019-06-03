@@ -753,6 +753,11 @@ bool Player::Wounded(float nx, float ny, Object* object, DIRECTION direction) {
 					}
 				}
 			}
+			else {
+				if (position.x >= 1155 && position.x <= 1244) {
+					Object::PlusPosition(0.0f, -1.2f);
+				}
+			}
 		}
 	}
 
@@ -776,7 +781,12 @@ bool Player::Wounded(float nx, float ny, Object* object, DIRECTION direction) {
 	}
 	isOnGround = false;
 	isWounded = true;
-	hp--;
+	if (object->GetObjectType() == BOSS) {
+		hp -= 2;
+	}
+	else {
+		hp--;
+	}
 	Sound::GetInstance()->Play(SOUND_WOUNDED, false, 1);
 	return false;
 }
@@ -970,7 +980,7 @@ void Player::MinusFreezeTime() {
 }
 
 bool Player::isFreezeTime() {
-	if (freezeTime) return true;
+	if (freezeTime > 0) return true;
 	return false;
 }
 

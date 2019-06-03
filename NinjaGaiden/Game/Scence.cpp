@@ -35,6 +35,7 @@ void Scence::Update(float deltaTime)
 		time = 0;
 		if (this->timer <= 0) {
 			this->timer = 0;
+			Player::GetInstance()->SetState(PLAYER_STATE::DIE);
 		}
 	}
 	else {
