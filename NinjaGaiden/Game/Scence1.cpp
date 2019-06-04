@@ -16,7 +16,7 @@ Scence1::~Scence1()
 
 void Scence1::LoadResource()
 {
-	Player::GetInstance()->Restart(20, 100.0f);
+	Player::GetInstance()->Restart(1200, 100.0f);
 	name = " STAGE 3-1";
 	scenceType = SCENCE::SCENCE_1;
 	timer = 150;

@@ -50,6 +50,7 @@ void SoliderBazoka::Update(float t, vector<Object*>* objects) {
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(state)->GetIsComplete()) {
 				sprite->at(state)->Reset();
+				sprite->at(this->state)->SetScale(1.0f);
 				isActive = false;
 				bullet->SetState(ENEMY_STATE::INVISIBLE);
 			}
@@ -184,6 +185,7 @@ void SoliderBazoka::ResetState() {
 	isActive = true;
 	if (state == ENEMY_STATE::DEAD) {
 		sprite->at(ENEMY_STATE::DEAD)->Reset();
+		sprite->at(this->state)->SetScale(1.0f);
 	}
 	SetPosition(lastPos.x, lastPos.y);
 

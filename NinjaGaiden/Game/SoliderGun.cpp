@@ -52,6 +52,7 @@ void SoliderGun::Update(float t, vector<Object*>* objects) {
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(state)->GetIsComplete()) {
 				sprite->at(state)->Reset();
+				sprite->at(this->state)->SetScale(1.0f);
 				state = ENEMY_STATE::INVISIBLE;
 				for (int i = 0; i < MAX_NUMBER_OF_BULLET; i++) {
 					bullet[i]->SetState(ENEMY_STATE::INVISIBLE);
@@ -178,7 +179,7 @@ void SoliderGun::Dead() {
 	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
-	Object::PlusPosition(0, -3.0f);
+	//Object::PlusPosition(0, -3.0f);
 }
 
 void SoliderGun::GotoStateFollow() {
@@ -195,10 +196,22 @@ void SoliderGun::Render() {
 	if (state != ENEMY_STATE::INVISIBLE) {
 		switch (direction) {
 		case RIGHT:
-			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -9, -5);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
 			break;
 		case LEFT:
-			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -9, -5);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
 			break;
 		default:
 			break;
@@ -213,8 +226,9 @@ void SoliderGun::Render() {
 void SoliderGun::ResetState() {
 	isActive = false;
 	isOnGround = false;
-	if (state == ENEMY_STATE::DEAD) {
-		sprite->at(ENEMY_STATE::DEAD)->Reset();
+	if (this->state == DEAD) {
+		this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+		sprite->at(this->state)->SetScale(1.0f);
 	}
 	GotoStateFollow();
 	SetPosition(lastPos.x, lastPos.y);

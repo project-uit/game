@@ -59,6 +59,7 @@ void WitchSword::Update(float t, vector<Object*>* objects) {
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(state)->GetIsComplete()) {
 				sprite->at(state)->Reset();
+				sprite->at(this->state)->SetScale(1.0f);
 				state = ENEMY_STATE::INVISIBLE;
 			}
 		}
@@ -107,10 +108,22 @@ void WitchSword::Render() {
 		drawWitchSword->DrawRect(GetBoundingBox(), Camera::GetInstance());
 		switch (this->direction) {
 		case RIGHT:
-			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -9, 0);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
 			break;
 		case LEFT:
-			sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -9, 0);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
 			break;
 		default:
 			break;
@@ -122,6 +135,7 @@ void WitchSword::ResetState() {
 	this->isActive = false;
 	if (this->state == DEAD) {
 		this->sprite->at(ENEMY_STATE::DEAD)->Reset();
+		sprite->at(this->state)->SetScale(1.0f);
 	}
 	state = ENEMY_STATE::INVISIBLE;
 	SetPosition(lastPos.x, lastPos.y);

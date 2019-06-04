@@ -46,21 +46,11 @@ void Witch::InitSpite() {
 		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.03f)));
 }
 void Witch::Update(float t, vector<Object*>* objects) {
-	if (Player::GetInstance()->isFreezeTime() && isActive) {
+	if (Player::GetInstance()->isFreezeTime()) {
 		SetVeclocity(0, 0);
 		Object::Update(t);
-		HandleCollision(objects);
-		Player::GetInstance()->KillEnemy(this);
-		if (state == DEAD) {
-			sprite->at(this->state)->NextSprite(t);
-			if (sprite->at(this->state)->GetIsComplete()) {
-				sprite->at(this->state)->SetIndex(2);
-				sprite->at(this->state)->SetScale(1.0f);
-				isActive = false;
-			}
-			this->sprite->at(ENEMY_STATE::FOLLOW)->Reset();
-			SetVx(0.0f);
-		}
+		isActive = false;
+		//HandleCollision(objects);
 		return;
 	}
 	if (isActive) {
@@ -71,6 +61,7 @@ void Witch::Update(float t, vector<Object*>* objects) {
 		if (state == ENEMY_STATE::DEAD) {
 			if (sprite->at(state)->GetIsComplete()) {
 				sprite->at(state)->Reset();
+				sprite->at(this->state)->SetScale(1.0f);
 				isActive = false;
 				for (int i = 0; i < NUMBER_OF_SWORD; i++) {
 					sword[i]->SetState(ENEMY_STATE::INVISIBLE);
@@ -93,9 +84,11 @@ void Witch::Update(float t, vector<Object*>* objects) {
 		}
 	}
 
-	for (int i = 0; i < NUMBER_OF_SWORD; i++) {
-		sword[i]->Update(t, objects);
-		sword[i]->UpdateWitchPosition(position);
+	if (!Player::GetInstance()->isFreezeTime()) {
+		for (int i = 0; i < NUMBER_OF_SWORD; i++) {
+			sword[i]->Update(t, objects);
+			sword[i]->UpdateWitchPosition(position);
+		}
 	}
 }
 
@@ -103,30 +96,36 @@ void Witch::HandleCollision(vector<Object*> *objects) {
 	vector<CollisionHandler*>* coEvents = new vector<CollisionHandler*>();
 	vector<CollisionHandler*>* coEventsResult = new vector<CollisionHandler*>();
 	coEvents->clear();
-	Object::CalcPotentialCollisions(objects, coEvents);
-	if (coEvents->size() != 0) {
-		float min_tx, min_ty, nx = 0, ny;
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		for (UINT i = 0; i < coEventsResult->size(); i++) {
-			CollisionHandler* e = coEventsResult->at(i);
-			if (e->object->GetObjectType() == OBJECT_TYPE::SQUARE) {
-				if (e->ny < 0) {
-					isOnGround = true;
-				}
-			}
-			else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
-				if (!Player::GetInstance()->GetWounded()) {
-					if (Player::GetInstance()->GetState() == JUMP_ATK) {
-						state = ENEMY_STATE::DEAD;
+	if (isActive) {
+		Object::CalcPotentialCollisions(objects, coEvents);
+	}
+	if (coEvents->size() == 0) {
+		Object::PlusPosition(this->deltaX, this->deltaY);
+	}
+	else {
+		if (coEvents->size() != 0) {
+			float min_tx, min_ty, nx = 0, ny;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+			for (UINT i = 0; i < coEventsResult->size(); i++) {
+				CollisionHandler* e = coEventsResult->at(i);
+				if (e->object->GetObjectType() == OBJECT_TYPE::SQUARE) {
+					if (e->ny < 0) {
+						isOnGround = true;
 					}
-					else {
-						Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
+				}
+				else if (e->object->GetObjectType() == OBJECT_TYPE::MAIN_CHARACTER) {
+					if (!Player::GetInstance()->GetWounded()) {
+						if (Player::GetInstance()->GetState() == JUMP_ATK) {
+							state = ENEMY_STATE::DEAD;
+						}
+						else {
+							Player::GetInstance()->Wounded(e->nx, e->ny, this, direction);
+						}
 					}
 				}
 			}
 		}
 	}
-
 	for (UINT i = 0; i < coEvents->size(); i++) {
 		delete coEvents->at(i);
 	}
@@ -235,7 +234,7 @@ void Witch::Dead() {
 	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
-	Object::PlusPosition(0, -3.0f);
+	//Object::PlusPosition(0, -3.0f);
 }
 
 void Witch::GotoStateFollow() {
@@ -249,20 +248,34 @@ void Witch::GotoStateFollow() {
 }
 
 void Witch::Render() {
-	if (isActive) {
+	if (isActive && !Player::GetInstance()->isFreezeTime()) {
 		switch (direction) {
 		case RIGHT:
-			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true, -9, 0);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), true);
+			}
 			break;
 		case LEFT:
-			sprite->at(state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -8, 0);
+			if (state == ENEMY_STATE::DEAD) {
+				sprite->at(this->state)->SetScale(sprite->at(this->state)->GetScale() + 0.015f);
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false, -9, 0);
+			}
+			else {
+				sprite->at(this->state)->DrawSprite(Object::GetTransformObjectPositionByCamera(), false);
+			}
 			break;
 		default:
 			break;
 		}
 	}
-	for (int i = 0; i < NUMBER_OF_SWORD; i++) {
-		sword[i]->Render();
+	if (!Player::GetInstance()->isFreezeTime()) {
+		for (int i = 0; i < NUMBER_OF_SWORD; i++) {
+			sword[i]->Render();
+		}
 	}
 }
 
@@ -271,6 +284,7 @@ void Witch::ResetState() {
 	isOnGround = false;
 	if (state == ENEMY_STATE::DEAD) {
 		sprite->at(ENEMY_STATE::DEAD)->Reset();
+		sprite->at(this->state)->SetScale(1.0f);
 	}
 	GotoStateFollow();
 	SetPosition(lastPos.x, lastPos.y);

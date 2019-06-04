@@ -32,7 +32,7 @@ Player::Player()
 	isWounded = false;
 	katana = new Katana();
 	alphaEndPoint = false;
-	//weapon = new CircleFire[3];
+	weapon = new CircleFire[3];
 	//weapon = new BigShuriken[3];
 	time = 0;
 	count = 0;
@@ -911,6 +911,9 @@ void Player::DigestFood(Food* food, Sprite* sprite) {
 		freezeTime = 4;
 		break;
 	case FOOD_TYPE::FIRE:
+		if (weapon->GetObjectType() == CIRCLE_FIRE) {
+			break;
+		}
 		if (weapon) {
 			delete weapon;
 			weapon = NULL;
