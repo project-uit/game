@@ -3,7 +3,7 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
-#include "Sound.h"
+#include "MCIPlayer.h"
 
 SoliderGun::SoliderGun() {
 
@@ -40,7 +40,7 @@ void SoliderGun::InitSpite() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_GUN_ATK, 2, 0.09f)));
 	sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.04f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.03f)));
 }
 
 void SoliderGun::Update(float t, vector<Object*>* objects) {
@@ -146,7 +146,7 @@ void SoliderGun::HandleDirection() {
 void SoliderGun::HandleAttack(float t) {
 	if (this->state != ENEMY_STATE::ATK) {
 		if (timerDelayShooting >= SHOOT_TIME_DELAY) {
-			Sound::GetInstance()->Play(SOUND_ENEMY_GUN, false, 1);
+			MCIPlayer::GetInstance()->Play(SOUND_ENEMY_GUN);
 			state = ENEMY_STATE::ATK;
 			SetVx(0);
 			timerDelayShooting = 0;
@@ -175,7 +175,7 @@ void SoliderGun::HandleAttack(float t) {
 }
 
 void SoliderGun::Dead() {
-	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
 	Object::PlusPosition(0, -3.0f);

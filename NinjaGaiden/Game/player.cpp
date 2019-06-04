@@ -1,6 +1,6 @@
 ﻿#include "Player.h"
 #include "Camera.h"
-#include "Sound.h"
+#include "MCIPlayer.h"
 #include "Square.h"
 #include "SoldierSword.h"
 #include "BigShuriken.h"
@@ -33,11 +33,12 @@ Player::Player()
 	katana = new Katana();
 	alphaEndPoint = false;
 	//weapon = new CircleFire[3];
+	//weapon = new BigShuriken[3];
 	time = 0;
 	count = 0;
 	borderBot = 0;
 	lifePoint = 3;
-	itemPoint = 0;
+	itemPoint = 5000;
 	freezeTime = 0;
 	alphaEndPoint = 255;
 	hp = 16;
@@ -357,9 +358,9 @@ void Player::Update(float t, vector<Object*>* object)
 			this->veclocity.x += acceleratorX;
 		}
 
-			/*if (this->sprite->at(this->state)->GetCount() > 2) {
-				this->sprite->at(this->state)->SetIndex(0);
-			}*/
+		/*if (this->sprite->at(this->state)->GetCount() > 2) {
+			this->sprite->at(this->state)->SetIndex(0);
+		}*/
 		if (this->sprite->at(this->state)->GetIsComplete()
 			&& (state == PLAYER_STATE::STAND_ATK || state == PLAYER_STATE::USE_WEAPON)) {
 			state = PLAYER_STATE::STAND;
@@ -621,7 +622,7 @@ void Player::UseWeapon() {
 			{
 			case OBJECT_TYPE::SMALL_SHURIKEN:
 				if (itemPoint >= MANA_POINT_SHURIKEN_SMALL) {
-					Sound::GetInstance()->Play(SOUND_ATK_SMALL_SHURIKEN, false, 1);
+					MCIPlayer::GetInstance()->Play(SOUND_ATK_SMALL_SHURIKEN);
 					if (this->direction == LEFT) {
 						weapon->SetPosition(position.x, position.y + 10);
 						weapon->SetVx(-250.0f);
@@ -636,7 +637,7 @@ void Player::UseWeapon() {
 				break;
 			case OBJECT_TYPE::BIG_SHURIKEN:
 				if (itemPoint >= MANA_POINT_SHURIKEN_BIG) {
-					Sound::GetInstance()->Play(SOUND_ATK_BIG_SHURIKEN, false, 1);
+					MCIPlayer::GetInstance()->Play(SOUND_ATK_BIG_SHURIKEN);
 					if (this->direction == LEFT) {
 						weapon->SetPosition(position.x - 20, position.y + 5);
 						weapon->SetVx(-400.0f);
@@ -651,7 +652,7 @@ void Player::UseWeapon() {
 				break;
 			case OBJECT_TYPE::CIRCLE_FIRE:
 				if (itemPoint >= MANA_POINT_FIRE) {
-					Sound::GetInstance()->Play(SOUND_ATK_FIRE, false, 1);
+					MCIPlayer::GetInstance()->Play(SOUND_ATK_FIRE);
 					float vx, vy = -35.0f, posX = 0;
 					if (this->direction == RIGHT) {
 						vx = 280.0f;
@@ -787,7 +788,7 @@ bool Player::Wounded(float nx, float ny, Object* object, DIRECTION direction) {
 	else {
 		hp--;
 	}
-	Sound::GetInstance()->Play(SOUND_WOUNDED, false, 1);
+	MCIPlayer::GetInstance()->Play(SOUND_WOUNDED);
 	return false;
 }
 
@@ -877,7 +878,7 @@ void Player::JumpClimb(int KeyCode) {
 			SetVeclocity(75, -270);
 			direction = DIRECTION::RIGHT;
 		}
-		Sound::GetInstance()->Play(SOUND_JUMP, false, 1);
+		MCIPlayer::GetInstance()->Play(SOUND_JUMP);
 		acceleratorX = 0;
 		state = PLAYER_STATE::JUMP;
 		isOnGround = false;
@@ -889,6 +890,10 @@ void Player::JumpClimb(int KeyCode) {
 
 bool Player::GetIsJumpClimb() {
 	return isJumpClimb;
+}
+
+DIRECTION Player::GetDirectionClimb() {
+	return directionClimb;
 }
 
 void Player::DigestFood(Food* food, Sprite* sprite) {
@@ -923,7 +928,7 @@ void Player::DigestFood(Food* food, Sprite* sprite) {
 			}
 			weapon = NULL;
 		}
-		
+
 		weapon = new SmallShuriken();
 		HUD::GetInstance()->SetSkill(sprite);
 		break;
@@ -940,7 +945,11 @@ void Player::DigestFood(Food* food, Sprite* sprite) {
 		weapon = new BigShuriken();
 		HUD::GetInstance()->SetSkill(sprite);
 		break;
-	case FOOD_TYPE::MANA:
+	case FOOD_TYPE::BLOOD:
+		hp += food->GetScore();
+		if (hp > 16) {
+			hp = 16;
+		}
 		break;
 	default:
 		break;

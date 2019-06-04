@@ -1,6 +1,7 @@
 #include "SoliderRun.h"
 #include "Square.h"
 #include "Player.h"
+#include "MCIPlayer.h"
 
 SoliderRun::SoliderRun() {
 
@@ -257,6 +258,7 @@ void SoliderRun::Dead() {
 	resetTime = 0;
 	Object::PlusPosition(0, -3.0f);
 	Player::GetInstance()->AddScore(this->score);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 }
 
 void SoliderRun::ResetState() {

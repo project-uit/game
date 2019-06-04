@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Debug.h"
 #include <math.h>
+#include "MCIPlayer.h"
+
 Eagle::Eagle() {
 
 }
@@ -76,7 +78,7 @@ void Eagle::UpdatteActiveArea(float t) {
 		}
 	}
 	if (!isActive && state != DEAD) {
-		
+
 		if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 			&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
 			&& Player::GetInstance()->GetDirection() == RIGHT) {
@@ -94,11 +96,11 @@ void Eagle::UpdatteActiveArea(float t) {
 			}
 		}
 	}
-	
+
 }
 
 void Eagle::FollowPlayer(float t) {
-	
+
 	if (direction == LEFT) {
 		if (position.x < Player::GetInstance()->GetPosition().x) {
 			direction = RIGHT;
@@ -128,7 +130,7 @@ void Eagle::FollowPlayer(float t) {
 		else if (dx <= 100 && dx > 30) {
 			destination = Player::GetInstance()->GetPosition().x - 100.0f;
 		}
-		
+
 		if (position.x - width < destination && dx < 75 && veclocity.x > -310) {
 			SetVx(0);
 			finishFly = 1;
@@ -219,7 +221,7 @@ void Eagle::Update(float t, vector<Object*>* object) {
 				isActive = false;
 			}
 		}
-		
+
 	}
 }
 
@@ -230,6 +232,7 @@ void Eagle::Dead() {
 	time = 0;
 	destination = 0;
 	Player::GetInstance()->AddScore(this->score);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 }
 
 void Eagle::HandleCollision(vector<Object*>* object) {
@@ -325,5 +328,5 @@ void Eagle::ResetState() {
 		}
 		state = ENEMY_STATE::FOLLOW;
 		objectHeight = objectWidth = 1;
-	} 
+	}
 }

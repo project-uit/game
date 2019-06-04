@@ -4,20 +4,21 @@
 #define GAME_SCREEN_640_480 1
 #define GAME_TITLE L"Ninja Gaiden"
 // ========= SOUND PATH
-#define SOUND_TRACK_PATH_MAP_1	((char *)"sound\\STAGE1.wav")
-#define SOUND_TRACK_PATH_MAP_2	((char *)"sound\\STAGE2.wav")
-#define SOUND_TRACK_PATH_MAP_3	((char *)"sound\\STAGE3.wav")
-#define SOUND_PATH_EFFECT_ATK					((char *)"sound/effects/22.wav")
-#define SOUND_PATH_EFFECT_ATK_SMALL_SHURIKEN	((char *)"sound/effects/10.wav")
-#define SOUND_PATH_EFFECT_ATK_BIG_SHURIKEN		((char *)"sound/effects/11.wav")
-#define SOUND_PATH_EFFECT_ATK_FIRE				((char *)"sound/effects/12.wav")
-#define SOUND_PATH_EFFECT_JUMP					((char *)"sound/effects/02.wav")
-#define SOUND_PATH_EFFECT_WOUNDED				((char *)"sound/effects/04.wav")
-#define SOUND_PATH_EFFECT_DIGEST_FOOD			((char *)"sound/effects/06.wav")
-#define SOUND_PATH_EFFECT_ENEMY_DIE				((char *)"sound/effects/05.wav")
-#define SOUND_PATH_EFFECT_ENEMY_GUN				((char *)"sound/effects/18.wav")
-#define SOUND_PATH_EFFECT_ENEMY_BAZOKA			((char *)"sound/effects/19.wav")
-#define SOUND_PATH_EFFECT_BOSS_JUMP				((char *)"sound/effects/32.wav")
+#define SOUND_TRACK_PATH_MAP_1	"sound//STAGE1.mp3"
+#define SOUND_TRACK_PATH_MAP_2	"sound//STAGE2.mp3"
+#define SOUND_TRACK_PATH_MAP_3	"sound//STAGE3.mid"
+#define SOUND_PATH_EFFECT_ATK					"sound///effects/22.wav"
+#define SOUND_PATH_EFFECT_ATK_SMALL_SHURIKEN	"sound//effects//10.wav"
+#define SOUND_PATH_EFFECT_ATK_BIG_SHURIKEN		"sound//effects//11.wav"
+#define SOUND_PATH_EFFECT_ATK_FIRE				"sound//effects//12.wav"
+#define SOUND_PATH_EFFECT_JUMP					"sound//effects//02.wav"
+#define SOUND_PATH_EFFECT_WOUNDED				"sound//effects//04.wav"
+#define SOUND_PATH_EFFECT_DIGEST_FOOD			"sound//effects//06.wav"
+#define SOUND_PATH_EFFECT_ENEMY_DIE				"sound//effects//05.wav"
+#define SOUND_PATH_EFFECT_ENEMY_GUN				"sound//effects//18.wav"
+#define SOUND_PATH_EFFECT_ENEMY_BAZOKA			"sound//effects//19.wav"
+#define SOUND_PATH_EFFECT_BOSS_EXPLOSION		"sound//effects//31.wav"
+#define SOUND_PATH_EFFECT_BOSS_JUMP				"sound//effects//32.wav"
 // ========= SOUND NAME
 #define SOUND_TRACK_MAP1			"sound_track_map1"
 #define SOUND_TRACK_MAP2			"sound_track_map2"
@@ -32,6 +33,7 @@
 #define SOUND_ENEMY_DIE				"enemy_die"
 #define SOUND_ENEMY_GUN				"enemy_gun"
 #define SOUND_ENEMY_BAZOKA			"enemy_bazoka"
+#define SOUND_BOSS_EXPLOSION		"boss_explosion"
 #define SOUND_BOSS_JUMP				"boss_jump"
 // =========== HUD
 #define HEALTH_ID 50
@@ -125,7 +127,7 @@
 #define PATH_TEXTURE_MAP_1_FOOD_FIRE L"sprite\\food\\food_fire.txt"
 #define PATH_TEXTURE_MAP_1_FOOD_SHURIKEN_BLUE L"sprite\\food\\food_shuriken_blue.txt"
 #define PATH_TEXTURE_MAP_1_FOOD_SHURIKEN_RED L"sprite\\food\\food_shuriken_red.txt"
-#define PATH_TEXTURE_MAP_1_FOOD_MANA L"sprite\\food\\food_mana.txt"
+#define PATH_TEXTURE_MAP_1_FOOD_BLOOD L"sprite\\food\\food_blood.txt"
 //=========== Phù thủy
 #define PATH_TEXTURE_MAP_1_ENEMY_WITCH_FOLLOW L"sprite\\enemy\\Witch\\follow.txt"
 #define PATH_TEXTURE_MAP_1_ENEMY_WITCH_ATK L"sprite\\enemy\\Witch\\atk.txt"
@@ -209,7 +211,7 @@ enum FOOD_TYPE {
 	FIRE,
 	SHURIKEN_BLUE,
 	SHURIKEN_RED,
-	MANA
+	BLOOD
 };
 
 enum DIRECTION {

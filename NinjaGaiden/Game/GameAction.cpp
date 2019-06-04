@@ -1,6 +1,6 @@
 ﻿#include "GameAction.h"
 #include "GameTime.h"
-#include "Sound.h"
+#include "MCIPlayer.h"
 #define MAX_FRAME_RATE 170
 GameAction *GameAction::_instance = NULL;
 
@@ -74,14 +74,33 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 	/*DebugOut((wchar_t *)L"[GameAction.cpp][KEYBOARD] KeyDown: %d\n", KeyCode);*/
 	if (Player::GetInstance()->GetState() != PLAYER_STATE::DIE && Player::GetInstance()->GetAlphaEndPoint() == 255) {
 		if (Player::GetInstance()->GetState() == PLAYER_STATE::JUMP) {
-			if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
-				Player::GetInstance()->SetAcceleratorX(-20.0f);
-				Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+			if (Player::GetInstance()->GetIsJumpClimb()) {
+				if (Player::GetInstance()->GetDirectionClimb() == DIRECTION::LEFT) {
+					if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
+						Player::GetInstance()->SetAcceleratorX(20.0f);
+						Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
+					}
+				}
+				else {
+					if (Player::GetInstance()->GetDirectionClimb() == DIRECTION::RIGHT) {
+						if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
+							Player::GetInstance()->SetAcceleratorX(-20.0f);
+							Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+						}
+					}
+				}
 			}
-			if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
-				Player::GetInstance()->SetAcceleratorX(20.0f);
-				Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
+			else {
+				if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
+					Player::GetInstance()->SetAcceleratorX(-20.0f);
+					Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+				}
+				if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
+					Player::GetInstance()->SetAcceleratorX(20.0f);
+					Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
+				}
 			}
+
 			if (Game::GetInstance()->IsKeyDown(DIK_UP)) {
 				if (KeyCode == DIK_Z) {
 					Player::GetInstance()->SetState(PLAYER_STATE::JUMP_ATK);
@@ -94,7 +113,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 						}
 					}
 					Player::GetInstance()->SetAcceleratorX(0.0f);
-					Sound::GetInstance()->Play(SOUND_ATK, false, 1);
+					MCIPlayer::GetInstance()->Play(SOUND_ATK);
 				}
 			}
 			else {
@@ -109,7 +128,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 						}
 					}
 					Player::GetInstance()->SetAcceleratorX(0.0f);
-					Sound::GetInstance()->Play(SOUND_ATK, false, 1);
+					MCIPlayer::GetInstance()->Play(SOUND_ATK);
 				}
 			}
 			if (KeyCode == DIK_C) {
@@ -142,7 +161,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 		if (Player::GetInstance()->GetLastState() == PLAYER_STATE::SIT) {
 			if (KeyCode == DIK_Z && Game::GetInstance()->IsKeyDown(DIK_DOWN)) {
 				Player::GetInstance()->SetState(PLAYER_STATE::SIT_ATK);
-				Sound::GetInstance()->Play(SOUND_ATK, false, 1);
+				MCIPlayer::GetInstance()->Play(SOUND_ATK);
 			}
 		}
 
@@ -159,7 +178,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 			}
 			if (KeyCode == DIK_Z) {
 				Player::GetInstance()->SetState(PLAYER_STATE::STAND_ATK);
-				Sound::GetInstance()->Play(SOUND_ATK, false, 1);
+				MCIPlayer::GetInstance()->Play(SOUND_ATK);
 				Player::GetInstance()->SetVx(0.0f);
 				Player::GetInstance()->SetAcceleratorX(0.0f);
 			}
@@ -168,7 +187,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 					Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
 					Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
 					Player::GetInstance()->SetOnGround(false);
-					Sound::GetInstance()->Play(SOUND_JUMP, false, 1);
+					MCIPlayer::GetInstance()->Play(SOUND_JUMP);
 				}
 			}
 			if (KeyCode == DIK_C) {
@@ -184,7 +203,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 				Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
 				Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);				
 				Player::GetInstance()->SetOnGround(false);
-				Sound::GetInstance()->Play(SOUND_JUMP, false, 1);
+				MCIPlayer::GetInstance()->Play(SOUND_JUMP);
 			}
 		}
 
@@ -194,7 +213,7 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 					Player::GetInstance()->SetState(PLAYER_STATE::JUMP);
 					Player::GetInstance()->SetVy(-PLAYER_VELOCITY_Y);
 					Player::GetInstance()->SetOnGround(false);
-					Sound::GetInstance()->Play(SOUND_JUMP, false, 1);
+					MCIPlayer::GetInstance()->Play(SOUND_JUMP);
 				}
 			}
 		}

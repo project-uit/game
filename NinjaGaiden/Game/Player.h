@@ -49,6 +49,7 @@ public:
 	PLAYER_STATE GetState();
 	void SetState(PLAYER_STATE value);
 	DIRECTION GetDirection();
+	DIRECTION GetDirectionClimb();
 	void SetDirection(DIRECTION direction);
 	void ResetAllSprites();
 	bool GetStateActive();

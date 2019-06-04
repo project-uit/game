@@ -1,12 +1,9 @@
 #include "Scence1.h"
-#include "MP3Player.h"
-#include "Sound.h"
 #include "SoldierSword.h"
 #include "GameDebugDraw.h"
 #include "HUD.h"
 #include "World.h"
-#include "Mp3.h"
-
+#include "MCIPlayer.h"
 Scence1::Scence1(): Scence()
 {
 	this->LoadResource();
@@ -19,7 +16,7 @@ Scence1::~Scence1()
 
 void Scence1::LoadResource()
 {
-	Player::GetInstance()->Restart(1843, 100.0f);
+	Player::GetInstance()->Restart(20, 100.0f);
 	name = " STAGE 3-1";
 	scenceType = SCENCE::SCENCE_1;
 	timer = 150;
@@ -28,10 +25,6 @@ void Scence1::LoadResource()
 	Grid::GetInstance()->ReSetGrid(246, map->GetWidth());
 	Grid::GetInstance()->LoadGroundAndItem(PATH_POS_GROUND_MAP_1, scenceType);
 	Grid::GetInstance()->LoadObjects(PATH_POS_ENEMY_MAP_1);
-	/*Mp3 mp3;
-	mp3.PlaySoundTrack(SOUND_TRACK_PATH_MAP_1);*/
-	//Sound::GetInstance()->LoadSound(SOUND_TRACK_PATH_MAP_1, SOUND_TRACK_MAP1);
-	//Sound::GetInstance()->Play(SOUND_TRACK_MAP1, true, 0);
 }
 
 void Scence1::Update(float deltaTime)

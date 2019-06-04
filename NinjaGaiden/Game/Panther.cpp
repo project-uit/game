@@ -1,10 +1,10 @@
 #include "Panther.h"
 #include "Player.h"
 #include "Camera.h"
-#include "Sound.h"
+#include "MCIPlayer.h"
 
 Panther::Panther() {
-	
+
 }
 
 void Panther::init() {
@@ -89,7 +89,7 @@ void Panther::UpdateActiveArea(float t) {
 		if (Player::GetInstance()->GetPosition().x >= activeArea.at(0)
 			&& Player::GetInstance()->GetPosition().x <= activeArea.at(1)
 			&& Player::GetInstance()->GetDirection() == LEFT
-			&& activeArea.at(0) != 0 
+			&& activeArea.at(0) != 0
 			&& activeArea.at(1) != 0) {
 			isActive = true;
 			direction = LEFT;
@@ -134,7 +134,7 @@ void Panther::Update(float t, vector<Object*>* objects) {
 	UpdateActiveArea(t);
 	if (isActive) {
 		Object::Update(t);
-		this->veclocity.y += GRAVITY*t;
+		this->veclocity.y += GRAVITY * t;
 		RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 
@@ -165,7 +165,7 @@ void Panther::Update(float t, vector<Object*>* objects) {
 }
 
 void Panther::Dead() {
-	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
 	objectHeight = objectWidth = 1;

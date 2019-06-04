@@ -2,6 +2,7 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
+#include "MCIPlayer.h"
 //GameDebugDraw* draw2;
 Bat::Bat() {
 }
@@ -181,6 +182,7 @@ void Bat::Dead() {
 	SetVeclocity(0.0f, 0.0f);
 	Object::PlusPosition(0, -3.0f);
 	Player::GetInstance()->AddScore(this->score);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 }
 
 void Bat::ResetState() {

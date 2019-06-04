@@ -13,6 +13,7 @@ private:
 	Boom boom[BOOM_NUMBERS];
 	int hp;
 	bool isOnGround;
+	bool isJump;
 	bool throwBoom;
 	float time;
 	int count;

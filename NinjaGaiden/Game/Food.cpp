@@ -1,4 +1,4 @@
-#include "Sound.h"
+#include "MCIPlayer.h"
 #include "Food.h"
 #include "Square.h"
 #include "Player.h"
@@ -90,10 +90,11 @@ Food::Food(SCENCE scene, int foodType, int posX, int posY) {
 				new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_FOOD_SHURIKEN_RED, 1, 0.0f)));
 		break;
 	case 8:
-		type = FOOD_TYPE::MANA;
+		type = FOOD_TYPE::BLOOD;
+		score = 16;
 		this->sprite
 			->insert(pair<FOOD_STATE, Sprite*>(FOOD_STATE::TOUCHED,
-				new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_FOOD_MANA, 1, 0.0f)));
+				new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAIN), PATH_TEXTURE_MAP_1_FOOD_BLOOD, 1, 0.0f)));
 		break;
 	default:
 		break;
@@ -194,7 +195,7 @@ void Food::HandleCollision(vector<Object*> *object) {
 
 	if (Game::AABB(Player::GetInstance()->GetBoundingBox(), GetBoundingBox())) {
 		if (this->state == TOUCHED) {
-			Sound::GetInstance()->Play(SOUND_DIGEST_FOOD, false, 1);
+			MCIPlayer::GetInstance()->Play(SOUND_DIGEST_FOOD);
 			Player::GetInstance()->DigestFood(this, sprite->at(FOOD_STATE::TOUCHED));
 			this->state = DIGESTED;
 		}

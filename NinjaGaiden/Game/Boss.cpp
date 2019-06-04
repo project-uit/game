@@ -1,10 +1,13 @@
 #include "Boss.h"
 #include "Player.h"
 #include "Debug.h"
+#include "MCIPlayer.h"
+
 Boss::Boss() {
 	objectType = OBJECT_TYPE::BOSS;
 	hp = 16;
 	isOnGround = true;
+	isJump = false;
 	SetVx(0.0f);
 	SetVy(0.0f);
 	SetPosition(187.0f, 122.0f);
@@ -76,7 +79,7 @@ void Boss::Update(float t, vector<Object*> * object) {
 				throwBoom = flag || boom[i].GetActive();
 			}
 		}
-		
+
 		Object::Update(t);
 		SetLastPos(GetPosition());
 		this->veclocity.y += GRAVITY * t;
@@ -90,17 +93,22 @@ void Boss::Update(float t, vector<Object*> * object) {
 		HandleCollision(object);
 		if (isOnGround) {
 			sprite->at(this->state)->SetIndex(0);
+			if (isJump) {
+				MCIPlayer::GetInstance()->Play(SOUND_BOSS_JUMP);
+			}
 			if (time >= 0.2f) {
 				isOnGround = false;
+				isJump = true;
 				time = 0.0f;
 				float tempVy = 510.0f;
 				SetVy(-tempVy);
 				count++;
 				/*float vy = (50 / 2678)*veclocity.x*veclocity.x - 3.78*veclocity.x - 263;
 				if (vy > 0) vy *= -1;*/
-				
+
 			}
 			else {
+				isJump = false;
 				time += t;
 				//Tránh boss bị lệch vị trí khi nhảy qua nhảy lại
 				if (position.x >= 27 && position.x < 33) {
@@ -123,7 +131,7 @@ void Boss::Update(float t, vector<Object*> * object) {
 				}
 			}
 			sprite->at(this->state)->SetIndex(1);
-		}		
+		}
 		if (Game::AABB(Player::GetInstance()->GetKatana()->GetBoundingBox(), GetBoundingBox())
 			|| (Game::AABB(Player::GetInstance()->GetBoundingBox(), GetBoundingBox()) && Player::GetInstance()->GetState() == JUMP_ATK)) {
 			if (timeHurt >= 0.06f) {
@@ -158,6 +166,7 @@ void Boss::Update(float t, vector<Object*> * object) {
 				boom[i].SetActive(false);
 			}
 			Player::GetInstance()->AddScore(score);
+			MCIPlayer::GetInstance()->Play(SOUND_BOSS_EXPLOSION);
 		}
 	}
 	else {
@@ -180,7 +189,7 @@ void Boss::HandleCollision(vector<Object*> *object) {
 	else {
 		float min_tx, min_ty, nx = 0, ny;
 		this->FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-		this->PlusPosition(0.0f, min_ty*this->deltaY + ny * 0.2f);	
+		this->PlusPosition(0.0f, min_ty*this->deltaY + ny * 0.2f);
 		for (UINT i = 0; i < coEventsResult->size(); i++) {
 			CollisionHandler* e = coEventsResult->at(i);
 			if (e->object->GetObjectType() == OBJECT_TYPE::SQUARE) {
@@ -240,20 +249,19 @@ void Boss::Render() {
 				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x - 12, position.y, 0), true);
 				break;
 			case 1:
-				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x + 13 * i, position.y + 5 , 0), true);
+				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x + 13 * i, position.y + 5, 0), true);
 				break;
 			case 2:
-				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x + - 12, position.y + 25, 0), true);
+				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x + -12, position.y + 25, 0), true);
 				break;
 			case 3:
 				explosion->at(i)->DrawSprite(D3DXVECTOR3(position.x + 13 * (i - 2), position.y + 30, 0), true);
 				break;
 			}
 		}
-	} 
+	}
 }
 
 int Boss::GetHp() {
 	return hp;
 }
-

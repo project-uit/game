@@ -1,10 +1,13 @@
 ﻿#include "World.h"
+#include <string.h> 
 #include "GameDebugDraw.h"
 #include "Camera.h"
 #include "Sound.h"
+#include "MCIPlayer.h"
 #include "Text.h"
 #include "Scence2.h"
 #include "Scence3.h"
+
 World *World::_instance = NULL;
 
 World::World()
@@ -31,16 +34,20 @@ void World::ReplaceScence(SCENCE scenceType) {
 	switch (scenceType) {
 		case SCENCE::SCENCE_1:
 			SetScence(new Scence1());
+			MCIPlayer::GetInstance()->SwitchSoundTrack(SOUND_TRACK_MAP1, 200 , 38000);
 			break;
 		case SCENCE::SCENCE_2:
 			SetScence(new Scence2());
+			MCIPlayer::GetInstance()->SwitchSoundTrack(SOUND_TRACK_MAP2, 200, 143000);
 			break;
 		case SCENCE::SCENCE_3:
 			SetScence(new Scence3());
+			MCIPlayer::GetInstance()->SwitchSoundTrack(SOUND_TRACK_MAP3, 200, 143000);
 			break;
 		default:
 			break;
 	}
+	Camera::GetInstance()->setPosition({ 0,0 });
 }
 
 void World::LoadResource()
@@ -60,19 +67,22 @@ void World::LoadResource()
 	texture->Add(POINT_ID, POINT_BOX, D3DCOLOR_XRGB(0, 0, 0));
 	//Big Shuriken
 	texture->Add(BIG_SHURIKEN_ID, PATH_BIG_SHURIKEN, D3DCOLOR_XRGB(0, 128, 128));
-	Sound* sound = Sound::GetInstance();
-	sound->LoadSound(SOUND_TRACK_PATH_MAP_1, SOUND_TRACK_MAP1);
-	sound->LoadSound(SOUND_PATH_EFFECT_ATK, SOUND_ATK);
-	sound->LoadSound(SOUND_PATH_EFFECT_ATK_SMALL_SHURIKEN, SOUND_ATK_SMALL_SHURIKEN);
-	sound->LoadSound(SOUND_PATH_EFFECT_ATK_BIG_SHURIKEN, SOUND_ATK_BIG_SHURIKEN);
-	sound->LoadSound(SOUND_PATH_EFFECT_ATK_FIRE, SOUND_ATK_FIRE);
-	sound->LoadSound(SOUND_PATH_EFFECT_JUMP, SOUND_JUMP);
-	sound->LoadSound(SOUND_PATH_EFFECT_WOUNDED, SOUND_WOUNDED);
-	sound->LoadSound(SOUND_PATH_EFFECT_DIGEST_FOOD, SOUND_DIGEST_FOOD);
-	sound->LoadSound(SOUND_PATH_EFFECT_ENEMY_DIE, SOUND_ENEMY_DIE);
-	sound->LoadSound(SOUND_PATH_EFFECT_ENEMY_GUN, SOUND_ENEMY_GUN);
-	sound->LoadSound(SOUND_PATH_EFFECT_ENEMY_BAZOKA, SOUND_ENEMY_BAZOKA);
-	sound->LoadSound(SOUND_PATH_EFFECT_BOSS_JUMP, SOUND_BOSS_JUMP);
+	MCIPlayer *mciPlayer = MCIPlayer::GetInstance();
+	mciPlayer->Load(SOUND_TRACK_PATH_MAP_1, SOUND_TRACK_MAP1);
+	mciPlayer->Load(SOUND_TRACK_PATH_MAP_2, SOUND_TRACK_MAP2);
+	mciPlayer->Load(SOUND_TRACK_PATH_MAP_3, SOUND_TRACK_MAP3);
+	mciPlayer->Load(SOUND_PATH_EFFECT_ATK, SOUND_ATK);
+	mciPlayer->Load(SOUND_PATH_EFFECT_ATK_SMALL_SHURIKEN, SOUND_ATK_SMALL_SHURIKEN);
+	mciPlayer->Load(SOUND_PATH_EFFECT_ATK_BIG_SHURIKEN, SOUND_ATK_BIG_SHURIKEN);
+	mciPlayer->Load(SOUND_PATH_EFFECT_ATK_FIRE, SOUND_ATK_FIRE);
+	mciPlayer->Load(SOUND_PATH_EFFECT_JUMP, SOUND_JUMP);
+	mciPlayer->Load(SOUND_PATH_EFFECT_WOUNDED, SOUND_WOUNDED);
+	mciPlayer->Load(SOUND_PATH_EFFECT_DIGEST_FOOD, SOUND_DIGEST_FOOD);
+	mciPlayer->Load(SOUND_PATH_EFFECT_ENEMY_DIE, SOUND_ENEMY_DIE);
+	mciPlayer->Load(SOUND_PATH_EFFECT_ENEMY_GUN, SOUND_ENEMY_GUN);
+	mciPlayer->Load(SOUND_PATH_EFFECT_ENEMY_BAZOKA, SOUND_ENEMY_BAZOKA);
+	mciPlayer->Load(SOUND_PATH_EFFECT_BOSS_EXPLOSION, SOUND_BOSS_EXPLOSION);
+	mciPlayer->Load(SOUND_PATH_EFFECT_BOSS_JUMP, SOUND_BOSS_JUMP);
 	Player *main = Player::GetInstance();
 	Text* text = Text::GetInstance();
 	Camera* camera = Camera::GetInstance();
@@ -85,23 +95,22 @@ void World::Update(float deltaTime)
 	if (Player::GetInstance()->GetAlphaEndPoint() == 0) {
 		switch (scence->GetScenceType()) {
 		case SCENCE::SCENCE_1:
-			SetScence(new Scence2());
-			Camera::GetInstance()->setPosition({ 0,0 });
-			
+			this->ReplaceScence(SCENCE::SCENCE_2);
 			break;
 		case SCENCE::SCENCE_2:
-			SetScence(new Scence3());
-			Camera::GetInstance()->setPosition({ 0,0 });
+			this->ReplaceScence(SCENCE::SCENCE_3);
 			break;
 		default:
 			break;
 		}
 		return;
 	}
+
 	if (Player::GetInstance()->GetState() == PLAYER_STATE::DIE && scence->GetScenceType() == SCENCE::SCENCE_3) {
 		ReplaceScence(SCENCE::SCENCE_2);
 		return;
 	}
+
 	scence->Update(deltaTime);
 }
 

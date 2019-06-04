@@ -3,7 +3,7 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
-#include "Sound.h"
+#include "MCIPlayer.h"
 
 SoliderBazoka::SoliderBazoka() {
 
@@ -37,7 +37,7 @@ void SoliderBazoka::InitSpite() {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_SOLIDER_BAZOKA_ATK, 2, 0.09f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.04f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.03f)));
 }
 
 void SoliderBazoka::Update(float t, vector<Object*>* objects) {
@@ -134,7 +134,7 @@ void SoliderBazoka::HandleDirection() {
 void SoliderBazoka::HandleAttack(float t) {
 	if (state != ENEMY_STATE::ATK) {
 		if (timerDelayShooting >= SHOOT_TIME_DELAY) {
-			Sound::GetInstance()->Play(SOUND_ENEMY_BAZOKA, false, 1);
+			MCIPlayer::GetInstance()->Play(SOUND_ENEMY_BAZOKA);
 			state = ENEMY_STATE::ATK;
 			bullet->Fly(direction);
 			SetVx(0);
@@ -153,7 +153,7 @@ void SoliderBazoka::HandleAttack(float t) {
 }
 
 void SoliderBazoka::Dead() {
-	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 	state = ENEMY_STATE::DEAD;
 }
 

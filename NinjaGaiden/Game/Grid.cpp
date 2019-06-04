@@ -22,7 +22,7 @@ Grid* Grid::_instance = NULL;
 
 Grid::Grid()
 {
-	
+
 }
 
 Grid::Grid(int mapHeight, int mapWidth)
@@ -207,7 +207,7 @@ void Grid::UpdateGrid(Object * object)
 	if (oldRow == newRow && oldColumn == newColumn) {
 		return;
 	}
-	
+
 	GetObjectsInCells(object);
 }
 
@@ -216,7 +216,7 @@ void Grid::UpdatePlayer(float t) {
 }
 
 void Grid::UpdateObject(float t) {
-	
+
 	for (int i = 0; i < objects->size(); i++) {
 		if (i > 0) {
 			vector<Object*>* list = FilterObjects(objects->at(i)->GetObjectType());
@@ -255,7 +255,7 @@ void Grid::DrawGrid() {
 	int x1 = ceil(camREC.left / CELL_WIDTH), y1 = ceil(camREC.top / CELL_HEIGHT);
 	//góc phải dưới
 	int x2 = ceil(camREC.right / CELL_WIDTH), y2 = ceil(camREC.bottom / CELL_HEIGHT);
-	
+
 	for (int i = y1; i < y2; i++) {
 		//cột của grid
 		for (int j = x1; j < x2; j++) {
@@ -300,48 +300,48 @@ void Grid::LoadGroundAndItem(LPCWSTR filePath, SCENCE scence) {
 			if (tempVector->size() > 5) {
 				left = tempVector->at(2);
 				top = tempVector->at(3),
-				right = tempVector->at(4);
+					right = tempVector->at(4);
 				bottom = tempVector->at(5);
 			}
 			Object* object;
 			switch (type) {
-				case 1:
-				{
-					object = new Square(left, top, right, bottom);
-					Square* square = dynamic_cast<Square*>(object);
-					squares->push_back(square);
-				}	
+			case 1:
+			{
+				object = new Square(left, top, right, bottom);
+				Square* square = dynamic_cast<Square*>(object);
+				squares->push_back(square);
+			}
+			break;
+			case 2:
+				object = new Brick(left, top, right, bottom);
+				Add(object);
 				break;
-				case 2:
-					object = new Brick(left, top, right, bottom);
-					Add(object);
-					break;
-				case 3:
-					object = new Destination(left, top, right, bottom);
-					Add(object);
-					break;
-				case 4:
-				{
-					int typeFood = tempVector->at(2);
-					int positionX = tempVector->at(3);
-					int positionY = tempVector->at(4);
-					object = new Food(scence, typeFood, positionX, positionY);
-					Add(object);
-				}
+			case 3:
+				object = new Destination(left, top, right, bottom);
+				Add(object);
 				break;
-				case 5:
-					object = new Ladder(left, top, right, bottom);
-					Add(object);
+			case 4:
+			{
+				int typeFood = tempVector->at(2);
+				int positionX = tempVector->at(3);
+				int positionY = tempVector->at(4);
+				object = new Food(scence, typeFood, positionX, positionY);
+				Add(object);
+			}
+			break;
+			case 5:
+				object = new Ladder(left, top, right, bottom);
+				Add(object);
 				break;
-				case 6:
-				{
-					bool isCanClimbLeft = tempVector->at(6), isCanClimbRight = tempVector->at(7);
-					object = new Rock(left, top, right, bottom, isCanClimbLeft, isCanClimbRight);
-					Add(object);
-				}
+			case 6:
+			{
+				bool isCanClimbLeft = tempVector->at(6), isCanClimbRight = tempVector->at(7);
+				object = new Rock(left, top, right, bottom, isCanClimbLeft, isCanClimbRight);
+				Add(object);
+			}
+			break;
+			default:
 				break;
-				default:
-					break;
 			}
 
 		}
@@ -422,13 +422,13 @@ void Grid::LoadObjects(LPCWSTR filePath) {
 			if (tempVector->size() > 4) {
 				//======== movingLimit
 				//==== Vùng di chuyển khi direction object là left
-				int left = tempVector->at(4); 
+				int left = tempVector->at(4);
 				int right = tempVector->at(5);
 				movingLimit.push_back(left);
 				movingLimit.push_back(right);
 				//==== Vùng di chuyển khi direction object là right
 				left = tempVector->at(6);
-				right = tempVector->at(7);				
+				right = tempVector->at(7);
 				movingLimit.push_back(left);
 				movingLimit.push_back(right);
 				//======== activeArea
@@ -451,40 +451,40 @@ void Grid::LoadObjects(LPCWSTR filePath) {
 			}
 			Object* object;
 			switch (TypeObject) {
-				case 1:
-					object = new SoldierSword(movingLimit, activeArea, positionX, positionY);
-					Add(object);
-					break;
-				case 2:
-					object = new Witch(positionX, positionY, movingLimit, activeArea);
-					Add(object);
-					break;
-				case 3:
-					object = new SoliderGun(positionX, positionY, movingLimit, activeArea);
-					Add(row, column, object);
-					break;
-				case 4:
-					object = new Panther(movingLimit, activeArea, positionX, positionY);
-					Add(object);
-					break;
-				case 5:
-					object = new SoliderBazoka(positionX, positionY, movingLimit, activeArea);
-					Add(object);
-					break;
-				case 10:
-					object = new Eagle(activeArea, positionX, positionY);
-					Add(object);
-					break;
-				case 11:
-					object = new SoliderRun(positionX, positionY, movingLimit, activeArea);
-					Add(object);
-					break;
-				case 12:
-					object = new Bat(movingLimit, activeArea, positionX, positionY);
-					Add(object);
-					break;
-				default:
-					break;
+			case 1:
+				object = new SoldierSword(movingLimit, activeArea, positionX, positionY);
+				Add(object);
+				break;
+			case 2:
+				object = new Witch(positionX, positionY, movingLimit, activeArea);
+				Add(object);
+				break;
+			case 3:
+				object = new SoliderGun(positionX, positionY, movingLimit, activeArea);
+				Add(row, column, object);
+				break;
+			case 4:
+				object = new Panther(movingLimit, activeArea, positionX, positionY);
+				Add(object);
+				break;
+			case 5:
+				object = new SoliderBazoka(positionX, positionY, movingLimit, activeArea);
+				Add(object);
+				break;
+			case 10:
+				object = new Eagle(activeArea, positionX, positionY);
+				Add(object);
+				break;
+			case 11:
+				object = new SoliderRun(positionX, positionY, movingLimit, activeArea);
+				Add(object);
+				break;
+			case 12:
+				object = new Bat(movingLimit, activeArea, positionX, positionY);
+				Add(object);
+				break;
+			default:
+				break;
 			}
 		}
 		tempVector->clear();

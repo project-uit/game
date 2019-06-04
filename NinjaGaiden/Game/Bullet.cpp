@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "SoliderGun.h"
 #include "GameDebugDraw.h"
-#include "Sound.h"
+#include "MCIPlayer.h"
 
 Bullet::Bullet(int positionX, int positionY, BULLET_TYPE type, DIRECTION direction) {
 	this->direction = direction;
@@ -27,7 +27,7 @@ Bullet::Bullet(int positionX, int positionY, BULLET_TYPE type, DIRECTION directi
 	}
 
 	sprite->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 2, 0.04f)));
+		new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.03f)));
 }
 
 Bullet::~Bullet() {
@@ -114,7 +114,7 @@ void Bullet::Fly(DIRECTION direction) {
 }
 
 void Bullet::Dead() {
-	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0, 0);
 	position.y = Player::GetInstance()->GetPosition().y - 10;

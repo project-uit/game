@@ -1,6 +1,8 @@
 #include "Boom.h"
 #include "Camera.h"
 #include "Player.h"
+#include "MCIPlayer.h"
+
 Boom::Boom() {
 	objectType = BOOM_BOSS;
 	isActive = false;
@@ -41,7 +43,7 @@ void Boom::Update(float t, float runTime, vector<Object*>* object) {
 }
 
 void Boom::Update(float t, vector<Object*>* object) {
-	
+
 	Object::Update(t);
 	RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 	Object::updateBoundingBox(rect);
@@ -65,6 +67,7 @@ void Boom::Dead() {
 	SetVeclocity(0.0f, 0.0f);
 	sprite->at(this->state)->SetScale(1.0f);
 	Player::GetInstance()->AddScore(score);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 }
 
 ENEMY_STATE Boom::GetState() {

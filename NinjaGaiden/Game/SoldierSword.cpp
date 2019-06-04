@@ -2,7 +2,7 @@
 #include "Square.h"
 #include "Player.h"
 #include "GameDebugDraw.h"
-#include "Sound.h"
+#include "MCIPlayer.h"
 
 SoldierSword::SoldierSword() {
 }
@@ -110,7 +110,7 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 	UpdateActiveArea(t);
 	if (this->isActive) {
 		Object::Update(t);
-		this->veclocity.y += GRAVITY*t;
+		this->veclocity.y += GRAVITY * t;
 		RECT rect = sprite->at(this->state)->GetBoudingBoxFromCurrentSprite();
 		Object::updateBoundingBox(rect);
 		sprite->at(this->state)->NextSprite(t);
@@ -160,7 +160,7 @@ void SoldierSword::Update(float t, vector<Object*>* objects) {
 }
 
 void SoldierSword::Dead() {
-	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0.0f, 0.0f);
 	Player::GetInstance()->AddScore(this->score);

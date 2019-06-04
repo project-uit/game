@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "WitchSword.h"
 #include "GameDebugDraw.h"
-#include "Sound.h"
+#include "MCIPlayer.h"
 
 GameDebugDraw* drawWitchSword;
 
@@ -22,7 +22,7 @@ WitchSword::WitchSword(int positionX, int positionY, DIRECTION direction) {
 			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY), PATH_TEXTURE_MAP_1_ENEMY_WITCH_SWORD, 2, 0.09f)));
 	this->sprite
 		->insert(pair<ENEMY_STATE, Sprite*>(ENEMY_STATE::DEAD,
-			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.04f)));
+			new Sprite(Texture::GetInstance()->Get(ID_TEXTURE_MAP_1_ENEMY_DIE_FIRE), PATH_TEXTURE_MAP_1_ENEMY_ENEMY_DIE, 3, 0.03f)));
 }
 
 WitchSword::~WitchSword() {
@@ -144,7 +144,7 @@ void WitchSword::Fly(int vX, DIRECTION direction) {
 }
 
 void WitchSword::Dead() {
-	Sound::GetInstance()->Play(SOUND_ENEMY_DIE, false, 1);
+	MCIPlayer::GetInstance()->Play(SOUND_ENEMY_DIE);
 	state = ENEMY_STATE::DEAD;
 	SetVeclocity(0, 0);
 }
