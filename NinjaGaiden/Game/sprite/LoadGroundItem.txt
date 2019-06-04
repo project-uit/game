@@ -1,6 +1,0 @@
-1	Ground/Square
-2	Brick
-3	Destination
-4	Item/Food
-5	Ladder
-6	Rock

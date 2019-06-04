@@ -81,297 +81,276 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Debug.h">
-      <Filter>Header Files\Logging</Filter>
-    </ClInclude>
-    <ClInclude Include="Constants.h">
+    <ClInclude Include="Framework\Camera.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
+    <ClInclude Include="Framework\Sprite.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Graphic.h">
+    <ClInclude Include="Framework\Texture.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
+    <ClInclude Include="Framework\World.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="Framework\Scence.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Framework\Object.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="World.h">
+    <ClInclude Include="Framework\InputDevice.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="InputDevice.h">
+    <ClInclude Include="Framework\Graphic.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="GameAction.h">
+    <ClInclude Include="Framework\GameTime.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Sound.h">
+    <ClInclude Include="Framework\GameAction.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
+    <ClInclude Include="Framework\Game.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Scence.h">
+    <ClInclude Include="Framework\Grid.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files\Object\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
+    <ClInclude Include="Framework\Map.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Scence1.h">
-      <Filter>Header Files\Scence</Filter>
-    </ClInclude>
-    <ClInclude Include="Square.h">
-      <Filter>Header Files\Object\Square</Filter>
-    </ClInclude>
-    <ClInclude Include="GameDebugDraw.h">
-      <Filter>Header Files\Logging</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Header Files\HUD\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="Katana.h">
-      <Filter>Header Files\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Scence2.h">
-      <Filter>Header Files\Scence</Filter>
-    </ClInclude>
-    <ClInclude Include="SoldierSword.h">
-      <Filter>Header Files\Object\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTime.h">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="Panther.h">
-      <Filter>Header Files\Object\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="SmallShuriken.h">
-      <Filter>Header Files\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>Header Files\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="BigShuriken.h">
-      <Filter>Header Files\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="CircleFire.h">
-      <Filter>Header Files\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="HUD.h">
+    <ClInclude Include="HUD\HUD.h">
       <Filter>Header Files\HUD\Health</Filter>
     </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>Header Files\Object\Enemy</Filter>
+    <ClInclude Include="HUD\Text.h">
+      <Filter>Header Files\HUD\Text</Filter>
     </ClInclude>
-    <ClInclude Include="Scence3.h">
-      <Filter>Header Files\Scence</Filter>
+    <ClInclude Include="Framework\Constants.h">
+      <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Header Files\Object\Enemy</Filter>
+    <ClInclude Include="Logging\Debug.h">
+      <Filter>Header Files\Logging</Filter>
     </ClInclude>
-    <ClInclude Include="SoliderBazoka.h">
-      <Filter>Header Files\Object\Enemy</Filter>
+    <ClInclude Include="Object\Boss\Boss.h">
+      <Filter>Header Files\Object\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="SoliderGun.h">
-      <Filter>Header Files\Object\Enemy</Filter>
+    <ClInclude Include="Object\Boss\Boom.h">
+      <Filter>Header Files\Object\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="SoliderRun.h">
-      <Filter>Header Files\Object\Enemy</Filter>
+    <ClInclude Include="Object\Player\BigShuriken.h">
+      <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Witch.h">
-      <Filter>Header Files\Object\Enemy</Filter>
+    <ClInclude Include="Object\Player\CircleFire.h">
+      <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="WitchSword.h">
-      <Filter>Header Files\Object\Enemy</Filter>
+    <ClInclude Include="Object\Player\Player.h">
+      <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Food.h">
+    <ClInclude Include="Object\Player\Katana.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Player\SmallShuriken.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Player\Weapon.h">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Items\Food.h">
       <Filter>Header Files\Object\Items</Filter>
     </ClInclude>
-    <ClInclude Include="Boom.h">
-      <Filter>Header Files\Object\Boss</Filter>
+    <ClInclude Include="Scence\Scence1.h">
+      <Filter>Header Files\Scence</Filter>
     </ClInclude>
-    <ClInclude Include="Boss.h">
-      <Filter>Header Files\Object\Boss</Filter>
+    <ClInclude Include="Scence\Scence2.h">
+      <Filter>Header Files\Scence</Filter>
     </ClInclude>
-    <ClInclude Include="Ladder.h">
-      <Filter>Header Files\Object\Ladder</Filter>
+    <ClInclude Include="Scence\Scence3.h">
+      <Filter>Header Files\Scence</Filter>
     </ClInclude>
-    <ClInclude Include="Rock.h">
-      <Filter>Header Files\Object\Ladder</Filter>
-    </ClInclude>
-    <ClInclude Include="Eagle.h">
+    <ClInclude Include="Object\Enemy\Bat.h">
       <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Brick.h">
+    <ClInclude Include="Object\Enemy\Bullet.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Enemy\Eagle.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Enemy\Panther.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Enemy\SoldierSword.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Enemy\SoliderBazoka.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Enemy\SoliderGun.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Enemy\SoliderRun.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Enemy\Witch.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Enemy\WitchSword.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Square\Brick.h">
       <Filter>Header Files\Object\Square</Filter>
     </ClInclude>
-    <ClInclude Include="Mp3.h">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="MP3Player.h">
-      <Filter>Header Files\FrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="Destination.h">
+    <ClInclude Include="Object\Square\Destination.h">
       <Filter>Header Files\Object\Square</Filter>
     </ClInclude>
-    <ClInclude Include="MCIPlayer.h">
+    <ClInclude Include="Object\Square\Square.h">
+      <Filter>Header Files\Object\Square</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Ladder\Ladder.h">
+      <Filter>Header Files\Object\Ladder</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\GameDebugDraw.h">
+      <Filter>Header Files\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Ladder\Rock.h">
+      <Filter>Header Files\Object\Ladder</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\MCIPlayer.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Debug.cpp">
+    <ClCompile Include="Framework\Camera.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Sprite.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Texture.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\World.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Scence.cpp">
+      <Filter>Source Files\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Object.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphic.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameTime.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameAction.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Game.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Grid.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Map.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD\HUD.cpp">
+      <Filter>Header Files\HUD\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD\Text.cpp">
+      <Filter>Header Files\HUD\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging\Debug.cpp">
       <Filter>Header Files\Logging</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files\Framework</Filter>
+    <ClCompile Include="Logging\GameDebugDraw.cpp">
+      <Filter>Header Files\Logging</Filter>
     </ClCompile>
-    <ClCompile Include="GameAction.cpp">
-      <Filter>Source Files\Framework</Filter>
+    <ClCompile Include="Object\Boss\Boss.cpp">
+      <Filter>Source Files\Object\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Graphic.cpp">
-      <Filter>Source Files\Framework</Filter>
+    <ClCompile Include="Object\Boss\Boom.cpp">
+      <Filter>Source Files\Object\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files\Framework</Filter>
+    <ClCompile Include="Object\Player\BigShuriken.cpp">
+      <Filter>Source Files\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="World.cpp">
-      <Filter>Source Files\Framework</Filter>
+    <ClCompile Include="Object\Player\CircleFire.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Player\player.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Player\Katana.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Player\SmallShuriken.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Items\Food.cpp">
+      <Filter>Source Files\Object\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence\Scence1.cpp">
+      <Filter>Source Files\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence\Scence2.cpp">
+      <Filter>Source Files\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence\Scence3.cpp">
+      <Filter>Source Files\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\Bat.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\Bullet.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\Eagle.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\Panther.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\SoldierSword.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\SoliderBazoka.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\SoliderGun.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\SoliderRun.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\Witch.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Enemy\WitchSword.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>Source Files\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files\Object\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Scence.cpp">
-      <Filter>Source Files\Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="Scence1.cpp">
-      <Filter>Source Files\Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="Square.cpp">
+    <ClCompile Include="Object\Square\Brick.cpp">
       <Filter>Source Files\Object\Square</Filter>
     </ClCompile>
-    <ClCompile Include="GameDebugDraw.cpp">
-      <Filter>Header Files\Logging</Filter>
+    <ClCompile Include="Object\Square\Destination.cpp">
+      <Filter>Source Files\Object\Square</Filter>
     </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Header Files\HUD\Text</Filter>
+    <ClCompile Include="Object\Square\Square.cpp">
+      <Filter>Source Files\Object\Square</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="SoldierSword.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sound.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTime.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Panther.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Katana.cpp">
-      <Filter>Source Files\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="SmallShuriken.cpp">
-      <Filter>Source Files\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="BigShuriken.cpp">
-      <Filter>Source Files\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="HUD.cpp">
-      <Filter>Header Files\HUD\Health</Filter>
-    </ClCompile>
-    <ClCompile Include="Bat.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Scence2.cpp">
-      <Filter>Source Files\Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="Scence3.cpp">
-      <Filter>Source Files\Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="SoliderBazoka.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="SoliderGun.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Witch.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="WitchSword.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Food.cpp">
-      <Filter>Source Files\Object\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="Boom.cpp">
-      <Filter>Source Files\Object\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss.cpp">
-      <Filter>Source Files\Object\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="Ladder.cpp">
+    <ClCompile Include="Object\Ladder\Ladder.cpp">
       <Filter>Source Files\Object\Ladder</Filter>
     </ClCompile>
-    <ClCompile Include="Rock.cpp">
+    <ClCompile Include="Object\Ladder\Rock.cpp">
       <Filter>Source Files\Object\Ladder</Filter>
     </ClCompile>
-    <ClCompile Include="Eagle.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="CircleFire.cpp">
-      <Filter>Source Files\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Source Files\Object\Square</Filter>
-    </ClCompile>
-    <ClCompile Include="Mp3.cpp">
-      <Filter>Source Files\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="SoliderRun.cpp">
-      <Filter>Source Files\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Destination.cpp">
-      <Filter>Source Files\Object\Square</Filter>
-    </ClCompile>
-    <ClCompile Include="MCIPlayer.cpp">
+    <ClCompile Include="Framework\MCIPlayer.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
   </ItemGroup>

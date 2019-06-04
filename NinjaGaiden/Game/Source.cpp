@@ -1,4 +1,4 @@
-#include "GameAction.h"
+#include "Framework/GameAction.h"
 int WINAPI WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,

@@ -1,2 +1,6 @@
 
 *.ipch
+*.idb
+*.tlog
+*.tlog
+*.tlog
