@@ -85,7 +85,7 @@ void Boss::Update(float t, vector<Object*> * object) {
 				throwBoom = flag || boom[i].GetActive();
 				
 			}
-			if (count == BOOM_NUMBERS - 1) {
+			if (count == BOOM_NUMBERS) {
 				throwBoom = false;
 			}
 		}

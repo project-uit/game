@@ -219,6 +219,9 @@
     <ClInclude Include="Framework\MCIPlayer.h">
       <Filter>Header Files\FrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Enemy\Enemy.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Camera.cpp">
