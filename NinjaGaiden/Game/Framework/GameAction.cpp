@@ -80,12 +80,24 @@ void KeyboardHandler::OnKeyDown(int KeyCode)
 						Player::GetInstance()->SetAcceleratorX(20.0f);
 						Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
 					}
+					else {
+						if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
+							Player::GetInstance()->SetAcceleratorX(-5.0f);
+							Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+						}
+					}
 				}
 				else {
 					if (Player::GetInstance()->GetDirectionClimb() == DIRECTION::RIGHT) {
 						if (Game::GetInstance()->IsKeyDown(DIK_LEFT)) {
 							Player::GetInstance()->SetAcceleratorX(-20.0f);
 							Player::GetInstance()->SetDirection(DIRECTION::LEFT);
+						}
+						else {
+							if (Game::GetInstance()->IsKeyDown(DIK_RIGHT)) {
+								Player::GetInstance()->SetAcceleratorX(5.0f);
+								Player::GetInstance()->SetDirection(DIRECTION::RIGHT);
+							}
 						}
 					}
 				}
