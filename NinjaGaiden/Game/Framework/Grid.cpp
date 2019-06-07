@@ -133,30 +133,30 @@ void Grid::GetObjectsInCells(Object * object)
 	int x2 = ceil(camREC.right / CELL_WIDTH), y2 = ceil(camREC.bottom / CELL_HEIGHT);
 
 	//ResetState 1 cột phía trước
-	int xRs = x2;
-	if (xRs < numOfColumn) {
-		for (int i = y1; i < y2; i++) {
-			vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
-			for (int k = 0; k < listObj->size(); k++) {
-				if (!Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
-					listObj->at(k)->ResetState();
-				}
-			}
-		}
-	}
+	//int xRs = x2;
+	//if (xRs < numOfColumn) {
+	//	for (int i = y1; i < y2; i++) {
+	//		vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
+	//		for (int k = 0; k < listObj->size(); k++) {
+	//			if (!Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
+	//				listObj->at(k)->ResetState();
+	//			}
+	//		}
+	//	}
+	//}
 
-	//ResetState 1 cột phía sau
-	xRs = x1 - 1;
-	if (xRs >= 0) {
-		for (int i = y1; i < y2; i++) {
-			vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
-			for (int k = 0; k < listObj->size(); k++) {
-				if (!Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
-					listObj->at(k)->ResetState();
-				}
-			}
-		}
-	}
+	////ResetState 1 cột phía sau
+	//xRs = x1 - 1;
+	//if (xRs >= 0) {
+	//	for (int i = y1; i < y2; i++) {
+	//		vector<Object*> *listObj = cells->at(i)->at(xRs)->objects;
+	//		for (int k = 0; k < listObj->size(); k++) {
+	//			if (!Game::AABB(Camera::GetInstance()->GetRECTx(), listObj->at(k)->GetBoundingBox())) {
+	//				listObj->at(k)->ResetState();
+	//			}
+	//		}
+	//	}
+	//}
 	for (int i = 0; i < squares->size(); i++) {
 		if (Game::AABB(camREC, squares->at(i)->GetBoundingBox())) {
 			this->objects->push_back(squares->at(i));

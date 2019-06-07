@@ -169,6 +169,7 @@
     <ClInclude Include="Object\Enemy\Witch.h" />
     <ClInclude Include="Object\Enemy\WitchSword.h" />
     <ClInclude Include="Framework\World.h" />
+    <ClInclude Include="Object\Square\StaticObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\MCIPlayer.cpp" />

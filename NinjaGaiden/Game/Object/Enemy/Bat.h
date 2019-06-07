@@ -1,8 +1,6 @@
 #pragma once
-#include "../../Framework/Object.h"
-#include "../../Framework/Sprite.h"
-#include <map>
-class Bat :public Object {
+#include "Enemy.h"
+class Bat : public Enemy {
 private:
 	int leftMoving;
 	int rightMoving;
